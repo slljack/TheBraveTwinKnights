@@ -16,6 +16,11 @@ export class LevelScene extends Phaser.Scene{
         back.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Menu)
         })
+        this.input.keyboard.on("keyup",function(e){
+            if(e.key=="Escape"){
+                this.scene.start(Control.Scene.Menu)
+            }
+        },this)
     }
 
 }

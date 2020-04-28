@@ -445,6 +445,11 @@ function (_super) {
     back.on("pointerdown", function () {
       _this.scene.start(Control_1.Control.Scene.Menu);
     });
+    this.input.keyboard.on("keyup", function (e) {
+      if (e.key == "Escape") {
+        this.scene.start(Control_1.Control.Scene.Menu);
+      }
+    }, this);
   };
 
   return LevelScene;
@@ -513,6 +518,11 @@ function (_super) {
     back.on("pointerdown", function () {
       _this.scene.start(Control_1.Control.Scene.Menu);
     });
+    this.input.keyboard.on("keyup", function (e) {
+      if (e.key == "Escape") {
+        this.scene.start(Control_1.Control.Scene.Menu);
+      }
+    }, this);
   };
 
   return ControlScene;
@@ -581,6 +591,11 @@ function (_super) {
     back.on("pointerdown", function () {
       _this.scene.start(Control_1.Control.Scene.Menu);
     });
+    this.input.keyboard.on("keyup", function (e) {
+      if (e.key == "Escape") {
+        this.scene.start(Control_1.Control.Scene.Menu);
+      }
+    }, this);
   };
 
   return HelpScene;
