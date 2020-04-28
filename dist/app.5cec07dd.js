@@ -127,7 +127,10 @@ exports.Control = {
   Scene: {
     LOAD: "LOAD",
     Menu: "Menu",
-    Splash: "Splash"
+    Splash: "Splash",
+    Level: "Level",
+    Help: "Help",
+    Control: "Control"
   }
 };
 },{}],"src/Scene/LoadingScene.ts":[function(require,module,exports) {
@@ -180,6 +183,7 @@ function (_super) {
     var _this = this;
 
     this.load.image("logo", "asset/LOGO.png");
+    this.load.image("pointer", "asset/pointer.png");
     this.load.image("splash", "asset/splash_screen.png");
     var loadingbar = this.add.graphics({
       fillStyle: {
@@ -256,20 +260,61 @@ function (_super) {
   MenuScene.prototype.init = function () {};
 
   MenuScene.prototype.create = function () {
+    var _this = this;
+
     this.add.image(420, 200, "logo");
-    this.add.text(360, 300, "<Play>", {
+    var playbutton = this.add.text(360, 300, "<Play>", {
       font: "40px Impact"
     });
-    this.add.text(360, 350, "<Levels>", {
+    var levelbutton = this.add.text(360, 350, "<Levels>", {
       font: "40px Impact"
     });
-    this.add.text(360, 400, "<Control>", {
+    var controlbutton = this.add.text(360, 400, "<Control>", {
       font: "40px Impact"
     });
-    this.add.text(360, 450, "<Help>", {
+    var helpbutton = this.add.text(360, 450, "<Help>", {
       font: "40px Impact"
     });
-    var hoversprite = this.add.sprite(100, 100, "redknight0");
+    var hoversprite = this.add.sprite(100, 100, "pointer");
+    hoversprite.setScale(2);
+    hoversprite.setVisible(false);
+    playbutton.setInteractive();
+    playbutton.on("pointerover", function () {
+      hoversprite.setVisible(true), hoversprite.x = playbutton.x - 50, hoversprite.y = playbutton.y + 23;
+    });
+    playbutton.on("pointerout", function () {
+      hoversprite.setVisible(false);
+    });
+    levelbutton.setInteractive();
+    levelbutton.on("pointerover", function () {
+      hoversprite.setVisible(true), hoversprite.x = levelbutton.x - 50, hoversprite.y = levelbutton.y + 23;
+    });
+    levelbutton.on("pointerout", function () {
+      hoversprite.setVisible(false);
+    });
+    levelbutton.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Level);
+    });
+    controlbutton.setInteractive();
+    controlbutton.on("pointerover", function () {
+      hoversprite.setVisible(true), hoversprite.x = controlbutton.x - 50, hoversprite.y = controlbutton.y + 23;
+    });
+    controlbutton.on("pointerout", function () {
+      hoversprite.setVisible(false);
+    });
+    controlbutton.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Control);
+    });
+    helpbutton.setInteractive();
+    helpbutton.on("pointerover", function () {
+      hoversprite.setVisible(true), hoversprite.x = helpbutton.x - 50, hoversprite.y = helpbutton.y + 23;
+    });
+    helpbutton.on("pointerout", function () {
+      hoversprite.setVisible(false);
+    });
+    helpbutton.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Help);
+    });
   };
 
   return MenuScene;
@@ -338,6 +383,180 @@ function (_super) {
 }(Phaser.Scene);
 
 exports.SplashScene = SplashScene;
+},{"../Control":"src/Control.ts"}],"src/Scene/LevelScene.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Control_1 = require("../Control");
+
+var LevelScene =
+/** @class */
+function (_super) {
+  __extends(LevelScene, _super);
+
+  function LevelScene() {
+    return _super.call(this, {
+      key: Control_1.Control.Scene.Level
+    }) || this;
+  }
+
+  LevelScene.prototype.init = function () {};
+
+  LevelScene.prototype.create = function () {
+    this.add.text(360, 400, "<Level>", {
+      font: "40px Impact"
+    });
+  };
+
+  return LevelScene;
+}(Phaser.Scene);
+
+exports.LevelScene = LevelScene;
+},{"../Control":"src/Control.ts"}],"src/Scene/ControlScene.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Control_1 = require("../Control");
+
+var ControlScene =
+/** @class */
+function (_super) {
+  __extends(ControlScene, _super);
+
+  function ControlScene() {
+    return _super.call(this, {
+      key: Control_1.Control.Scene.Control
+    }) || this;
+  }
+
+  ControlScene.prototype.init = function () {};
+
+  ControlScene.prototype.create = function () {
+    this.add.text(360, 400, "<Control>", {
+      font: "40px Impact"
+    });
+  };
+
+  return ControlScene;
+}(Phaser.Scene);
+
+exports.ControlScene = ControlScene;
+},{"../Control":"src/Control.ts"}],"src/Scene/HelpScene.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Control_1 = require("../Control");
+
+var HelpScene =
+/** @class */
+function (_super) {
+  __extends(HelpScene, _super);
+
+  function HelpScene() {
+    return _super.call(this, {
+      key: Control_1.Control.Scene.Help
+    }) || this;
+  }
+
+  HelpScene.prototype.init = function () {};
+
+  HelpScene.prototype.create = function () {
+    this.add.text(360, 400, "<HELP>", {
+      font: "40px Impact"
+    });
+  };
+
+  return HelpScene;
+}(Phaser.Scene);
+
+exports.HelpScene = HelpScene;
 },{"../Control":"src/Control.ts"}],"src/app.ts":[function(require,module,exports) {
 "use strict";
 /**@type {import("../types/phaser")} */
@@ -352,14 +571,20 @@ var MenuScene_1 = require("./Scene/MenuScene");
 
 var SplashScene_1 = require("./Scene/SplashScene");
 
+var LevelScene_1 = require("./Scene/LevelScene");
+
+var ControlScene_1 = require("./Scene/ControlScene");
+
+var HelpScene_1 = require("./Scene/HelpScene");
+
 var config = {
   type: Phaser.AUTO,
   width: 860,
   height: 700,
-  scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene]
+  scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene]
 };
 var game = new Phaser.Game(config);
-},{"./Scene/LoadingScene":"src/Scene/LoadingScene.ts","./Scene/MenuScene":"src/Scene/MenuScene.ts","./Scene/SplashScene":"src/Scene/SplashScene.ts"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Scene/LoadingScene":"src/Scene/LoadingScene.ts","./Scene/MenuScene":"src/Scene/MenuScene.ts","./Scene/SplashScene":"src/Scene/SplashScene.ts","./Scene/LevelScene":"src/Scene/LevelScene.ts","./Scene/ControlScene":"src/Scene/ControlScene.ts","./Scene/HelpScene":"src/Scene/HelpScene.ts"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

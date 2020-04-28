@@ -7,6 +7,7 @@ export class LoadingScene extends Phaser.Scene{
     }
     preload(){
         this.load.image("logo","asset/LOGO.png");
+        this.load.image("pointer", "asset/pointer.png");
         this.load.image("splash","asset/splash_screen.png");
         let loadingbar = this.add.graphics({
             fillStyle:{
