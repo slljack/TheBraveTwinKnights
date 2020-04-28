@@ -1,5 +1,33 @@
 {
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babelify": "^8.0.0",
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "typescript": "^3.8.3"
-  }
+  },
+  "name": "twinknight",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "gulp-sourcemaps": "^2.6.5",
+    "tsify": "^4.0.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://runjiechen@bitbucket.org/ShilongLi219/thebravetwinknights.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ShilongLi219/thebravetwinknights#readme",
+  "description": ""
 }

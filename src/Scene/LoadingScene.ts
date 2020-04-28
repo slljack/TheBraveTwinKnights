@@ -11,7 +11,7 @@ export class LoadingScene extends Phaser.Scene{
         this.load.image("splash","asset/splash_screen.png");
         let loadingbar = this.add.graphics({
             fillStyle:{
-                color:0xffffff;
+                color:0xffffff
             }
         })
         for(let i=0;i<100;i++){
@@ -20,7 +20,7 @@ export class LoadingScene extends Phaser.Scene{
                 frameWidth:64
             });
         }
-        this.load.on("progress",(percent)=>{
+        this.load.on("progress",(percent: number)=>{
             loadingbar.fillRect(330,this.game.renderer.height/2,200*percent,10);
         })
     }

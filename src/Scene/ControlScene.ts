@@ -17,8 +17,8 @@ export class ControlScene extends Phaser.Scene{
         back.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Menu)
         })
-        this.input.keyboard.on("keyup",function(e){
-            if(e.key=="Escape"){
+        this.input.keyboard.on("keyup",function(event: any){
+            if(event.key=="Escape"){
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
