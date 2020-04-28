@@ -432,8 +432,18 @@ function (_super) {
   LevelScene.prototype.init = function () {};
 
   LevelScene.prototype.create = function () {
-    this.add.text(360, 400, "<Level>", {
+    var _this = this;
+
+    var logo = this.add.image(0, 0, "logo").setOrigin(0);
+    this.add.text(logo.x + 150, logo.y + 50, "Levels", {
       font: "40px Impact"
+    });
+    var back = this.add.text(this.game.renderer.width - 100, 0, "Back", {
+      font: "40px Impact"
+    });
+    back.setInteractive();
+    back.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Menu);
     });
   };
 
@@ -490,8 +500,18 @@ function (_super) {
   ControlScene.prototype.init = function () {};
 
   ControlScene.prototype.create = function () {
-    this.add.text(360, 400, "<Control>", {
+    var _this = this;
+
+    var logo = this.add.image(0, 0, "logo").setOrigin(0);
+    this.add.text(logo.x + 150, logo.y + 50, "Control", {
       font: "40px Impact"
+    });
+    var back = this.add.text(this.game.renderer.width - 100, 0, "Back", {
+      font: "40px Impact"
+    });
+    back.setInteractive();
+    back.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Menu);
     });
   };
 
@@ -548,8 +568,18 @@ function (_super) {
   HelpScene.prototype.init = function () {};
 
   HelpScene.prototype.create = function () {
-    this.add.text(360, 400, "<HELP>", {
+    var _this = this;
+
+    var logo = this.add.image(0, 0, "logo").setOrigin(0);
+    this.add.text(logo.x + 150, logo.y + 50, "HELP", {
       font: "40px Impact"
+    });
+    var back = this.add.text(this.game.renderer.width - 100, 0, "Back", {
+      font: "40px Impact"
+    });
+    back.setInteractive();
+    back.on("pointerdown", function () {
+      _this.scene.start(Control_1.Control.Scene.Menu);
     });
   };
 

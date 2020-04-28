@@ -9,7 +9,13 @@ export class LevelScene extends Phaser.Scene{
 
     }
     create(){
-        this.add.text(360,400,"<Level>",{font:"40px Impact"});
+        let logo = this.add.image(0,0,"logo").setOrigin(0);
+        this.add.text(logo.x+150,logo.y+50,"Levels",{font:"40px Impact"});
+        let back = this.add.text(this.game.renderer.width-100,0,"Back",{font:"40px Impact"});
+        back.setInteractive();
+        back.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Menu)
+        })
     }
 
 }
