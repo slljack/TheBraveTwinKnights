@@ -5,6 +5,7 @@ export const Control ={
         Splash:"Splash",
         Level:"Level",
         Help:"Help",
-        Control:"Control"
+        Control:"Control",
+        Level1:"Level1"
     }
 }

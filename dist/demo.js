@@ -9,7 +9,8 @@ exports.Control = {
         Splash: "Splash",
         Level: "Level",
         Help: "Help",
-        Control: "Control"
+        Control: "Control",
+        Level1: "Level1"
     }
 };
 
@@ -155,9 +156,14 @@ var LevelScene = function (_Phaser$Scene) {
             var logo = this.add.image(0, 0, "logo").setOrigin(0);
             this.add.text(logo.x + 150, logo.y + 50, "Levels", { font: "40px Impact" });
             var back = this.add.text(this.game.renderer.width - 100, 0, "Back", { font: "40px Impact" });
+            var level1 = this.add.text(360, 200, "[ Level 1 ]", { font: "40px Impact" });
             back.setInteractive();
             back.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Menu);
+            });
+            level1.setInteractive();
+            level1.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Level1);
             });
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
