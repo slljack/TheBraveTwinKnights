@@ -9,20 +9,36 @@ export class LoadingScene extends Phaser.Scene{
         this.load.image("logo","asset/LOGO.png");
         this.load.image("pointer", "asset/pointer.png");
         this.load.image("splash","asset/splash_screen.png");
+        this.load.image("up","asset/up.png");
+        this.load.image("down","asset/down.png");
+        this.load.image("right","asset/right.png");
+        this.load.image("left","asset/left.png");
+
+        this.load.image("w","asset/W.png");
+        this.load.image("a","asset/A.png");
+        this.load.image("s","asset/S.png");
+        this.load.image("d","asset/D.png");
+
         let loadingbar = this.add.graphics({
             fillStyle:{
                 color:0xffffff
             }
         })
+        this.load.spritesheet("blueknight","asset/BlueKnight.png",{
+            frameHeight: 128,
+            frameWidth:128
+        });
         for(let i=0;i<100;i++){
             this.load.spritesheet("redknight"+i,"asset/RedKnight.png",{
-                frameHeight: 64,
-                frameWidth:64
+                frameHeight: 128,
+                frameWidth:128
             });
         }
         this.load.on("progress",(percent: number)=>{
             loadingbar.fillRect(330,this.game.renderer.height/2,200*percent,10);
         })
+
+
     }
     create(){
 

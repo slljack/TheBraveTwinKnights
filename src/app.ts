@@ -7,13 +7,16 @@ import { SplashScene } from "./Scene/SplashScene";
 import { LevelScene } from "./Scene/LevelScene";
 import { ControlScene } from "./Scene/ControlScene";
 import { HelpScene } from "./Scene/HelpScene";
-
+import {Level1} from "./Level/Level1"
 
 var config = {
     type:Phaser.AUTO,
     width:860,
     height:700,
-    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene]
+    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1],
+    render:{
+        pixelArt:true
+    }
 
 }
 

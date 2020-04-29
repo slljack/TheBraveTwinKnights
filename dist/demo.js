@@ -28,6 +28,60 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Control_1 = require("../Control");
 
+var Level1 = function (_Phaser$Scene) {
+    _inherits(Level1, _Phaser$Scene);
+
+    function Level1() {
+        _classCallCheck(this, Level1);
+
+        return _possibleConstructorReturn(this, (Level1.__proto__ || Object.getPrototypeOf(Level1)).call(this, {
+            key: Control_1.Control.Scene.Level1
+        }));
+    }
+
+    _createClass(Level1, [{
+        key: "init",
+        value: function init() {}
+    }, {
+        key: "preload",
+        value: function preload() {
+            this.load.image('castleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
+            this.load.image('castleBG', 'asset/tilemaps/tiles/CastleBackground.png');
+            this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
+        }
+    }, {
+        key: "create",
+        value: function create() {
+            //let map = this.make.tilemap({ key: 'map', tileWidth: 128, tileHeight: 128 });
+            //let tileset = map.addTilesetImage('castleBlock');
+            //let layer = map.createDynamicLayer('Collision',tileset);
+            this.input.keyboard.on("keyup", function (e) {
+                if (e.key == "Escape") {
+                    this.scene.start(Control_1.Control.Scene.Menu);
+                }
+            }, this);
+        }
+    }]);
+
+    return Level1;
+}(Phaser.Scene);
+
+exports.Level1 = Level1;
+
+},{"../Control":1}],3:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Control_1 = require("../Control");
+
 var ControlScene = function (_Phaser$Scene) {
     _inherits(ControlScene, _Phaser$Scene);
 
@@ -59,6 +113,25 @@ var ControlScene = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
+            this.add.sprite(200, 200, "redknight1");
+            this.add.sprite(600, 200, "blueknight");
+            //controls
+            var up = this.add.image(200, 400, "up");
+            up.setScale(4);
+            var right = this.add.image(270, 455, "right");
+            right.setScale(4);
+            var left = this.add.image(130, 455, "left");
+            left.setScale(4);
+            var down = this.add.image(200, 455, "down");
+            down.setScale(4);
+            var w = this.add.image(600, 400, "w");
+            w.setScale(4);
+            var a = this.add.image(530, 455, "a");
+            a.setScale(4);
+            var s = this.add.image(600, 455, "s");
+            s.setScale(4);
+            var d = this.add.image(670, 455, "d");
+            d.setScale(4);
         }
     }]);
 
@@ -67,7 +140,7 @@ var ControlScene = function (_Phaser$Scene) {
 
 exports.ControlScene = ControlScene;
 
-},{"../Control":1}],3:[function(require,module,exports){
+},{"../Control":1}],4:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -120,7 +193,7 @@ var HelpScene = function (_Phaser$Scene) {
 
 exports.HelpScene = HelpScene;
 
-},{"../Control":1}],4:[function(require,module,exports){
+},{"../Control":1}],5:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -178,7 +251,7 @@ var LevelScene = function (_Phaser$Scene) {
 
 exports.LevelScene = LevelScene;
 
-},{"../Control":1}],5:[function(require,module,exports){
+},{"../Control":1}],6:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -211,15 +284,27 @@ var LoadingScene = function (_Phaser$Scene) {
             this.load.image("logo", "asset/LOGO.png");
             this.load.image("pointer", "asset/pointer.png");
             this.load.image("splash", "asset/splash_screen.png");
+            this.load.image("up", "asset/up.png");
+            this.load.image("down", "asset/down.png");
+            this.load.image("right", "asset/right.png");
+            this.load.image("left", "asset/left.png");
+            this.load.image("w", "asset/W.png");
+            this.load.image("a", "asset/A.png");
+            this.load.image("s", "asset/S.png");
+            this.load.image("d", "asset/D.png");
             var loadingbar = this.add.graphics({
                 fillStyle: {
                     color: 0xffffff
                 }
             });
+            this.load.spritesheet("blueknight", "asset/BlueKnight.png", {
+                frameHeight: 128,
+                frameWidth: 128
+            });
             for (var i = 0; i < 100; i++) {
                 this.load.spritesheet("redknight" + i, "asset/RedKnight.png", {
-                    frameHeight: 64,
-                    frameWidth: 64
+                    frameHeight: 128,
+                    frameWidth: 128
                 });
             }
             this.load.on("progress", function (percent) {
@@ -238,7 +323,7 @@ var LoadingScene = function (_Phaser$Scene) {
 
 exports.LoadingScene = LoadingScene;
 
-},{"../Control":1}],6:[function(require,module,exports){
+},{"../Control":1}],7:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -324,7 +409,7 @@ var MenuScene = function (_Phaser$Scene) {
 
 exports.MenuScene = MenuScene;
 
-},{"../Control":1}],7:[function(require,module,exports){
+},{"../Control":1}],8:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -368,7 +453,7 @@ var SplashScene = function (_Phaser$Scene) {
 
 exports.SplashScene = SplashScene;
 
-},{"../Control":1}],8:[function(require,module,exports){
+},{"../Control":1}],9:[function(require,module,exports){
 "use strict";
 /**@type {import("../types/phaser")} */
 
@@ -379,14 +464,18 @@ var SplashScene_1 = require("./Scene/SplashScene");
 var LevelScene_1 = require("./Scene/LevelScene");
 var ControlScene_1 = require("./Scene/ControlScene");
 var HelpScene_1 = require("./Scene/HelpScene");
+var Level1_1 = require("./Level/Level1");
 var config = {
     type: Phaser.AUTO,
     width: 860,
     height: 700,
-    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene]
+    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1],
+    render: {
+        pixelArt: true
+    }
 };
 var game = new Phaser.Game(config);
 
-},{"./Scene/ControlScene":2,"./Scene/HelpScene":3,"./Scene/LevelScene":4,"./Scene/LoadingScene":5,"./Scene/MenuScene":6,"./Scene/SplashScene":7}]},{},[8])
+},{"./Level/Level1":2,"./Scene/ControlScene":3,"./Scene/HelpScene":4,"./Scene/LevelScene":5,"./Scene/LoadingScene":6,"./Scene/MenuScene":7,"./Scene/SplashScene":8}]},{},[9])
 
 //# sourceMappingURL=demo.js.map

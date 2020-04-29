@@ -22,6 +22,44 @@ export class ControlScene extends Phaser.Scene{
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
+
+        this.add.sprite(200,200,"redknight1");
+        this.add.sprite(600,200,"blueknight");
+
+        //controls
+
+
+
+        let up = this.add.image(200,400,"up");
+        up.setScale(4);
+
+        let right = this.add.image(270,455,"right");
+        right.setScale(4);
+
+
+        let left = this.add.image(130,455,"left");
+        left.setScale(4);
+
+
+        let down = this.add.image(200,455,"down");
+        down.setScale(4);
+
+
+
+        let w = this.add.image(600,400,"w");
+        w.setScale(4);
+
+
+        let a = this.add.image(530,455,"a");
+        a.setScale(4);
+
+
+        let s = this.add.image(600,455,"s");
+        s.setScale(4);
+
+
+        let d = this.add.image(670,455,"d");
+        d.setScale(4);
     }
 
 }

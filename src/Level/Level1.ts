@@ -9,12 +9,13 @@ export class Level1 extends Phaser.Scene{
 
     }
     preload(){
-        this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
+
         this.load.image('castleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('castleBG','asset/tilemaps/tiles/CastleBackground.png');
+        this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
     }
     create(){
-        let map = this.make.tilemap({ key: 'map', tileWidth: 128, tileHeight: 128 });
+        //let map = this.make.tilemap({ key: 'map', tileWidth: 128, tileHeight: 128 });
         //let tileset = map.addTilesetImage('castleBlock');
         //let layer = map.createDynamicLayer('Collision',tileset);
 
