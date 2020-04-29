@@ -11,8 +11,16 @@ import {Level1} from "./Level/Level1"
 
 var config = {
     type:Phaser.AUTO,
-    width:860,
-    height:700,
+    scale:{
+        //1280×720
+        //860x700
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width:1280,
+        height:720,
+    },
+    
     scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1],
     render:{
         pixelArt:true

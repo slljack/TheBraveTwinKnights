@@ -61,7 +61,9 @@ var Level1 = function (_Phaser$Scene) {
             var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
             var top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
+            top.setDepth(1);
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
+            bot.setDepth(0);
         }
     }]);
 
@@ -470,8 +472,15 @@ var HelpScene_1 = require("./Scene/HelpScene");
 var Level1_1 = require("./Level/Level1");
 var config = {
     type: Phaser.AUTO,
-    width: 860,
-    height: 700,
+    scale: {
+        //1280×720
+        //860x700
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1280,
+        height: 720
+    },
     scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1],
     render: {
         pixelArt: true
