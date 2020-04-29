@@ -45,21 +45,23 @@ var Level1 = function (_Phaser$Scene) {
     }, {
         key: "preload",
         value: function preload() {
-            this.load.image('castleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
-            this.load.image('castleBG', 'asset/tilemaps/tiles/CastleBackground.png');
+            this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
+            this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
         }
     }, {
         key: "create",
         value: function create() {
-            //let map = this.make.tilemap({ key: 'map', tileWidth: 128, tileHeight: 128 });
-            //let tileset = map.addTilesetImage('castleBlock');
-            //let layer = map.createDynamicLayer('Collision',tileset);
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
+            var map1 = this.add.tilemap("map");
+            var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
+            var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
+            var top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
+            var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
         }
     }]);
 
