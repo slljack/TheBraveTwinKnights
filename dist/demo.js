@@ -185,6 +185,7 @@ var HelpScene = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
+            this.add.text(100, 200, "                 The demon king had kidnapped the princess of the Magic Kingdom and \n" + "prisoned her inside his evil castle. The king of the Magic Kingdom orders the bravest\n" + "knights, the twin knights, to travel to the demon king’s castle to save the princess. Thus,\n" + "the brave twin knights start their journey of saving the princess. ", { font: "20px Impact" });
         }
     }]);
 
