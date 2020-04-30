@@ -51,6 +51,8 @@ var Level1 = function (_Phaser$Scene) {
     }, {
         key: "preload",
         value: function preload() {
+            this.load.image("redkey", "asset/RedKey.png");
+            this.load.image("bluekey", "asset/BlueKey.png");
             this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
@@ -164,14 +166,28 @@ var Level1 = function (_Phaser$Scene) {
             this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
             this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
             //knights
-            this.red = this.physics.add.sprite(100, 280, "redknight1");
-            this.blue = this.physics.add.sprite(100, 500, "blueknight");
+            this.red = this.physics.add.sprite(90, 280, "redknight1");
+            this.blue = this.physics.add.sprite(90, 500, "blueknight");
             this.red.setCollideWorldBounds(true);
             this.blue.setCollideWorldBounds(true);
+            this.redkey = this.add.image(610, 170, "redkey");
+            this.redkey.setScale(2);
+            this.bluekey = this.add.image(935, 550, "bluekey");
+            this.bluekey.setScale(2);
         }
     }, {
         key: "update",
         value: function update(delta) {
+            if (this.red.getBounds().centerX > 570 && this.red.getBounds().centerX < 640) {
+                if (this.red.getBounds().centerY > 130 && this.red.getBounds().centerY < 200) {
+                    this.redkey.destroy();
+                }
+            }
+            if (this.blue.getBounds().centerX > 895 && this.blue.getBounds().centerX < 965) {
+                if (this.blue.getBounds().centerY > 500 && this.blue.getBounds().centerY < 600) {
+                    this.bluekey.destroy();
+                }
+            }
             //red control
             if (this.redcanjump == false) {
                 if (this.redjumpcount == 1 && this.red.body.velocity.y == 10) {
@@ -616,6 +632,9 @@ var MenuScene = function (_Phaser$Scene) {
             });
             playbutton.on("pointerout", function () {
                 hoversprite.setVisible(false);
+            });
+            playbutton.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Level);
             });
             levelbutton.setInteractive();
             levelbutton.on("pointerover", function () {

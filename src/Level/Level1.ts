@@ -14,6 +14,8 @@ export class Level1 extends Phaser.Scene{
     key_W: Phaser.Input.Keyboard.Key;
     key_A: Phaser.Input.Keyboard.Key;
     key_D: Phaser.Input.Keyboard.Key;
+    redkey: Phaser.GameObjects.Image;
+    bluekey: Phaser.GameObjects.Image;
     constructor(){
         super({
             key : Control.Scene.Level1
@@ -23,7 +25,8 @@ export class Level1 extends Phaser.Scene{
 
     }
     preload(){
-
+        this.load.image("redkey","asset/RedKey.png");
+        this.load.image("bluekey","asset/BlueKey.png");
         this.load.image('CastleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
@@ -133,6 +136,8 @@ export class Level1 extends Phaser.Scene{
 
     }
     create(){
+
+
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
                 this.scene.start(Control.Scene.Menu)
@@ -160,13 +165,39 @@ export class Level1 extends Phaser.Scene{
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         //knights
-        this.red = this.physics.add.sprite(100,280,"redknight1");
-        this.blue = this.physics.add.sprite(100,500,"blueknight");
+        this.red = this.physics.add.sprite(90,280,"redknight1");
+        this.blue = this.physics.add.sprite(90,500,"blueknight");
         this.red.setCollideWorldBounds(true);
         this.blue.setCollideWorldBounds(true);
-    
+
+
+
+
+
+
+
+        this.redkey = this.add.image(610,170,"redkey");
+        this.redkey.setScale(2)
+
+        this.bluekey = this.add.image(935,550,"bluekey")
+        this.bluekey.setScale(2);
+
+
     }
     update(delta:number){
+        if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
+            if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
+                this.redkey.destroy()
+            }
+        }
+
+
+        if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+            if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
+                this.bluekey.destroy()
+            }
+        }
+
         //red control
         if(this.redcanjump==false){
             if(this.redjumpcount==1 && this.red.body.velocity.y==10){

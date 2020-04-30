@@ -33,7 +33,9 @@ export class MenuScene extends Phaser.Scene{
         playbutton.on("pointerout",()=>{
             hoversprite.setVisible(false);
         })
-
+        playbutton.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Level);
+        })
 
         levelbutton.setInteractive();
 
