@@ -48,6 +48,7 @@ var Level1 = function (_Phaser$Scene) {
             this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
+            this.load.image('player', 'asset/TestPlayer.png');
         }
     }, {
         key: "create",
@@ -65,6 +66,9 @@ var Level1 = function (_Phaser$Scene) {
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
             bot.setDepth(0);
         }
+    }, {
+        key: "update",
+        value: function update() {}
     }]);
 
     return Level1;
@@ -480,6 +484,12 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 1280,
         height: 720
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 600 }
+        }
     },
     scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1],
     render: {

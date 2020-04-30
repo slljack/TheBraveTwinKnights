@@ -20,6 +20,12 @@ var config = {
         width:1280,
         height:720,
     },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 600 }
+        }
+    },
     
     scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1],
     render:{

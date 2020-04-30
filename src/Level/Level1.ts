@@ -13,6 +13,7 @@ export class Level1 extends Phaser.Scene{
         this.load.image('CastleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
+        this.load.image('player','asset/TestPlayer.png');
 
     }
     create(){
@@ -29,7 +30,9 @@ export class Level1 extends Phaser.Scene{
         top.setDepth(1);
         let bot = map1.createStaticLayer("Background",[block,CastleBackground],0,0);
         bot.setDepth(0);
-
+    }
+    update(){
+        
     }
 
 
