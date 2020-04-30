@@ -42,12 +42,19 @@ var Level1 = function (_Phaser$Scene) {
         _this.redjumpcount = 0;
         _this.bluecanjump = true;
         _this.bluejumpcount = 0;
+        _this.getRedKey = false;
+        _this.getBlueKey = false;
+        _this.isVictory = false;
         return _this;
     }
 
     _createClass(Level1, [{
         key: "init",
-        value: function init() {}
+        value: function init() {
+            this.getBlueKey = false;
+            this.getRedKey = false;
+            this.isVictory = false;
+        }
     }, {
         key: "preload",
         value: function preload() {
@@ -58,6 +65,8 @@ var Level1 = function (_Phaser$Scene) {
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
             this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
             this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
+            this.load.audio('key_sound', 'asset/sounds/key.mp3');
+            this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -148,25 +157,28 @@ var Level1 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Play music
-            var bgm = this.sound.add('bgm');
+            this.bgm = this.sound.add('bgm');
             var musicConfig = {
                 mute: false,
-                volume: 0.35,
+                volume: 0.4,
                 rate: 1,
                 detune: 0,
                 seek: 0,
                 loop: true,
                 delay: 0
             };
-            bgm.play(musicConfig);
+            this.bgm.play(musicConfig);
+            // Add sound effect
+            this.jumpSound = this.sound.add('jump_sound');
+            this.keySound = this.sound.add('key_sound');
+            this.vicSound = this.sound.add('vic_sound');
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     // Stop music when esc
-                    bgm.stop();
+                    this.bgm.stop();
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
-            this.jumpSound = this.sound.add('jump_sound');
             var map1 = this.add.tilemap("map");
             var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
@@ -200,12 +212,26 @@ var Level1 = function (_Phaser$Scene) {
             if (this.red.getBounds().centerX > 570 && this.red.getBounds().centerX < 640) {
                 if (this.red.getBounds().centerY > 130 && this.red.getBounds().centerY < 200) {
                     this.redkey.destroy();
+                    if (this.getRedKey === false) {
+                        this.keySound.play();
+                        this.getRedKey = true;
+                    }
                 }
             }
             if (this.blue.getBounds().centerX > 895 && this.blue.getBounds().centerX < 965) {
                 if (this.blue.getBounds().centerY > 500 && this.blue.getBounds().centerY < 600) {
                     this.bluekey.destroy();
+                    if (this.getBlueKey === false) {
+                        this.keySound.play();
+                        this.getBlueKey = true;
+                    }
                 }
+            }
+            if (this.getBlueKey && this.getRedKey && this.isVictory === false) {
+                this.vicSound.play();
+                this.bgm.stop();
+                this.isVictory = true;
+                this.scene.start(Control_1.Control.Scene.Level);
             }
             // Red Control
             // Jump detection
@@ -252,7 +278,7 @@ var Level1 = function (_Phaser$Scene) {
                 this.red.setVelocityX(0);
                 this.red.play("red_idle_right", true);
             }
-            //blue control
+            // Blue Control
             // Jump detection
             if (this.bluecanjump == false) {
                 if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 10) {

@@ -15,15 +15,23 @@ export class Level1 extends Phaser.Scene{
     key_A: Phaser.Input.Keyboard.Key;
     key_D: Phaser.Input.Keyboard.Key;
     redkey: Phaser.GameObjects.Image;
+    getRedKey: boolean = false;
     bluekey: Phaser.GameObjects.Image;
-    jumpSound: Phaser.Sound.BaseSound
+    getBlueKey: boolean = false;
+    jumpSound: Phaser.Sound.BaseSound;
+    keySound: Phaser.Sound.BaseSound;
+    vicSound: Phaser.Sound.BaseSound;
+    bgm: Phaser.Sound.BaseSound;
+    isVictory: boolean = false;
     constructor(){
         super({
             key : Control.Scene.Level1
         })
     }
     init(){
-
+        this.getBlueKey = false;
+        this.getRedKey = false;
+        this.isVictory = false;
     }
     preload(){
         this.load.image("redkey","asset/RedKey.png");
@@ -33,6 +41,8 @@ export class Level1 extends Phaser.Scene{
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
         this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
         this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
+        this.load.audio('key_sound','asset/sounds/key.mp3');
+        this.load.audio('vic_sound','asset/sounds/victory.mp3');
 
         this.anims.create({
             key:"red_idle_right",
@@ -140,7 +150,7 @@ export class Level1 extends Phaser.Scene{
 
     create(){
         // Play music
-        let bgm = this.sound.add('bgm');
+        this.bgm = this.sound.add('bgm');
 
         var musicConfig = {
             mute : false,
@@ -152,17 +162,22 @@ export class Level1 extends Phaser.Scene{
             delay:0
         }
 
-        bgm.play(musicConfig);
+        this.bgm.play(musicConfig);
+
+        // Add sound effect
+        this.jumpSound = this.sound.add('jump_sound');
+        this.keySound = this.sound.add('key_sound');
+        this.vicSound = this.sound.add('vic_sound');
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
                 // Stop music when esc
-                bgm.stop();
+                this.bgm.stop();
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
 
-        this.jumpSound = this.sound.add('jump_sound');
+        
 
         let map1 = this.add.tilemap("map");
         let block =  map1.addTilesetImage("CastleBlock","CastleBlock");
@@ -202,9 +217,15 @@ export class Level1 extends Phaser.Scene{
     }
 
     update(delta:number){
+
         if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
             if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
                 this.redkey.destroy()
+                if(this.getRedKey === false){
+                    this.keySound.play();
+                    this.getRedKey = true;
+                }
+                    
             }
         }
 
@@ -212,7 +233,18 @@ export class Level1 extends Phaser.Scene{
         if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
             if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                 this.bluekey.destroy()
+                if(this.getBlueKey === false){
+                    this.keySound.play();
+                    this.getBlueKey = true;
+                }
             }
+        }
+
+        if(this.getBlueKey && this.getRedKey && this.isVictory === false){
+            this.vicSound.play();
+            this.bgm.stop();
+            this.isVictory = true;
+            this.scene.start(Control.Scene.Level);
         }
 
         // Red Control
@@ -271,7 +303,7 @@ export class Level1 extends Phaser.Scene{
 
 
 
-        //blue control
+        // Blue Control
 
         // Jump detection
         if(this.bluecanjump==false){
