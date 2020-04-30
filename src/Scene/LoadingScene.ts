@@ -25,17 +25,17 @@ export class LoadingScene extends Phaser.Scene{
             }
         })
         this.load.spritesheet("blueknight","asset/BlueKnight.png",{
-            frameHeight: 128,
-            frameWidth:128
+            frameHeight: 64,
+            frameWidth:64
         });
         for(let i=0;i<100;i++){
             this.load.spritesheet("redknight"+i,"asset/RedKnight.png",{
-                frameHeight: 128,
-                frameWidth:128
+                frameHeight: 64,
+                frameWidth:64
             });
         }
         this.load.on("progress",(percent: number)=>{
-            loadingbar.fillRect(330,this.game.renderer.height/2,200*percent,10);
+            loadingbar.fillRect(350,this.game.renderer.height/2,580*percent,10);
         })
 
 

@@ -23,8 +23,16 @@ export class ControlScene extends Phaser.Scene{
             }
         },this)
 
-        this.add.sprite(200,200,"redknight1");
-        this.add.sprite(600,200,"blueknight");
+        let red = this.add.sprite(200,200,"redknight1");
+        let blue =this.add.sprite(600,200,"blueknight");
+        red.setScale(2);
+        blue.setScale(2);
+
+
+
+
+
+
 
         //controls
 

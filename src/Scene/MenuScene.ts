@@ -10,11 +10,12 @@ export class MenuScene extends Phaser.Scene{
 
     }
     create(){
-        this.add.image(420,200,"logo");
-        let playbutton = this.add.text(360,300,"<Play>",{font:"40px Impact"});
-        let levelbutton = this.add.text(360,350,"<Levels>",{font:"40px Impact"});
-        let controlbutton = this.add.text(360,400,"<Control>",{font:"40px Impact"});
-        let helpbutton = this.add.text(360,450,"<Help>",{font:"40px Impact"});
+        let logo = this.add.image(this.game.renderer.width/2,this.game.renderer.height/2-164,"logo");
+        logo.setScale(2);
+        let playbutton = this.add.text(570,400,"<Play>",{font:"40px Impact"});
+        let levelbutton = this.add.text(570,450,"<Levels>",{font:"40px Impact"});
+        let controlbutton = this.add.text(570,500,"<Control>",{font:"40px Impact"});
+        let helpbutton = this.add.text(570,550,"<Help>",{font:"40px Impact"});
         let hoversprite = this.add.sprite(100,100,"pointer");
         hoversprite.setScale(2);
         hoversprite.setVisible(false);

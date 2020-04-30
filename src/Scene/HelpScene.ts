@@ -23,9 +23,9 @@ export class HelpScene extends Phaser.Scene{
         },this)
 
 
-        this.add.text(100,200,"                 The demon king had kidnapped the princess of the Magic Kingdom and \n"+"prisoned her inside his evil castle. The king of the Magic Kingdom orders the bravest\n"+
-        "knights, the twin knights, to travel to the demon king’s castle to save the princess. Thus,\n"+"the brave twin knights start their journey of saving the princess. ",
-        {font:"20px Impact"})
+        this.add.text(100,200,"                 The demon king had kidnapped the princess of the Magic\n Kingdom and"+"prisoned her inside his evil castle. The king of the \nMagic Kingdom orders the bravest"+
+        "knights, the twin knights, to travel\n to the demon king’s castle to save the princess. Thus,"+"the brave twin\n knights start their journey of saving the princess. ",
+        {font:"40px Impact"})
     }
 
 }

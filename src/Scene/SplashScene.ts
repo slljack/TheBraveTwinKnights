@@ -9,8 +9,9 @@ export class SplashScene extends Phaser.Scene{
 
     }
     create(){
-        this.add.image(420,300,"logo");
-        this.add.text(300,500,"<Press any key to continue>",{font: "20px Impact"});
+        let logo = this.add.image(this.game.renderer.width/2,this.game.renderer.height/2-64,"logo");
+        logo.setScale(2);
+        this.add.text(this.game.renderer.width/2-250,this.game.renderer.height/2+100,"<Press any key to continue>",{font: "40px Impact"});
         this.input.keyboard.on("keyup",function(){
             this.scene.start(Control.Scene.Menu);
         },this)

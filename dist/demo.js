@@ -121,8 +121,18 @@ var ControlScene = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
-            this.add.sprite(200, 200, "redknight1");
-            this.add.sprite(600, 200, "blueknight");
+            var red = this.add.sprite(200, 200, "redknight1");
+            var blue = this.add.sprite(600, 200, "blueknight");
+            red.setScale(2);
+            blue.setScale(2);
+            this.anims.create({
+                key: "idle_right",
+                frameRate: 4,
+                repeat: -1,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [0, 1, 2, 3, 4, 5]
+                })
+            });
             //controls
             var up = this.add.image(200, 400, "up");
             up.setScale(4);
@@ -193,7 +203,7 @@ var HelpScene = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
-            this.add.text(100, 200, "                 The demon king had kidnapped the princess of the Magic Kingdom and \n" + "prisoned her inside his evil castle. The king of the Magic Kingdom orders the bravest\n" + "knights, the twin knights, to travel to the demon king’s castle to save the princess. Thus,\n" + "the brave twin knights start their journey of saving the princess. ", { font: "20px Impact" });
+            this.add.text(100, 200, "                 The demon king had kidnapped the princess of the Magic\n Kingdom and" + "prisoned her inside his evil castle. The king of the \nMagic Kingdom orders the bravest" + "knights, the twin knights, to travel\n to the demon king’s castle to save the princess. Thus," + "the brave twin\n knights start their journey of saving the princess. ", { font: "40px Impact" });
         }
     }]);
 
@@ -307,17 +317,17 @@ var LoadingScene = function (_Phaser$Scene) {
                 }
             });
             this.load.spritesheet("blueknight", "asset/BlueKnight.png", {
-                frameHeight: 128,
-                frameWidth: 128
+                frameHeight: 64,
+                frameWidth: 64
             });
             for (var i = 0; i < 100; i++) {
                 this.load.spritesheet("redknight" + i, "asset/RedKnight.png", {
-                    frameHeight: 128,
-                    frameWidth: 128
+                    frameHeight: 64,
+                    frameWidth: 64
                 });
             }
             this.load.on("progress", function (percent) {
-                loadingbar.fillRect(330, _this2.game.renderer.height / 2, 200 * percent, 10);
+                loadingbar.fillRect(350, _this2.game.renderer.height / 2, 580 * percent, 10);
             });
         }
     }, {
@@ -365,11 +375,12 @@ var MenuScene = function (_Phaser$Scene) {
         value: function create() {
             var _this2 = this;
 
-            this.add.image(420, 200, "logo");
-            var playbutton = this.add.text(360, 300, "<Play>", { font: "40px Impact" });
-            var levelbutton = this.add.text(360, 350, "<Levels>", { font: "40px Impact" });
-            var controlbutton = this.add.text(360, 400, "<Control>", { font: "40px Impact" });
-            var helpbutton = this.add.text(360, 450, "<Help>", { font: "40px Impact" });
+            var logo = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 - 164, "logo");
+            logo.setScale(2);
+            var playbutton = this.add.text(570, 400, "<Play>", { font: "40px Impact" });
+            var levelbutton = this.add.text(570, 450, "<Levels>", { font: "40px Impact" });
+            var controlbutton = this.add.text(570, 500, "<Control>", { font: "40px Impact" });
+            var helpbutton = this.add.text(570, 550, "<Help>", { font: "40px Impact" });
             var hoversprite = this.add.sprite(100, 100, "pointer");
             hoversprite.setScale(2);
             hoversprite.setVisible(false);
@@ -449,8 +460,9 @@ var SplashScene = function (_Phaser$Scene) {
     }, {
         key: "create",
         value: function create() {
-            this.add.image(420, 300, "logo");
-            this.add.text(300, 500, "<Press any key to continue>", { font: "20px Impact" });
+            var logo = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 - 64, "logo");
+            logo.setScale(2);
+            this.add.text(this.game.renderer.width / 2 - 250, this.game.renderer.height / 2 + 100, "<Press any key to continue>", { font: "40px Impact" });
             this.input.keyboard.on("keyup", function () {
                 this.scene.start(Control_1.Control.Scene.Menu);
             }, this);
