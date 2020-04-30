@@ -57,6 +57,7 @@ var Level1 = function (_Phaser$Scene) {
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
             this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
+            this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -148,7 +149,16 @@ var Level1 = function (_Phaser$Scene) {
         value: function create() {
             // Play music
             var bgm = this.sound.add('bgm');
-            bgm.play();
+            var musicConfig = {
+                mute: false,
+                volume: 0.35,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            };
+            bgm.play(musicConfig);
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     // Stop music when esc
@@ -156,6 +166,7 @@ var Level1 = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
+            this.jumpSound = this.sound.add('jump_sound');
             var map1 = this.add.tilemap("map");
             var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
@@ -216,6 +227,7 @@ var Level1 = function (_Phaser$Scene) {
                         this.red.play("red_jump_right");
                         this.red.setVelocityY(-400);
                         this.redcanjump = false;
+                        this.jumpSound.play();
                     }
                 }
             } else if (this.key_ArrowLeft.isDown) {
@@ -226,6 +238,7 @@ var Level1 = function (_Phaser$Scene) {
                         this.red.play("red_jump_left");
                         this.red.setVelocityY(-400);
                         this.redcanjump = false;
+                        this.jumpSound.play();
                     }
                 }
             } else if (this.key_ArrowUp.isDown) {
@@ -233,13 +246,7 @@ var Level1 = function (_Phaser$Scene) {
                     this.red.play("red_jump_right");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
-                }
-            } else if (this.key_ArrowUp.isDown && this.key_ArrowLeft.isDown) {
-                if (this.redcanjump) {
-                    this.red.play("red_jump_left");
-                    this.red.setVelocityX(-200);
-                    this.red.setVelocityY(-400);
-                    this.redcanjump = false;
+                    this.jumpSound.play();
                 }
             } else {
                 this.red.setVelocityX(0);
@@ -265,6 +272,7 @@ var Level1 = function (_Phaser$Scene) {
                         this.blue.play("blue_jump_right");
                         this.blue.setVelocityY(-400);
                         this.bluecanjump = false;
+                        this.jumpSound.play();
                     }
                 }
             } else if (this.key_A.isDown) {
@@ -275,6 +283,7 @@ var Level1 = function (_Phaser$Scene) {
                         this.blue.play("blue_jump_left");
                         this.blue.setVelocityY(-400);
                         this.bluecanjump = false;
+                        this.jumpSound.play();
                     }
                 }
             } else if (this.key_W.isDown) {
@@ -282,6 +291,7 @@ var Level1 = function (_Phaser$Scene) {
                     this.blue.play("blue_jump_right");
                     this.blue.setVelocityY(-400);
                     this.bluecanjump = false;
+                    this.jumpSound.play();
                 }
             } else {
                 this.blue.setVelocityX(0);

@@ -16,6 +16,7 @@ export class Level1 extends Phaser.Scene{
     key_D: Phaser.Input.Keyboard.Key;
     redkey: Phaser.GameObjects.Image;
     bluekey: Phaser.GameObjects.Image;
+    jumpSound: Phaser.Sound.BaseSound
     constructor(){
         super({
             key : Control.Scene.Level1
@@ -31,6 +32,7 @@ export class Level1 extends Phaser.Scene{
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
         this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
+        this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
 
         this.anims.create({
             key:"red_idle_right",
@@ -139,7 +141,18 @@ export class Level1 extends Phaser.Scene{
     create(){
         // Play music
         let bgm = this.sound.add('bgm');
-        bgm.play();
+
+        var musicConfig = {
+            mute : false,
+            volume: 0.4,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay:0
+        }
+
+        bgm.play(musicConfig);
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
@@ -148,6 +161,8 @@ export class Level1 extends Phaser.Scene{
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
+
+        this.jumpSound = this.sound.add('jump_sound');
 
         let map1 = this.add.tilemap("map");
         let block =  map1.addTilesetImage("CastleBlock","CastleBlock");
@@ -224,6 +239,7 @@ export class Level1 extends Phaser.Scene{
                     this.red.play("red_jump_right");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
+                    this.jumpSound.play();
                 }
             }
         }
@@ -235,6 +251,7 @@ export class Level1 extends Phaser.Scene{
                     this.red.play("red_jump_left");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
+                    this.jumpSound.play();
                 }
             }
         }
@@ -243,14 +260,7 @@ export class Level1 extends Phaser.Scene{
                 this.red.play("red_jump_right");
                 this.red.setVelocityY(-400);
                 this.redcanjump = false;
-            }
-        }
-        else if(this.key_ArrowUp.isDown && this.key_ArrowLeft.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_left");
-                this.red.setVelocityX(-200);
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
+                this.jumpSound.play();
             }
         }
         else{
@@ -284,6 +294,7 @@ export class Level1 extends Phaser.Scene{
                     this.blue.play("blue_jump_right");
                     this.blue.setVelocityY(-400);
                     this.bluecanjump = false;
+                    this.jumpSound.play();
                 }
             }
         }
@@ -295,6 +306,7 @@ export class Level1 extends Phaser.Scene{
                     this.blue.play("blue_jump_left");
                     this.blue.setVelocityY(-400);
                     this.bluecanjump = false;
+                    this.jumpSound.play();
                 }
             }
         }
@@ -303,6 +315,7 @@ export class Level1 extends Phaser.Scene{
                 this.blue.play("blue_jump_right");
                 this.blue.setVelocityY(-400);
                 this.bluecanjump = false;
+                this.jumpSound.play();
             }
         }
         else{
