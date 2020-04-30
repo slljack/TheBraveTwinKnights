@@ -34,9 +34,15 @@ var Level1 = function (_Phaser$Scene) {
     function Level1() {
         _classCallCheck(this, Level1);
 
-        return _possibleConstructorReturn(this, (Level1.__proto__ || Object.getPrototypeOf(Level1)).call(this, {
+        var _this = _possibleConstructorReturn(this, (Level1.__proto__ || Object.getPrototypeOf(Level1)).call(this, {
             key: Control_1.Control.Scene.Level1
         }));
+
+        _this.redcanjump = true;
+        _this.redjumpcount = 0;
+        _this.bluecanjump = true;
+        _this.bluejumpcount = 0;
+        return _this;
     }
 
     _createClass(Level1, [{
@@ -77,6 +83,63 @@ var Level1 = function (_Phaser$Scene) {
                     frames: [27, 28, 29]
                 })
             });
+            this.anims.create({
+                key: "red_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "red_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [30, 31, 32]
+                })
+            });
+            //blue anim
+            this.anims.create({
+                key: "blue_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "blue_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [24, 25, 26]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [27, 28, 29]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [30, 31, 32]
+                })
+            });
         }
     }, {
         key: "create",
@@ -91,32 +154,131 @@ var Level1 = function (_Phaser$Scene) {
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
             this.top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
             this.top.setDepth(1);
-            this.top.setCollisionBetween(0, 100);
+            this.top.setCollisionBetween(0, 5);
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
             bot.setDepth(0);
-            this.input.keyboard.on("keyup", function (event) {
-                console.log(event.key);
-            });
             this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
             this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
             this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+            this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
             //knights
-            this.red = this.physics.add.sprite(100, 287, "redknight1");
+            this.red = this.physics.add.sprite(100, 280, "redknight1");
+            this.blue = this.physics.add.sprite(100, 500, "blueknight");
+            this.red.setCollideWorldBounds(true);
+            this.blue.setCollideWorldBounds(true);
         }
     }, {
         key: "update",
         value: function update(delta) {
+            //red control
+            if (this.redcanjump == false) {
+                if (this.redjumpcount == 1 && this.red.body.velocity.y == 10) {
+                    this.redcanjump = true;
+                    this.redjumpcount = 0;
+                } else if (this.red.body.velocity.y == 10) {
+                    this.redjumpcount++;
+                }
+            }
             this.physics.collide(this.red, this.top);
             if (this.key_ArrowRight.isDown === true) {
-                this.red.x = this.red.x + delta / 5000;
+                this.red.setVelocityX(200);
                 this.red.play("red_move_right", true);
             } else if (this.key_ArrowLeft.isDown) {
-                this.red.x = this.red.x - delta / 5000;
+                this.red.setVelocityX(-200);
                 this.red.play("red_move_left", true);
             } else if (this.key_ArrowUp.isDown) {
-                this.red.setVelocityY(-150);
+                if (this.redcanjump) {
+                    this.red.play("red_jump_right");
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                }
+            } else if (this.key_ArrowUp.isDown && this.key_ArrowLeft.isDown) {
+                if (this.redcanjump) {
+                    this.red.play("red_jump_left");
+                    this.red.setVelocityX(-200);
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                }
+            } else if (this.key_ArrowUp.isDown && this.key_ArrowRight.isDown) {
+                if (this.redcanjump) {
+                    this.red.play("red_jump_right");
+                    this.red.setVelocityX(200);
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                }
+            } else if (this.key_ArrowLeft.isDown && this.key_ArrowUp.isDown) {
+                if (this.redcanjump) {
+                    this.red.play("red_jump_left");
+                    this.red.setVelocityX(-200);
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                }
+            } else if (this.key_ArrowRight.isDown && this.key_ArrowUp.isDown) {
+                if (this.redcanjump) {
+                    this.red.play("red_jump_right");
+                    this.red.setVelocityX(200);
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                }
             } else {
+                this.red.setVelocityX(0);
                 this.red.play("red_idle_right", true);
+            }
+            //blue control
+            if (this.bluecanjump == false) {
+                if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 10) {
+                    this.bluecanjump = true;
+                    this.bluejumpcount = 0;
+                } else if (this.blue.body.velocity.y == 10) {
+                    this.bluejumpcount++;
+                }
+            }
+            this.physics.collide(this.blue, this.top);
+            if (this.key_D.isDown === true) {
+                this.blue.setVelocityX(200);
+                this.blue.play("blue_move_right", true);
+            } else if (this.key_A.isDown) {
+                this.blue.setVelocityX(-200);
+                this.blue.play("blue_move_left", true);
+            } else if (this.key_W.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_right");
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                }
+            } else if (this.key_W.isDown && this.key_A.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_left");
+                    this.blue.setVelocityX(-200);
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                }
+            } else if (this.key_W.isDown && this.key_D.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_right");
+                    this.blue.setVelocityX(200);
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                }
+            } else if (this.key_A.isDown && this.key_W.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_left");
+                    this.blue.setVelocityX(-200);
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                }
+            } else if (this.key_D.isDown && this.key_W.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_right");
+                    this.blue.setVelocityX(200);
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                }
+            } else {
+                this.blue.setVelocityX(0);
+                this.blue.play("blue_idle_right", true);
             }
         }
     }]);
