@@ -56,7 +56,7 @@ var Level1 = function (_Phaser$Scene) {
             this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
             this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
-            this.load.image('player', 'asset/TestPlayer.png');
+            this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -146,8 +146,13 @@ var Level1 = function (_Phaser$Scene) {
     }, {
         key: "create",
         value: function create() {
+            // Play music
+            var bgm = this.sound.add('bgm');
+            bgm.play();
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
+                    // Stop music when esc
+                    bgm.stop();
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
@@ -159,17 +164,20 @@ var Level1 = function (_Phaser$Scene) {
             this.top.setCollisionBetween(0, 5);
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
             bot.setDepth(0);
+            // Define Keys
             this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
             this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
             this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
             this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
             this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
             this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-            //knights
+            // Add knights in to the scene
             this.red = this.physics.add.sprite(90, 280, "redknight1");
-            this.blue = this.physics.add.sprite(90, 500, "blueknight");
+            this.blue = this.physics.add.sprite(90, 600, "blueknight");
+            // Enable collision
             this.red.setCollideWorldBounds(true);
             this.blue.setCollideWorldBounds(true);
+            // Place the keys
             this.redkey = this.add.image(610, 170, "redkey");
             this.redkey.setScale(2);
             this.bluekey = this.add.image(935, 550, "bluekey");
@@ -490,7 +498,7 @@ var LevelScene = function (_Phaser$Scene) {
             var logo = this.add.image(0, 0, "logo").setOrigin(0);
             this.add.text(logo.x + 150, logo.y + 50, "Levels", { font: "40px Impact" });
             var back = this.add.text(this.game.renderer.width - 100, 0, "Back", { font: "40px Impact" });
-            var level1 = this.add.text(360, 200, "[ Level 1 ]", { font: "40px Impact" });
+            var level1 = this.add.text(570, 200, "[ Level 1 ]", { font: "40px Impact" });
             back.setInteractive();
             back.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Menu);
@@ -613,10 +621,17 @@ var MenuScene = function (_Phaser$Scene) {
         key: "init",
         value: function init() {}
     }, {
+        key: "preload",
+        value: function preload() {
+            this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
+        }
+    }, {
         key: "create",
         value: function create() {
             var _this2 = this;
 
+            // Play music
+            var bgm = this.sound.add('bgm');
             var logo = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 - 164, "logo");
             logo.setScale(2);
             var playbutton = this.add.text(570, 400, "<Play>", { font: "40px Impact" });

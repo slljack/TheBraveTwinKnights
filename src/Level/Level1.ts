@@ -30,7 +30,7 @@ export class Level1 extends Phaser.Scene{
         this.load.image('CastleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
-        this.load.image('player','asset/TestPlayer.png');
+        this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
 
         this.anims.create({
             key:"red_idle_right",
@@ -135,11 +135,16 @@ export class Level1 extends Phaser.Scene{
         })
 
     }
-    create(){
 
+    create(){
+        // Play music
+        let bgm = this.sound.add('bgm');
+        bgm.play();
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
+                // Stop music when esc
+                bgm.stop();
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
@@ -153,37 +158,34 @@ export class Level1 extends Phaser.Scene{
         let bot = map1.createStaticLayer("Background",[block,CastleBackground],0,0);
         bot.setDepth(0);
 
-
         
+
+
+        // Define Keys
         this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
-
-
         this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        //knights
+
+        // Add knights in to the scene
         this.red = this.physics.add.sprite(90,280,"redknight1");
-        this.blue = this.physics.add.sprite(90,500,"blueknight");
+        this.blue = this.physics.add.sprite(90,600,"blueknight");
+        
+        // Enable collision
         this.red.setCollideWorldBounds(true);
         this.blue.setCollideWorldBounds(true);
 
-
-
-
-
-
-
+        // Place the keys
         this.redkey = this.add.image(610,170,"redkey");
         this.redkey.setScale(2)
 
         this.bluekey = this.add.image(935,550,"bluekey")
         this.bluekey.setScale(2);
-
-
     }
+
     update(delta:number){
         if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
             if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
