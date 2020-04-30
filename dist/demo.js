@@ -89,8 +89,9 @@ var Level1 = function (_Phaser$Scene) {
             var map1 = this.add.tilemap("map");
             var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
-            var top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
-            top.setDepth(1);
+            this.top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
+            this.top.setDepth(1);
+            this.top.setCollisionBetween(0, 100);
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
             bot.setDepth(0);
             this.input.keyboard.on("keyup", function (event) {
@@ -100,17 +101,20 @@ var Level1 = function (_Phaser$Scene) {
             this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
             this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
             //knights
-            this.red = this.add.sprite(100, 287, "redknight1");
+            this.red = this.physics.add.sprite(100, 287, "redknight1");
         }
     }, {
         key: "update",
         value: function update(delta) {
+            this.physics.collide(this.red, this.top);
             if (this.key_ArrowRight.isDown === true) {
-                this.red.x = this.red.x + delta / 2000;
+                this.red.x = this.red.x + delta / 5000;
                 this.red.play("red_move_right", true);
             } else if (this.key_ArrowLeft.isDown) {
-                this.red.x = this.red.x - delta / 2000;
+                this.red.x = this.red.x - delta / 5000;
                 this.red.play("red_move_left", true);
+            } else if (this.key_ArrowUp.isDown) {
+                this.red.setVelocityY(-150);
             } else {
                 this.red.play("red_idle_right", true);
             }

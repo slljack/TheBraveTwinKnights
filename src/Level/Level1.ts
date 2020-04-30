@@ -1,9 +1,11 @@
 import {Control} from "../Control"
 export class Level1 extends Phaser.Scene{
-    red: Phaser.GameObjects.Sprite;
+    red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
     key_ArrowUp: Phaser.Input.Keyboard.Key;
     key_ArrowLeft: Phaser.Input.Keyboard.Key;
+    up: Phaser.Physics.Arcade.Image;
+    top: Phaser.Tilemaps.StaticTilemapLayer;
     constructor(){
         super({
             key : Control.Scene.Level1
@@ -63,8 +65,9 @@ export class Level1 extends Phaser.Scene{
         let map1 = this.add.tilemap("map");
         let block =  map1.addTilesetImage("CastleBlock","CastleBlock");
         let CastleBackground = map1.addTilesetImage("CastleBackground","CastleBackground");
-        let top = map1.createStaticLayer("Collision",[block,CastleBackground],0,0);
-        top.setDepth(1);
+        this.top = map1.createStaticLayer("Collision",[block,CastleBackground],0,0);
+        this.top.setDepth(1);
+        this.top.setCollisionBetween(0,100);
         let bot = map1.createStaticLayer("Background",[block,CastleBackground],0,0);
         bot.setDepth(0);
 
@@ -77,17 +80,24 @@ export class Level1 extends Phaser.Scene{
         this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
         //knights
-         this.red = this.add.sprite(100,287,"redknight1");
+        this.red = this.physics.add.sprite(100,287,"redknight1");
 
+    
+    
+    
     }
     update(delta:number){
+        this.physics.collide(this.red,this.top)
         if(this.key_ArrowRight.isDown ===true){
-            this.red.x = this.red.x+(delta/2000);
+            this.red.x = this.red.x+(delta/5000);
             this.red.play("red_move_right",true);
         }
         else if(this.key_ArrowLeft.isDown){
-            this.red.x = this.red.x-(delta/2000);
+            this.red.x = this.red.x-(delta/5000);
             this.red.play("red_move_left",true);
+        }
+        else if(this.key_ArrowUp.isDown){
+            this.red.setVelocityY(-150);
         }
         else{
             this.red.play("red_idle_right",true);
