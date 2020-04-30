@@ -5,6 +5,26 @@ export class ControlScene extends Phaser.Scene{
             key : Control.Scene.Control
         })
     }
+    preload(){
+        this.anims.create({
+            key:"idle_red",
+            frameRate:4,
+            repeat:-1,
+            frames:this.anims.generateFrameNumbers("redknight1",{
+                frames:[0,1,2]
+            })
+        })
+
+        this.anims.create({
+            key:"idle_blue",
+            frameRate:4,
+            repeat:-1,
+            frames:this.anims.generateFrameNumbers("blueknight",{
+                frames:[0,1,2]
+            })
+        })
+
+    }
     init(){
 
     }
@@ -27,7 +47,8 @@ export class ControlScene extends Phaser.Scene{
         let blue =this.add.sprite(800,200,"blueknight");
         red.setScale(2);
         blue.setScale(2);
-
+        red.play("idle_red");
+        blue.play("idle_blue");
 
 
 
