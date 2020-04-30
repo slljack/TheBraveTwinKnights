@@ -121,34 +121,26 @@ var ControlScene = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
-            var red = this.add.sprite(200, 200, "redknight1");
-            var blue = this.add.sprite(600, 200, "blueknight");
+            var red = this.add.sprite(400, 200, "redknight1");
+            var blue = this.add.sprite(800, 200, "blueknight");
             red.setScale(2);
             blue.setScale(2);
-            this.anims.create({
-                key: "idle_right",
-                frameRate: 4,
-                repeat: -1,
-                frames: this.anims.generateFrameNumbers("redknight1", {
-                    frames: [0, 1, 2, 3, 4, 5]
-                })
-            });
             //controls
-            var up = this.add.image(200, 400, "up");
+            var up = this.add.image(400, 400, "up");
             up.setScale(4);
-            var right = this.add.image(270, 455, "right");
+            var right = this.add.image(470, 455, "right");
             right.setScale(4);
-            var left = this.add.image(130, 455, "left");
+            var left = this.add.image(330, 455, "left");
             left.setScale(4);
-            var down = this.add.image(200, 455, "down");
+            var down = this.add.image(400, 455, "down");
             down.setScale(4);
-            var w = this.add.image(600, 400, "w");
+            var w = this.add.image(800, 400, "w");
             w.setScale(4);
-            var a = this.add.image(530, 455, "a");
+            var a = this.add.image(730, 455, "a");
             a.setScale(4);
-            var s = this.add.image(600, 455, "s");
+            var s = this.add.image(800, 455, "s");
             s.setScale(4);
-            var d = this.add.image(670, 455, "d");
+            var d = this.add.image(870, 455, "d");
             d.setScale(4);
         }
     }]);

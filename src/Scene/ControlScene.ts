@@ -23,8 +23,8 @@ export class ControlScene extends Phaser.Scene{
             }
         },this)
 
-        let red = this.add.sprite(200,200,"redknight1");
-        let blue =this.add.sprite(600,200,"blueknight");
+        let red = this.add.sprite(400,200,"redknight1");
+        let blue =this.add.sprite(800,200,"blueknight");
         red.setScale(2);
         blue.setScale(2);
 
@@ -38,35 +38,35 @@ export class ControlScene extends Phaser.Scene{
 
 
 
-        let up = this.add.image(200,400,"up");
+        let up = this.add.image(400,400,"up");
         up.setScale(4);
 
-        let right = this.add.image(270,455,"right");
+        let right = this.add.image(470,455,"right");
         right.setScale(4);
 
 
-        let left = this.add.image(130,455,"left");
+        let left = this.add.image(330,455,"left");
         left.setScale(4);
 
 
-        let down = this.add.image(200,455,"down");
+        let down = this.add.image(400,455,"down");
         down.setScale(4);
 
 
 
-        let w = this.add.image(600,400,"w");
+        let w = this.add.image(800,400,"w");
         w.setScale(4);
 
 
-        let a = this.add.image(530,455,"a");
+        let a = this.add.image(730,455,"a");
         a.setScale(4);
 
 
-        let s = this.add.image(600,455,"s");
+        let s = this.add.image(800,455,"s");
         s.setScale(4);
 
 
-        let d = this.add.image(670,455,"d");
+        let d = this.add.image(870,455,"d");
         d.setScale(4);
     }
 
