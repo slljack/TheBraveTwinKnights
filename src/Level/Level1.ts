@@ -185,6 +185,7 @@ export class Level1 extends Phaser.Scene{
 
     }
     update(delta:number){
+        console.log(this.redcanjump)
         if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
             if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
                 this.redkey.destroy()

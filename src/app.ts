@@ -18,7 +18,7 @@ var config = {
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width:1280,
-        height:720,
+        height:768,
     },
     physics: {
         default: 'arcade',
