@@ -209,6 +209,7 @@ var Level1 = function (_Phaser$Scene) {
     }, {
         key: "update",
         value: function update(delta) {
+            console.log(this.redcanjump);
             if (this.red.getBounds().centerX > 570 && this.red.getBounds().centerX < 640) {
                 if (this.red.getBounds().centerY > 130 && this.red.getBounds().centerY < 200) {
                     this.redkey.destroy();
@@ -774,7 +775,7 @@ var config = {
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 1280,
-        height: 720
+        height: 768
     },
     physics: {
         default: 'arcade',
