@@ -13,7 +13,7 @@ export class LevelScene extends Phaser.Scene{
         this.add.text(logo.x+150,logo.y+50,"Levels",{font:"40px Impact"});
         let back = this.add.text(this.game.renderer.width-100,0,"Back",{font:"40px Impact"});
 
-        let level1 = this.add.text(360,200,"[ Level 1 ]",{font:"40px Impact"});
+        let level1 = this.add.text(570,200,"[ Level 1 ]",{font:"40px Impact"});
 
         back.setInteractive();
         back.on("pointerdown",()=>{

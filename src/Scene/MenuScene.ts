@@ -9,7 +9,13 @@ export class MenuScene extends Phaser.Scene{
 
 
     }
+    preload(){
+        this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
+    }
     create(){
+        // Play music
+        let bgm = this.sound.add('bgm');
+
         let logo = this.add.image(this.game.renderer.width/2,this.game.renderer.height/2-164,"logo");
         logo.setScale(2);
         let playbutton = this.add.text(570,400,"<Play>",{font:"40px Impact"});
@@ -20,7 +26,7 @@ export class MenuScene extends Phaser.Scene{
         hoversprite.setScale(2);
         hoversprite.setVisible(false);
 
-
+        
 
         playbutton.setInteractive();
 

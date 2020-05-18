@@ -15,14 +15,23 @@ export class Level1 extends Phaser.Scene{
     key_A: Phaser.Input.Keyboard.Key;
     key_D: Phaser.Input.Keyboard.Key;
     redkey: Phaser.GameObjects.Image;
+    getRedKey: boolean = false;
     bluekey: Phaser.GameObjects.Image;
+    getBlueKey: boolean = false;
+    jumpSound: Phaser.Sound.BaseSound;
+    keySound: Phaser.Sound.BaseSound;
+    vicSound: Phaser.Sound.BaseSound;
+    bgm: Phaser.Sound.BaseSound;
+    isVictory: boolean = false;
     constructor(){
         super({
             key : Control.Scene.Level1
         })
     }
     init(){
-
+        this.getBlueKey = false;
+        this.getRedKey = false;
+        this.isVictory = false;
     }
     preload(){
         this.load.image("redkey","asset/RedKey.png");
@@ -30,7 +39,10 @@ export class Level1 extends Phaser.Scene{
         this.load.image('CastleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
         this.load.tilemapTiledJSON('map','asset/tilemaps/maps/LevelMap1.json');
-        this.load.image('player','asset/TestPlayer.png');
+        this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
+        this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
+        this.load.audio('key_sound','asset/sounds/key.mp3');
+        this.load.audio('vic_sound','asset/sounds/victory.mp3');
 
         this.anims.create({
             key:"red_idle_right",
@@ -135,14 +147,37 @@ export class Level1 extends Phaser.Scene{
         })
 
     }
-    create(){
 
+    create(){
+        // Play music
+        this.bgm = this.sound.add('bgm');
+
+        var musicConfig = {
+            mute : false,
+            volume: 0.4,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay:0
+        }
+
+        this.bgm.play(musicConfig);
+
+        // Add sound effect
+        this.jumpSound = this.sound.add('jump_sound');
+        this.keySound = this.sound.add('key_sound');
+        this.vicSound = this.sound.add('vic_sound');
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
+                // Stop music when esc
+                this.bgm.stop();
                 this.scene.start(Control.Scene.Menu)
             }
         },this)
+
+        
 
         let map1 = this.add.tilemap("map");
         let block =  map1.addTilesetImage("CastleBlock","CastleBlock");
@@ -153,42 +188,48 @@ export class Level1 extends Phaser.Scene{
         let bot = map1.createStaticLayer("Background",[block,CastleBackground],0,0);
         bot.setDepth(0);
 
-
         
+
+
+        // Define Keys
         this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
-
-
         this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        //knights
+
+        // Add knights in to the scene
         this.red = this.physics.add.sprite(90,280,"redknight1");
-        this.blue = this.physics.add.sprite(90,500,"blueknight");
+        this.blue = this.physics.add.sprite(90,600,"blueknight");
+        
+        // Enable collision
         this.red.setCollideWorldBounds(true);
         this.blue.setCollideWorldBounds(true);
 
-
-
-
-
-
-
+        // Place the keys
         this.redkey = this.add.image(610,170,"redkey");
         this.redkey.setScale(2)
 
         this.bluekey = this.add.image(935,550,"bluekey")
         this.bluekey.setScale(2);
-
-
     }
+
     update(delta:number){
+<<<<<<< HEAD
         console.log(this.redcanjump)
+=======
+
+>>>>>>> dbb4f58061236d6d9e6c65fdebf53cbeea5dde84
         if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
             if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
                 this.redkey.destroy()
+                if(this.getRedKey === false){
+                    this.keySound.play();
+                    this.getRedKey = true;
+                }
+                    
             }
         }
 
@@ -196,10 +237,23 @@ export class Level1 extends Phaser.Scene{
         if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
             if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                 this.bluekey.destroy()
+                if(this.getBlueKey === false){
+                    this.keySound.play();
+                    this.getBlueKey = true;
+                }
             }
         }
 
-        //red control
+        if(this.getBlueKey && this.getRedKey && this.isVictory === false){
+            this.vicSound.play();
+            this.bgm.stop();
+            this.isVictory = true;
+            this.scene.start(Control.Scene.Level);
+        }
+
+        // Red Control
+
+        // Jump detection
         if(this.redcanjump==false){
             if(this.redjumpcount==1 && this.red.body.velocity.y==10){
                 this.redcanjump=true;
@@ -210,61 +264,40 @@ export class Level1 extends Phaser.Scene{
             }
             
         }
+
+        // Right Left Jump action
         this.physics.collide(this.red,this.top)
         if(this.key_ArrowRight.isDown ===true){
             this.red.setVelocityX(200);
             this.red.play("red_move_right",true);
+            if(this.key_ArrowUp.isDown === true){
+                if(this.redcanjump){
+                    this.red.play("red_jump_right");
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                    this.jumpSound.play();
+                }
+            }
         }
         else if(this.key_ArrowLeft.isDown){
             this.red.setVelocityX(-200)
             this.red.play("red_move_left",true);
+            if(this.key_ArrowUp.isDown === true){
+                if(this.redcanjump){
+                    this.red.play("red_jump_left");
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                    this.jumpSound.play();
+                }
+            }
         }
         else if(this.key_ArrowUp.isDown){
             if(this.redcanjump){
                 this.red.play("red_jump_right");
                 this.red.setVelocityY(-400);
                 this.redcanjump = false;
+                this.jumpSound.play();
             }
-
-
-        }
-        else if(this.key_ArrowUp.isDown && this.key_ArrowLeft.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_left");
-                this.red.setVelocityX(-200);
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
-            }
-
-
-        }
-        else if(this.key_ArrowUp.isDown && this.key_ArrowRight.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_right");
-                this.red.setVelocityX(200);
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
-            }
-
-        }
-        else if(this.key_ArrowLeft.isDown && this.key_ArrowUp.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_left");
-                this.red.setVelocityX(-200);
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
-            }
-
-
-        }
-        else if(this.key_ArrowRight.isDown && this.key_ArrowUp.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_right");
-                this.red.setVelocityX(200);
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
-            }
-
         }
         else{
             this.red.setVelocityX(0);
@@ -274,9 +307,9 @@ export class Level1 extends Phaser.Scene{
 
 
 
-        //blue control
+        // Blue Control
 
-
+        // Jump detection
         if(this.bluecanjump==false){
             if(this.bluejumpcount==1 && this.blue.body.velocity.y==10){
                 this.bluecanjump=true;
@@ -285,64 +318,41 @@ export class Level1 extends Phaser.Scene{
             else if(this.blue.body.velocity.y==10){
                 this.bluejumpcount++
             }
-            
         }
 
+        // Right Left Jump action
         this.physics.collide(this.blue,this.top)
         if(this.key_D.isDown ===true){
             this.blue.setVelocityX(200);
             this.blue.play("blue_move_right",true);
+            if(this.key_W.isDown === true){
+                if(this.bluecanjump){
+                    this.blue.play("blue_jump_right");
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                    this.jumpSound.play();
+                }
+            }
         }
         else if(this.key_A.isDown){
             this.blue.setVelocityX(-200)
             this.blue.play("blue_move_left",true);
+            if(this.key_W.isDown === true){
+                if(this.bluecanjump){
+                    this.blue.play("blue_jump_left");
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                    this.jumpSound.play();
+                }
+            }
         }
         else if(this.key_W.isDown){
             if(this.bluecanjump){
                 this.blue.play("blue_jump_right");
                 this.blue.setVelocityY(-400);
                 this.bluecanjump = false;
+                this.jumpSound.play();
             }
-
-
-        }
-        else if(this.key_W.isDown && this.key_A.isDown){
-            if(this.bluecanjump){
-                this.blue.play("blue_jump_left");
-                this.blue.setVelocityX(-200);
-                this.blue.setVelocityY(-400);
-                this.bluecanjump = false;
-            }
-
-
-        }
-        else if(this.key_W.isDown && this.key_D.isDown){
-            if(this.bluecanjump){
-                this.blue.play("blue_jump_right");
-                this.blue.setVelocityX(200);
-                this.blue.setVelocityY(-400);
-                this.bluecanjump = false;
-            }
-
-        }
-        else if(this.key_A.isDown && this.key_W.isDown){
-            if(this.bluecanjump){
-                this.blue.play("blue_jump_left");
-                this.blue.setVelocityX(-200);
-                this.blue.setVelocityY(-400);
-                this.bluecanjump = false;
-            }
-
-
-        }
-        else if(this.key_D.isDown && this.key_W.isDown){
-            if(this.bluecanjump){
-                this.blue.play("blue_jump_right");
-                this.blue.setVelocityX(200);
-                this.blue.setVelocityY(-400);
-                this.bluecanjump = false;
-            }
-
         }
         else{
             this.blue.setVelocityX(0);
