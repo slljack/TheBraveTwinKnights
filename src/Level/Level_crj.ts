@@ -1,4 +1,6 @@
 import {Control} from "../Control"
+
+
 export class Level_crj extends Phaser.Scene{
     red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
@@ -25,12 +27,15 @@ export class Level_crj extends Phaser.Scene{
     isVictory: boolean = false;
     huopao: Phaser.Physics.Arcade.Sprite;
     shuipao: Phaser.Physics.Arcade.Sprite;
+    shoottime: number;
+    fireballs: Phaser.Physics.Arcade.Group;
     constructor(){
         super({
             key : Control.Scene.Level2
         })
     }
     init(){
+        this.shoottime = 0;
         this.getBlueKey = false;
         this.getRedKey = false;
         this.isVictory = false;
@@ -50,39 +55,8 @@ export class Level_crj extends Phaser.Scene{
             frameWidth:128,
             frameHeight:64
         })
-        this.anims.create({
-            key:"dapao_idle_left",
-            frameRate:10,
-            frames:this.anims.generateFrameNumbers("dapao",{
-                frames:[3]
-            })
-        })
 
-        this.anims.create({
-            key:"dapao_idle_right",
-            frameRate:10,
-            frames:this.anims.generateFrameNumbers("dapao",{
-                frames:[0]
-            })
-        })
-
-        this.anims.create({
-            key:"dapao_move_right",
-            frameRate:10,
-            frames:this.anims.generateFrameNumbers("dapao",{
-                frames:[0,1,2]
-            })
-        })
-
-        this.anims.create({
-            key:"dapao_move_left",
-            frameRate:10,
-            frames:this.anims.generateFrameNumbers("dapao",{
-                frames:[3,4,5]
-            })
-        })
-        
-
+        // shooting group
 
         this.anims.create({
             key:"red_idle_right",
@@ -189,6 +163,43 @@ export class Level_crj extends Phaser.Scene{
     }
 
     create(){
+        // dapao anims
+        this.anims.create({
+            key:"dapao_idle_right",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("dapao",{
+                frames:[3]
+            })
+        })
+
+        this.anims.create({
+            key:"dapao_idle_left",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("dapao",{
+                frames:[0]
+            })
+        })
+
+        this.anims.create({
+            key:"dapao_move_left",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("dapao",{
+                frames:[0,1,2]
+            })
+        })
+
+        this.anims.create({
+            key:"dapao_move_right",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("dapao",{
+                frames:[3,4,5]
+            })
+        })
+        
+
+
+
+
         // Play music
         this.bgm = this.sound.add('bgm');
 
@@ -254,15 +265,41 @@ export class Level_crj extends Phaser.Scene{
 
         this.huopao.setCollideWorldBounds(true);
         this.shuipao.setCollideWorldBounds(true);
+        this.shuipao.setDrag(200,200);
+        this.huopao.play("dapao_idle_left",true);
+        this.shuipao.play("dapao_idle_right",true);
 
+        this.fireballs = this.physics.add.group({
+            immovable:true,
+            allowGravity:false,
+        })
+        for(let i = 0;i<30;i++){
+            const fireball = this.fireballs.create(0,0,"fireball");
+            fireball.name = "fireball"+i;
+            fireball.exists = false;
+            fireball.visible = false;
+            fireball.checkWorldBounds = true;
+            //fireball.events.onOutOfBounds.add(resetFireball, this);
+        }
 
     }
 
     update(delta:number){
         this.physics.collide(this.top,this.huopao);
         this.physics.collide(this.top,this.shuipao);
-        this.huopao.play("dapao_idle_left");
-        this.shuipao.play("dapao_idle_right");
+        this.physics.collide(this.red,this.huopao);
+        this.physics.collide(this.blue,this.shuipao);
+
+        //shuipao move
+        if(this.shuipao.body.velocity.x !=0){
+            this.shuipao.play("dapao_move_right",true);
+        }
+
+
+        
+        if(this.time.now>this.shoottime){
+
+        }
 
         
         /** 
@@ -405,6 +442,7 @@ export class Level_crj extends Phaser.Scene{
             this.blue.play("blue_idle_right",true);
         }
     }
+
 
 
 }

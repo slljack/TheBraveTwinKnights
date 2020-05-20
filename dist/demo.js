@@ -347,29 +347,84 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Control_1 = require("../Control");
 
+var Fireball = function (_Phaser$Physics$Arcad) {
+    _inherits(Fireball, _Phaser$Physics$Arcad);
+
+    function Fireball(scene, x, y) {
+        _classCallCheck(this, Fireball);
+
+        return _possibleConstructorReturn(this, (Fireball.__proto__ || Object.getPrototypeOf(Fireball)).call(this, scene, x, y, "fireball"));
+    }
+
+    _createClass(Fireball, [{
+        key: "fire",
+        value: function fire(x, y) {
+            this.body.reset(x, y);
+            this.setActive(true);
+            this.setVisible(true);
+            this.setVelocityX(-200);
+            this.setGravity(0);
+        }
+    }]);
+
+    return Fireball;
+}(Phaser.Physics.Arcade.Sprite);
+
+var FireballGroup = function (_Phaser$Physics$Arcad2) {
+    _inherits(FireballGroup, _Phaser$Physics$Arcad2);
+
+    function FireballGroup(scene) {
+        _classCallCheck(this, FireballGroup);
+
+        var _this2 = _possibleConstructorReturn(this, (FireballGroup.__proto__ || Object.getPrototypeOf(FireballGroup)).call(this, scene.physics.world, scene));
+
+        _this2.createMultiple({
+            classType: Fireball,
+            frameQuantity: 30,
+            active: false,
+            visible: false,
+            key: "fireball"
+        });
+        return _this2;
+    }
+
+    _createClass(FireballGroup, [{
+        key: "shootfireball",
+        value: function shootfireball(x, y) {
+            var fireball = this.getFirstDead(false);
+            if (fireball) {
+                fireball.fire(x, y);
+            }
+        }
+    }]);
+
+    return FireballGroup;
+}(Phaser.Physics.Arcade.Group);
+
 var Level_crj = function (_Phaser$Scene) {
     _inherits(Level_crj, _Phaser$Scene);
 
     function Level_crj() {
         _classCallCheck(this, Level_crj);
 
-        var _this = _possibleConstructorReturn(this, (Level_crj.__proto__ || Object.getPrototypeOf(Level_crj)).call(this, {
+        var _this3 = _possibleConstructorReturn(this, (Level_crj.__proto__ || Object.getPrototypeOf(Level_crj)).call(this, {
             key: Control_1.Control.Scene.Level2
         }));
 
-        _this.redcanjump = true;
-        _this.redjumpcount = 0;
-        _this.bluecanjump = true;
-        _this.bluejumpcount = 0;
-        _this.getRedKey = false;
-        _this.getBlueKey = false;
-        _this.isVictory = false;
-        return _this;
+        _this3.redcanjump = true;
+        _this3.redjumpcount = 0;
+        _this3.bluecanjump = true;
+        _this3.bluejumpcount = 0;
+        _this3.getRedKey = false;
+        _this3.getBlueKey = false;
+        _this3.isVictory = false;
+        return _this3;
     }
 
     _createClass(Level_crj, [{
         key: "init",
         value: function init() {
+            this.shoottime = 0;
             this.getBlueKey = false;
             this.getRedKey = false;
             this.isVictory = false;
@@ -390,34 +445,7 @@ var Level_crj = function (_Phaser$Scene) {
                 frameWidth: 128,
                 frameHeight: 64
             });
-            this.anims.create({
-                key: "dapao_idle_left",
-                frameRate: 10,
-                frames: this.anims.generateFrameNumbers("dapao", {
-                    frames: [3, 5]
-                })
-            });
-            this.anims.create({
-                key: "dapao_idle_right",
-                frameRate: 10,
-                frames: this.anims.generateFrameNumbers("dapao", {
-                    frames: [0, 2]
-                })
-            });
-            this.anims.create({
-                key: "dapao_move_right",
-                frameRate: 10,
-                frames: this.anims.generateFrameNumbers("dapao", {
-                    frames: [0, 1, 2]
-                })
-            });
-            this.anims.create({
-                key: "dapao_move_left",
-                frameRate: 10,
-                frames: this.anims.generateFrameNumbers("dapao", {
-                    frames: [3, 4, 5]
-                })
-            });
+            // shooting group
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -507,6 +535,35 @@ var Level_crj = function (_Phaser$Scene) {
     }, {
         key: "create",
         value: function create() {
+            // dapao anims
+            this.anims.create({
+                key: "dapao_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [3]
+                })
+            });
+            this.anims.create({
+                key: "dapao_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [0]
+                })
+            });
+            this.anims.create({
+                key: "dapao_move_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "dapao_move_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [3, 4, 5]
+                })
+            });
             // Play music
             this.bgm = this.sound.add('bgm');
             var musicConfig = {
@@ -556,14 +613,26 @@ var Level_crj = function (_Phaser$Scene) {
             this.shuipao = this.physics.add.sprite(256, 512, "dapao");
             this.huopao.setCollideWorldBounds(true);
             this.shuipao.setCollideWorldBounds(true);
+            this.shuipao.setDrag(200, 200);
+            this.huopao.play("dapao_idle_left", true);
+            this.shuipao.play("dapao_idle_right", true);
+            this.fireballgroup = new FireballGroup(this);
         }
     }, {
         key: "update",
         value: function update(delta) {
             this.physics.collide(this.top, this.huopao);
             this.physics.collide(this.top, this.shuipao);
-            this.huopao.play("dapao_idle_left");
-            this.shuipao.play("dapao_idle_right");
+            this.physics.collide(this.red, this.huopao);
+            this.physics.collide(this.blue, this.shuipao);
+            //shuipao move
+            if (this.shuipao.body.velocity.x != 0) {
+                this.shuipao.play("dapao_move_right", true);
+            }
+            if (this.time.now > this.shoottime) {
+                this.shoottime = this.time.now + 1500;
+                this.fireballgroup.shootfireball(this.huopao.x - 100, this.huopao.y);
+            }
             /**
             if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
                 if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
@@ -963,6 +1032,8 @@ var LoadingScene = function (_Phaser$Scene) {
             this.load.on("progress", function (percent) {
                 loadingbar.fillRect(350, _this2.game.renderer.height / 2, 580 * percent, 10);
             });
+            this.load.image("fireball", "asset/level_crj/Fireball.png");
+            this.load.image("bubble", "asset/level_crj/Waterball.png");
         }
     }, {
         key: "create",

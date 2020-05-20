@@ -38,6 +38,8 @@ export class LoadingScene extends Phaser.Scene{
             loadingbar.fillRect(350,this.game.renderer.height/2,580*percent,10);
         })
 
+        this.load.image("fireball","asset/level_crj/Fireball.png");
+        this.load.image("bubble","asset/level_crj/Waterball.png");
 
     }
     create(){
