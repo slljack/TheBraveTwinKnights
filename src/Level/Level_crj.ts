@@ -29,12 +29,15 @@ export class Level_crj extends Phaser.Scene{
     shuipao: Phaser.Physics.Arcade.Sprite;
     shoottime: number;
     fireballs: Phaser.Physics.Arcade.Group;
+    redalive: boolean;
+    bubbles: Phaser.Physics.Arcade.Group;
     constructor(){
         super({
             key : Control.Scene.Level2
         })
     }
     init(){
+        this.redalive = true;
         this.shoottime = 0;
         this.getBlueKey = false;
         this.getRedKey = false;
@@ -104,6 +107,16 @@ export class Level_crj extends Phaser.Scene{
             frames:this.anims.generateFrameNumbers("redknight1",{
                 frames:[30,31,32]
             })
+        })
+
+        this.anims.create({
+            key:"red_dead_right",
+            frameRate:5,
+            frames:this.anims.generateFrameNumbers("redknight1",{
+                frames:[10,11,12,13,14]
+            }),
+            repeat:0,
+
         })
 
 
@@ -274,13 +287,25 @@ export class Level_crj extends Phaser.Scene{
             allowGravity:false,
         })
         for(let i = 0;i<30;i++){
-            const fireball = this.fireballs.create(0,0,"fireball");
+            const fireball = this.fireballs.create(0,0,"fireball").setDepth(2);
             fireball.name = "fireball"+i;
-            fireball.exists = false;
+            fireball.active = false;
             fireball.visible = false;
             fireball.checkWorldBounds = true;
-            //fireball.events.onOutOfBounds.add(resetFireball, this);
         }
+
+        this.bubbles = this.physics.add.group({
+            immovable:true,
+            allowGravity:false,
+        })
+        for(let i = 0;i<30;i++){
+            const bubble = this.bubbles.create(0,0,"bubble").setDepth(2);
+            bubble.name = "fireball"+i;
+            bubble.active = false;
+            bubble.visible = false;
+            bubble.checkWorldBounds = true;
+        }
+
 
     }
 
@@ -295,10 +320,42 @@ export class Level_crj extends Phaser.Scene{
             this.shuipao.play("dapao_move_right",true);
         }
 
+        this.physics.overlap(this.red,this.fireballs,this.redshot,null,this)
 
+
+
+        let fireball = this.fireballs.getFirstAlive(true);
+        if(fireball){
+            if(fireball.body.x<0){
+                fireball.active = false;
+            }
+        }
         
-        if(this.time.now>this.shoottime){
+        let bubble = this.bubbles.getFirstAlive(true);
+        if(bubble){
+            if(bubble.body.x>1200){
+                bubble.active = false;
+            }
+        }
 
+
+        if(this.time.now>this.shoottime){
+            let fireball = this.fireballs.getFirstDead(false);
+            if(fireball){
+                fireball.visible = true;
+                fireball.active = true;
+                fireball.body.reset(this.huopao.x-100,this.huopao.y);
+                fireball.body.velocity.x = -200;
+                this.shoottime = this.time.now+1500;
+            }
+
+            let bubble = this.bubbles.getFirstDead(false);
+            if(bubble){
+                bubble.visible = true;
+                bubble.active = true;
+                bubble.body.reset(this.shuipao.x+100,this.shuipao.y);
+                bubble.body.velocity.x = 200;
+            }
         }
 
         
@@ -337,23 +394,45 @@ export class Level_crj extends Phaser.Scene{
         // Red Control
 
         // Jump detection
-        if(this.redcanjump==false){
-            if(this.redjumpcount==1 && this.red.body.velocity.y==10){
-                this.redcanjump=true;
-                this.redjumpcount = 0;
+        if(this.redalive ==true){
+            if(this.redcanjump==false){
+                if(this.redjumpcount==1 && this.red.body.velocity.y==10){
+                    this.redcanjump=true;
+                    this.redjumpcount = 0;
+                }
+                else if(this.red.body.velocity.y==10){
+                    this.redjumpcount++
+                }
+                
             }
-            else if(this.red.body.velocity.y==10){
-                this.redjumpcount++
+    
+            // Right Left Jump action
+            this.physics.collide(this.red,this.top)
+            if(this.key_ArrowRight.isDown ===true){
+                this.red.setVelocityX(200);
+                this.red.play("red_move_right",true);
+                if(this.key_ArrowUp.isDown === true){
+                    if(this.redcanjump){
+                        this.red.play("red_jump_right");
+                        this.red.setVelocityY(-400);
+                        this.redcanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
             }
-            
-        }
-
-        // Right Left Jump action
-        this.physics.collide(this.red,this.top)
-        if(this.key_ArrowRight.isDown ===true){
-            this.red.setVelocityX(200);
-            this.red.play("red_move_right",true);
-            if(this.key_ArrowUp.isDown === true){
+            else if(this.key_ArrowLeft.isDown){
+                this.red.setVelocityX(-200)
+                this.red.play("red_move_left",true);
+                if(this.key_ArrowUp.isDown === true){
+                    if(this.redcanjump){
+                        this.red.play("red_jump_left");
+                        this.red.setVelocityY(-400);
+                        this.redcanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
+            }
+            else if(this.key_ArrowUp.isDown){
                 if(this.redcanjump){
                     this.red.play("red_jump_right");
                     this.red.setVelocityY(-400);
@@ -361,32 +440,17 @@ export class Level_crj extends Phaser.Scene{
                     this.jumpSound.play();
                 }
             }
-        }
-        else if(this.key_ArrowLeft.isDown){
-            this.red.setVelocityX(-200)
-            this.red.play("red_move_left",true);
-            if(this.key_ArrowUp.isDown === true){
-                if(this.redcanjump){
-                    this.red.play("red_jump_left");
-                    this.red.setVelocityY(-400);
-                    this.redcanjump = false;
-                    this.jumpSound.play();
-                }
+            else{
+                this.red.setVelocityX(0);
+                this.red.play("red_idle_right",true);
             }
-        }
-        else if(this.key_ArrowUp.isDown){
-            if(this.redcanjump){
-                this.red.play("red_jump_right");
-                this.red.setVelocityY(-400);
-                this.redcanjump = false;
-                this.jumpSound.play();
-            }
+    
+            
         }
         else{
-            this.red.setVelocityX(0);
-            this.red.play("red_idle_right",true);
+            this.physics.collide(this.red,this.top)
         }
-
+        
 
 
 
@@ -442,6 +506,14 @@ export class Level_crj extends Phaser.Scene{
             this.blue.play("blue_idle_right",true);
         }
     }
+    redshot(){
+        if(this.redalive == true){
+            this.redalive = false;
+            this.red.play("red_dead_right",true);
+            this.red.body.velocity.x = 0
+        }
+
+        }
 
 
 
