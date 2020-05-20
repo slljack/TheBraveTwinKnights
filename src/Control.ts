@@ -6,6 +6,7 @@ export const Control ={
         Level:"Level",
         Help:"Help",
         Control:"Control",
-        Level1:"Level1"
+        Level1:"Level1",
+        Level2:"Level_crj"
     }
 }

@@ -14,7 +14,7 @@ export class LevelScene extends Phaser.Scene{
         let back = this.add.text(this.game.renderer.width-100,0,"Back",{font:"40px Impact"});
 
         let level1 = this.add.text(570,200,"[ Level 1 ]",{font:"40px Impact"});
-
+        let level2 = this.add.text(570,250,"[ Level 2 ]",{font:"40px Impact"});
         back.setInteractive();
         back.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Menu)
@@ -25,6 +25,11 @@ export class LevelScene extends Phaser.Scene{
             this.scene.start(Control.Scene.Level1)
         })
 
+
+        level2.setInteractive();
+        level2.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Level2)
+        })
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
                 this.scene.start(Control.Scene.Menu)
