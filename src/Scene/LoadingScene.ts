@@ -41,6 +41,11 @@ export class LoadingScene extends Phaser.Scene{
         this.load.image("fireball","asset/level_crj/fireball2.png");
         this.load.image("bubble","asset/level_crj/bubble.png");
 
+        this.load.spritesheet("blueknight2","asset/level_crj/BlueKnight.png",{
+            frameWidth:64,
+            frameHeight:64
+        });
+
     }
     create(){
 
