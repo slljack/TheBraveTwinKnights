@@ -11,7 +11,8 @@ exports.Control = {
         Help: "Help",
         Control: "Control",
         Level1: "Level1",
-        Level2: "Level_crj"
+        Level2: "Level_crj",
+        Level3: "Level_crj2"
     }
 };
 
@@ -897,6 +898,556 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Control_1 = require("../Control");
 
+var Level_crj2 = function (_Phaser$Scene) {
+    _inherits(Level_crj2, _Phaser$Scene);
+
+    function Level_crj2() {
+        _classCallCheck(this, Level_crj2);
+
+        var _this = _possibleConstructorReturn(this, (Level_crj2.__proto__ || Object.getPrototypeOf(Level_crj2)).call(this, {
+            key: Control_1.Control.Scene.Level3
+        }));
+
+        _this.redcanjump = true;
+        _this.redjumpcount = 0;
+        _this.bluecanjump = true;
+        _this.bluejumpcount = 0;
+        _this.getRedKey = false;
+        _this.getBlueKey = false;
+        _this.isVictory = false;
+        return _this;
+    }
+
+    _createClass(Level_crj2, [{
+        key: "init",
+        value: function init() {
+            this.bluealive = true;
+            this.bluebubble = false;
+            this.redalive = true;
+            this.shoottime = 0;
+            this.getBlueKey = false;
+            this.getRedKey = false;
+            this.isVictory = false;
+        }
+    }, {
+        key: "preload",
+        value: function preload() {
+            this.load.image("redkey", "asset/RedKey.png");
+            this.load.image("bluekey", "asset/BlueKey.png");
+            this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
+            this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
+            this.load.image('ele', "asset/level_crj/ele.png");
+            this.load.tilemapTiledJSON('map', 'asset/level_crj/mylevel.json');
+            this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
+            this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
+            this.load.audio('key_sound', 'asset/sounds/key.mp3');
+            this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
+            this.load.image("block", "asset/level_crj/CastleBlock_1.png");
+            this.load.spritesheet("dapao", "asset/level_crj/dapao.png", {
+                frameWidth: 128,
+                frameHeight: 64
+            });
+            // shooting group
+            this.anims.create({
+                key: "red_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "red_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "red_move_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [24, 25, 26]
+                })
+            });
+            this.anims.create({
+                key: "red_move_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [27, 28, 29]
+                })
+            });
+            this.anims.create({
+                key: "red_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "red_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [30, 31, 32]
+                })
+            });
+            this.anims.create({
+                key: "red_dead_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [12, 13, 14, 15, 16, 17]
+                }),
+                repeat: 0
+            });
+            //blue anim
+            this.anims.create({
+                key: "blue_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "blue_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [24, 25, 26]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [27, 28, 29]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [30, 31, 32]
+                })
+            });
+            this.anims.create({
+                key: "blue_bubble",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [36]
+                })
+            });
+            this.anims.create({
+                key: "blue_dead_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight2", {
+                    frames: [12, 13, 14, 15, 16, 17]
+                })
+            });
+        }
+    }, {
+        key: "create",
+        value: function create() {
+            // dapao anims
+            this.anims.create({
+                key: "dapao_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [3]
+                })
+            });
+            this.anims.create({
+                key: "dapao_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [0]
+                })
+            });
+            this.anims.create({
+                key: "dapao_move_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "dapao_move_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("dapao", {
+                    frames: [3, 4, 5]
+                })
+            });
+            // Play music
+            this.bgm = this.sound.add('bgm');
+            var musicConfig = {
+                mute: false,
+                volume: 0.4,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            };
+            this.bgm.play(musicConfig);
+            // Add sound effect
+            this.jumpSound = this.sound.add('jump_sound');
+            this.keySound = this.sound.add('key_sound');
+            this.vicSound = this.sound.add('vic_sound');
+            this.input.keyboard.on("keyup", function (e) {
+                if (e.key == "Escape") {
+                    // Stop music when esc
+                    this.bgm.stop();
+                    this.scene.start(Control_1.Control.Scene.Menu);
+                }
+            }, this);
+            var map1 = this.add.tilemap("map");
+            var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
+            var ele = map1.addTilesetImage("ele", "ele");
+            var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
+            this.top = map1.createStaticLayer("collide", [block, CastleBackground], 0, 0);
+            this.top.setDepth(2);
+            this.mid = map1.createStaticLayer("ele", [ele], 0, 0);
+            this.mid.setDepth(1);
+            this.top.setCollisionBetween(0, 5);
+            var bot = map1.createStaticLayer("background", [block, CastleBackground], 0, 0);
+            bot.setDepth(0);
+            this.blocks = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+            this.block1 = this.blocks.create(672, 352, "block").setDepth(3);
+            this.block2 = this.blocks.create(736, 352, "block").setDepth(3);
+            this.block1.checkWorldBounds = true;
+            this.block2.checkWorldBounds = true;
+            // Define Keys
+            this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+            this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+            this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+            this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            // Add knights in to the scene
+            this.red = this.physics.add.sprite(90, 280, "redknight1");
+            this.blue = this.physics.add.sprite(90, 600, "blueknight2");
+            // Enable collision
+            this.red.setCollideWorldBounds(true);
+            this.blue.setCollideWorldBounds(true);
+            this.redkey = this.physics.add.image(1185, 288, "redkey");
+            this.redkey.setScale(2);
+            this.bluekey = this.physics.add.image(1057, 672, "bluekey");
+            this.bluekey.setScale(2);
+            //add dapao to scene
+            this.huopao = this.physics.add.sprite(1172, 64, "dapao");
+            this.shuipao = this.physics.add.sprite(256, 512, "dapao");
+            this.huopao.setCollideWorldBounds(true);
+            this.shuipao.setCollideWorldBounds(true);
+            this.shuipao.setDrag(200, 200);
+            this.huopao.play("dapao_idle_left", true);
+            this.shuipao.play("dapao_idle_right", true);
+            this.fireballs = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+            for (var i = 0; i < 30; i++) {
+                var fireball = this.fireballs.create(0, 0, "fireball").setDepth(3);
+                fireball.name = "fireball" + i;
+                fireball.active = false;
+                fireball.visible = false;
+                fireball.checkWorldBounds = true;
+            }
+            this.bubbles = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+            for (var _i = 0; _i < 30; _i++) {
+                var bubble = this.bubbles.create(0, 0, "bubble").setDepth(3);
+                bubble.name = "bubble" + _i;
+                bubble.active = false;
+                bubble.visible = false;
+                bubble.checkWorldBounds = true;
+            }
+        }
+    }, {
+        key: "update",
+        value: function update(delta) {
+            this.physics.collide(this.top, this.huopao);
+            this.physics.collide(this.top, this.shuipao);
+            this.physics.collide(this.red, this.huopao);
+            this.physics.collide(this.blue, this.shuipao);
+            this.physics.collide(this.top, this.redkey);
+            this.physics.collide(this.top, this.bluekey);
+            //shuipao move
+            if (this.shuipao.body.velocity.x != 0) {
+                this.shuipao.play("dapao_move_right", true);
+            }
+            this.physics.overlap(this.red, this.fireballs, this.redshot, null, this);
+            this.physics.overlap(this.blue, this.bubbles, this.blueshot, null, this);
+            var fireball = this.fireballs.getFirstAlive(true);
+            if (fireball) {
+                if (fireball.body.x < 0) {
+                    fireball.active = false;
+                }
+            }
+            var bubble = this.bubbles.getFirstAlive(true);
+            if (bubble) {
+                if (bubble.body.x > 1200) {
+                    bubble.active = false;
+                }
+            }
+            if (this.time.now > this.shoottime) {
+                var _fireball = this.fireballs.getFirstDead(false);
+                if (_fireball) {
+                    _fireball.visible = true;
+                    _fireball.active = true;
+                    _fireball.body.reset(this.huopao.x - 100, this.huopao.y);
+                    _fireball.body.velocity.x = -200;
+                    this.shoottime = this.time.now + 2300;
+                }
+                var _bubble = this.bubbles.getFirstDead(false);
+                if (_bubble) {
+                    _bubble.visible = true;
+                    _bubble.active = true;
+                    _bubble.body.reset(this.shuipao.x + 100, this.shuipao.y);
+                    _bubble.body.velocity.x = 270;
+                }
+            }
+            // xiao ji guan
+            this.physics.collide(this.red, this.blocks, this.dropdown, null, this);
+            this.physics.collide(this.blue, this.blocks);
+            if (this.block1.body.y >= 640) {
+                this.block1.body.velocity.y = 0;
+            }
+            if (this.block2.body.y >= 576) {
+                this.block2.body.velocity.y = 0;
+            }
+            //death
+            if (this.red.body.y >= 352) {
+                this.redshot();
+            }
+            if (this.blue.body.y <= 352 || this.blue.body.y >= 726) {
+                console.log("bluedead");
+                this.bluedead();
+            }
+            this.physics.overlap(this.red, this.redkey, this.getredkey, null, this);
+            this.physics.overlap(this.blue, this.bluekey, this.getbluekey, null, this);
+            /**
+            if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
+                if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
+                    this.redkey.destroy()
+                    if(this.getRedKey === false){
+                        this.keySound.play();
+                        this.getRedKey = true;
+                    }
+                        
+                }
+            }
+            */
+            /**
+                    if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+                        if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
+                            this.bluekey.destroy()
+                            if(this.getBlueKey === false){
+                                this.keySound.play();
+                                this.getBlueKey = true;
+                            }
+                        }
+                    }
+                    */
+            if (this.getBlueKey && this.getRedKey && this.isVictory === false) {
+                this.vicSound.play();
+                this.bgm.stop();
+                this.isVictory = true;
+                this.scene.start(Control_1.Control.Scene.Level);
+            }
+            // Red Control
+            // Jump detection
+            if (this.redalive == true) {
+                if (this.redcanjump == false) {
+                    if (this.redjumpcount == 1 && this.red.body.velocity.y == 10) {
+                        this.redcanjump = true;
+                        this.redjumpcount = 0;
+                    } else if (this.red.body.velocity.y == 10) {
+                        this.redjumpcount++;
+                    }
+                }
+                // Right Left Jump action
+                this.physics.collide(this.red, this.top);
+                if (this.key_ArrowRight.isDown === true) {
+                    this.red.setVelocityX(200);
+                    this.red.play("red_move_right", true);
+                    if (this.key_ArrowUp.isDown === true) {
+                        if (this.redcanjump) {
+                            this.red.play("red_jump_right");
+                            this.red.setVelocityY(-400);
+                            this.redcanjump = false;
+                            this.jumpSound.play();
+                        }
+                    }
+                } else if (this.key_ArrowLeft.isDown) {
+                    this.red.setVelocityX(-200);
+                    this.red.play("red_move_left", true);
+                    if (this.key_ArrowUp.isDown === true) {
+                        if (this.redcanjump) {
+                            this.red.play("red_jump_left");
+                            this.red.setVelocityY(-400);
+                            this.redcanjump = false;
+                            this.jumpSound.play();
+                        }
+                    }
+                } else if (this.key_ArrowUp.isDown) {
+                    if (this.redcanjump) {
+                        this.red.play("red_jump_right");
+                        this.red.setVelocityY(-400);
+                        this.redcanjump = false;
+                        this.jumpSound.play();
+                    }
+                } else {
+                    this.red.setVelocityX(0);
+                    this.red.play("red_idle_right", true);
+                }
+            } else {
+                this.physics.collide(this.red, this.top);
+            }
+            // Blue Control
+            // Jump detection
+            if (this.bluebubble == false && this.bluealive == true) {
+                if (this.bluecanjump == false) {
+                    if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 10) {
+                        this.bluecanjump = true;
+                        this.bluejumpcount = 0;
+                    } else if (this.blue.body.velocity.y == 10) {
+                        this.bluejumpcount++;
+                    } else if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 0) {
+                        this.bluecanjump = true;
+                        this.bluejumpcount = 0;
+                    }
+                }
+                // Right Left Jump action
+                this.physics.collide(this.blue, this.top);
+                if (this.key_D.isDown === true) {
+                    this.blue.setVelocityX(200);
+                    this.blue.play("blue_move_right", true);
+                    if (this.key_W.isDown === true) {
+                        if (this.bluecanjump) {
+                            this.blue.play("blue_jump_right");
+                            this.blue.setVelocityY(-400);
+                            this.bluecanjump = false;
+                            this.jumpSound.play();
+                        }
+                    }
+                } else if (this.key_A.isDown) {
+                    this.blue.setVelocityX(-200);
+                    this.blue.play("blue_move_left", true);
+                    if (this.key_W.isDown === true) {
+                        if (this.bluecanjump) {
+                            this.blue.play("blue_jump_left");
+                            this.blue.setVelocityY(-400);
+                            this.bluecanjump = false;
+                            this.jumpSound.play();
+                        }
+                    }
+                } else if (this.key_W.isDown) {
+                    if (this.bluecanjump) {
+                        this.blue.play("blue_jump_right");
+                        this.blue.setVelocityY(-400);
+                        this.bluecanjump = false;
+                        this.jumpSound.play();
+                    }
+                } else {
+                    this.blue.setVelocityX(0);
+                    this.blue.play("blue_idle_right", true);
+                }
+            } else if (this.bluealive == true && this.bluebubble == true) {
+                this.physics.collide(this.blue, this.top);
+                this.blue.setVelocityY(-200);
+            } else if (this.bluealive == false) {
+                this.physics.collide(this.blue, this.top);
+            }
+        }
+    }, {
+        key: "redshot",
+        value: function redshot() {
+            if (this.redalive == true) {
+                this.redalive = false;
+                this.red.play("red_dead_right", true);
+                this.red.body.velocity.x = 0;
+            }
+        }
+    }, {
+        key: "blueshot",
+        value: function blueshot() {
+            if (this.bluebubble == false) {
+                this.bluebubble = true;
+                this.blue.play("blue_bubble", true);
+                this.blue.body.velocity.x = 0;
+                this.blue.setVelocityY(-200);
+            }
+        }
+    }, {
+        key: "bluedead",
+        value: function bluedead() {
+            if (this.bluealive == true) {
+                this.bluealive = false;
+                this.blue.play("blue_dead_right", true);
+                this.blue.body.velocity.x = 0;
+            }
+        }
+    }, {
+        key: "dropdown",
+        value: function dropdown() {
+            this.block1.body.velocity.y = 600;
+            this.block2.body.velocity.y = 600;
+        }
+    }, {
+        key: "getredkey",
+        value: function getredkey() {
+            this.redkey.destroy();
+            if (this.getRedKey === false) {
+                this.keySound.play();
+                this.getRedKey = true;
+            }
+        }
+    }, {
+        key: "getbluekey",
+        value: function getbluekey() {
+            this.bluekey.destroy();
+            if (this.getBlueKey === false) {
+                this.keySound.play();
+                this.getBlueKey = true;
+            }
+        }
+    }]);
+
+    return Level_crj2;
+}(Phaser.Scene);
+
+exports.Level_crj2 = Level_crj2;
+
+},{"../Control":1}],5:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Control_1 = require("../Control");
+
 var ControlScene = function (_Phaser$Scene) {
     _inherits(ControlScene, _Phaser$Scene);
 
@@ -979,7 +1530,7 @@ var ControlScene = function (_Phaser$Scene) {
 
 exports.ControlScene = ControlScene;
 
-},{"../Control":1}],5:[function(require,module,exports){
+},{"../Control":1}],6:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1033,7 +1584,7 @@ var HelpScene = function (_Phaser$Scene) {
 
 exports.HelpScene = HelpScene;
 
-},{"../Control":1}],6:[function(require,module,exports){
+},{"../Control":1}],7:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1071,6 +1622,7 @@ var LevelScene = function (_Phaser$Scene) {
             var back = this.add.text(this.game.renderer.width - 100, 0, "Back", { font: "40px Impact" });
             var level1 = this.add.text(570, 200, "[ Level 1 ]", { font: "40px Impact" });
             var level2 = this.add.text(570, 250, "[ Level 2 ]", { font: "40px Impact" });
+            var level3 = this.add.text(570, 300, "[ Level 3 ]", { font: "40px Impact" });
             back.setInteractive();
             back.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Menu);
@@ -1082,6 +1634,10 @@ var LevelScene = function (_Phaser$Scene) {
             level2.setInteractive();
             level2.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Level2);
+            });
+            level3.setInteractive();
+            level3.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Level3);
             });
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
@@ -1096,7 +1652,7 @@ var LevelScene = function (_Phaser$Scene) {
 
 exports.LevelScene = LevelScene;
 
-},{"../Control":1}],7:[function(require,module,exports){
+},{"../Control":1}],8:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1174,7 +1730,7 @@ var LoadingScene = function (_Phaser$Scene) {
 
 exports.LoadingScene = LoadingScene;
 
-},{"../Control":1}],8:[function(require,module,exports){
+},{"../Control":1}],9:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1271,7 +1827,7 @@ var MenuScene = function (_Phaser$Scene) {
 
 exports.MenuScene = MenuScene;
 
-},{"../Control":1}],9:[function(require,module,exports){
+},{"../Control":1}],10:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1316,7 +1872,7 @@ var SplashScene = function (_Phaser$Scene) {
 
 exports.SplashScene = SplashScene;
 
-},{"../Control":1}],10:[function(require,module,exports){
+},{"../Control":1}],11:[function(require,module,exports){
 "use strict";
 /**@type {import("../types/phaser")} */
 
@@ -1329,6 +1885,7 @@ var ControlScene_1 = require("./Scene/ControlScene");
 var HelpScene_1 = require("./Scene/HelpScene");
 var Level1_1 = require("./Level/Level1");
 var Level_crj_1 = require("./Level/Level_crj");
+var Level_crj2_1 = require("./Level/Level_crj2");
 var config = {
     type: Phaser.AUTO,
     scale: {
@@ -1346,13 +1903,13 @@ var config = {
             gravity: { y: 600 }
         }
     },
-    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1, Level_crj_1.Level_crj],
+    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1, Level_crj_1.Level_crj, Level_crj2_1.Level_crj2],
     render: {
         pixelArt: true
     }
 };
 var game = new Phaser.Game(config);
 
-},{"./Level/Level1":2,"./Level/Level_crj":3,"./Scene/ControlScene":4,"./Scene/HelpScene":5,"./Scene/LevelScene":6,"./Scene/LoadingScene":7,"./Scene/MenuScene":8,"./Scene/SplashScene":9}]},{},[10])
+},{"./Level/Level1":2,"./Level/Level_crj":3,"./Level/Level_crj2":4,"./Scene/ControlScene":5,"./Scene/HelpScene":6,"./Scene/LevelScene":7,"./Scene/LoadingScene":8,"./Scene/MenuScene":9,"./Scene/SplashScene":10}]},{},[11])
 
 //# sourceMappingURL=demo.js.map

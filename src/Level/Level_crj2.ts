@@ -1,7 +1,7 @@
 import {Control} from "../Control"
 
 
-export class Level_crj extends Phaser.Scene{
+export class Level_crj2 extends Phaser.Scene{
     blocks: Phaser.Physics.Arcade.Group;
     red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
@@ -39,7 +39,7 @@ export class Level_crj extends Phaser.Scene{
     bluealive: boolean;
     constructor(){
         super({
-            key : Control.Scene.Level2
+            key : Control.Scene.Level3
         })
     }
     init(){
@@ -424,7 +424,6 @@ export class Level_crj extends Phaser.Scene{
 
         this.physics.overlap(this.red,this.redkey,this.getredkey,null,this);
         this.physics.overlap(this.blue,this.bluekey,this.getbluekey,null,this);
-
 
 
 
