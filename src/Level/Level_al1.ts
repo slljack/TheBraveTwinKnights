@@ -1,5 +1,5 @@
 import {Control} from "../Control"
-export class Level1 extends Phaser.Scene{
+export class Level_al1 extends Phaser.Scene{
     red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
     key_ArrowUp: Phaser.Input.Keyboard.Key;

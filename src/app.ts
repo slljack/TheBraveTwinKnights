@@ -7,8 +7,9 @@ import { SplashScene } from "./Scene/SplashScene";
 import { LevelScene } from "./Scene/LevelScene";
 import { ControlScene } from "./Scene/ControlScene";
 import { HelpScene } from "./Scene/HelpScene";
-import {Level1} from "./Level/Level1"
+import {Level1} from "./Level/Level1";
 import {Level_crj} from "./Level/Level_crj"
+import {Level_al1} from "./Level/Level_al1"
 var config = {
     type:Phaser.AUTO,
     scale:{
@@ -27,7 +28,7 @@ var config = {
         }
     },
     
-    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1,Level_crj],
+    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1,Level_crj,Level_al1],
     render:{
         pixelArt:true
     }
