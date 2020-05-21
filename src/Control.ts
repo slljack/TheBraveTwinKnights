@@ -8,6 +8,7 @@ export const Control ={
         Control:"Control",
         Level1:"Level1",
         Level2:"Level_crj",
-        Level4:"Level_al1"
+        Level3:"Level_crj2",
+        Level4:"Level_al1",
     }
 }
