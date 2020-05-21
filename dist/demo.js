@@ -612,6 +612,12 @@ var Level_crj = function (_Phaser$Scene) {
                     fireball.active = false;
                 }
             }
+            var bubble = this.bubbles.getFirstAlive(true);
+            if (bubble) {
+                if (bubble.body.x > 1200) {
+                    bubble.active = false;
+                }
+            }
             if (this.time.now > this.shoottime) {
                 var _fireball = this.fireballs.getFirstDead(false);
                 if (_fireball) {
@@ -619,14 +625,14 @@ var Level_crj = function (_Phaser$Scene) {
                     _fireball.active = true;
                     _fireball.body.reset(this.huopao.x - 100, this.huopao.y);
                     _fireball.body.velocity.x = -200;
-                    this.shoottime = this.time.now + 1500;
+                    this.shoottime = this.time.now + 2300;
                 }
-                var bubble = this.bubbles.getFirstDead(false);
-                if (bubble) {
-                    bubble.visible = true;
-                    bubble.active = true;
-                    bubble.body.reset(this.shuipao.x + 100, this.shuipao.y);
-                    bubble.body.velocity.x = 200;
+                var _bubble = this.bubbles.getFirstDead(false);
+                if (_bubble) {
+                    _bubble.visible = true;
+                    _bubble.active = true;
+                    _bubble.body.reset(this.shuipao.x + 100, this.shuipao.y);
+                    _bubble.body.velocity.x = 300;
                 }
             }
             /**
@@ -1041,8 +1047,8 @@ var LoadingScene = function (_Phaser$Scene) {
             this.load.on("progress", function (percent) {
                 loadingbar.fillRect(350, _this2.game.renderer.height / 2, 580 * percent, 10);
             });
-            this.load.image("fireball", "asset/level_crj/Fireball.png");
-            this.load.image("bubble", "asset/level_crj/Waterball.png");
+            this.load.image("fireball", "asset/level_crj/fireball2.png");
+            this.load.image("bubble", "asset/level_crj/bubble.png");
         }
     }, {
         key: "create",

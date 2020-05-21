@@ -346,7 +346,7 @@ export class Level_crj extends Phaser.Scene{
                 fireball.active = true;
                 fireball.body.reset(this.huopao.x-100,this.huopao.y);
                 fireball.body.velocity.x = -200;
-                this.shoottime = this.time.now+1500;
+                this.shoottime = this.time.now+2300;
             }
 
             let bubble = this.bubbles.getFirstDead(false);
@@ -354,7 +354,7 @@ export class Level_crj extends Phaser.Scene{
                 bubble.visible = true;
                 bubble.active = true;
                 bubble.body.reset(this.shuipao.x+100,this.shuipao.y);
-                bubble.body.velocity.x = 200;
+                bubble.body.velocity.x = 300;
             }
         }
 
