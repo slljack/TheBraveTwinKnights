@@ -25,7 +25,7 @@ export class Level1 extends Phaser.Scene{
     isVictory: boolean = false;
     constructor(){
         super({
-            key : Control.Scene.Level4
+            key : Control.Scene.Level1
         })
     }
     init(){
