@@ -19,6 +19,7 @@ export class LevelScene extends Phaser.Scene{
         let level4 = this.add.text(570,350,"[ Level 4 ]",{font:"40px Impact"});
         let level5 = this.add.text(570,400,"[ Level 5 ]",{font:"40px Impact"});
         let level6 = this.add.text(570,450,"[ Level 6 ]",{font:"40px Impact"});
+        let level7 = this.add.text(570,500,"[ Level 7 ]",{font:"40px Impact"});
         back.setInteractive();
         back.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Menu)
@@ -51,6 +52,10 @@ export class LevelScene extends Phaser.Scene{
         level6.setInteractive();
         level6.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Level6)
+        })
+        level7.setInteractive();
+        level7.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Level7)
         })
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){

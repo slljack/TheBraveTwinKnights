@@ -13,6 +13,7 @@ import {Level_al1} from "./Level/Level_al1"
 import {Level_crj2} from "./Level/Level_crj2"
 import {Level_al2} from "./Level/Level_al2"
 import {Level_sll1} from "./Level/Level_sll1"
+import {Level_sll2} from "./Level/Level_sll2"
 var config = {
     type:Phaser.AUTO,
     scale:{
@@ -31,7 +32,7 @@ var config = {
         }
     },
     
-    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1,Level_crj,Level_al1,Level_crj2,Level_al2,Level_sll1],
+    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1,Level_crj,Level_al1,Level_crj2,Level_al2,Level_sll1,Level_sll2],
     render:{
         pixelArt:true
     }

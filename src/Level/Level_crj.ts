@@ -40,7 +40,7 @@ export class Level_crj extends Phaser.Scene{
     lose: Phaser.Sound.BaseSound;
     constructor(){
         super({
-            key : Control.Scene.Level5
+            key : Control.Scene.Level6
         })
     }
     init(){

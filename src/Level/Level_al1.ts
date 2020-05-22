@@ -45,7 +45,7 @@ export class Level_al1 extends Phaser.Scene{
     key_space: Phaser.Input.Keyboard.Key;
     constructor(){
         super({
-            key : Control.Scene.Level3
+            key : Control.Scene.Level4
         })
     }
     init(){

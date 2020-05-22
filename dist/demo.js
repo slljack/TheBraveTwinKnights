@@ -15,7 +15,8 @@ exports.Control = {
         Level3: "Level_al1",
         Level4: "Level_al2",
         Level5: "Level_crj",
-        Level6: "Level_crj2"
+        Level6: "Level_crj2",
+        Level7: "Level_sll2"
     }
 };
 
@@ -359,7 +360,7 @@ var Level_al1 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_al1);
 
         var _this = _possibleConstructorReturn(this, (Level_al1.__proto__ || Object.getPrototypeOf(Level_al1)).call(this, {
-            key: Control_1.Control.Scene.Level3
+            key: Control_1.Control.Scene.Level4
         }));
 
         _this.redcanjump = true;
@@ -945,7 +946,7 @@ var Level_al2 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_al2);
 
         var _this = _possibleConstructorReturn(this, (Level_al2.__proto__ || Object.getPrototypeOf(Level_al2)).call(this, {
-            key: Control_1.Control.Scene.Level4
+            key: Control_1.Control.Scene.Level5
         }));
 
         _this.redcanjump = true;
@@ -1553,7 +1554,7 @@ var Level_crj = function (_Phaser$Scene) {
         _classCallCheck(this, Level_crj);
 
         var _this = _possibleConstructorReturn(this, (Level_crj.__proto__ || Object.getPrototypeOf(Level_crj)).call(this, {
-            key: Control_1.Control.Scene.Level5
+            key: Control_1.Control.Scene.Level6
         }));
 
         _this.redcanjump = true;
@@ -2096,7 +2097,7 @@ var Level_crj2 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_crj2);
 
         var _this = _possibleConstructorReturn(this, (Level_crj2.__proto__ || Object.getPrototypeOf(Level_crj2)).call(this, {
-            key: Control_1.Control.Scene.Level6
+            key: Control_1.Control.Scene.Level7
         }));
 
         _this.redcanjump = true;
@@ -3398,6 +3399,685 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Control_1 = require("../Control");
 
+var Level_sll2 = function (_Phaser$Scene) {
+    _inherits(Level_sll2, _Phaser$Scene);
+
+    function Level_sll2() {
+        _classCallCheck(this, Level_sll2);
+
+        var _this = _possibleConstructorReturn(this, (Level_sll2.__proto__ || Object.getPrototypeOf(Level_sll2)).call(this, {
+            key: Control_1.Control.Scene.Level3
+        }));
+
+        _this.redcanjump = true;
+        _this.redjumpcount = 0;
+        _this.bluecanjump = true;
+        _this.bluejumpcount = 0;
+        _this.getRedKey = false;
+        _this.getBlueKey = false;
+        _this.isVictory = false;
+        _this.ppRed1Press = false;
+        _this.ppRed2Press = false;
+        _this.ppRed3Press = false;
+        _this.ppBlue1Press = false;
+        _this.ppBlue2Press = false;
+        _this.ppBlue3Press = false;
+        _this.showRedKey = false;
+        _this.showBlueKey = false;
+        _this.wrongComboRed = false;
+        _this.wrongComboBlue = false;
+        return _this;
+    }
+
+    _createClass(Level_sll2, [{
+        key: "init",
+        value: function init() {
+            this.sound.stopAll();
+            this.getBlueKey = false;
+            this.getRedKey = false;
+            this.isVictory = false;
+            this.ppRed1Press = false;
+            this.ppRed2Press = false;
+            this.ppRed3Press = false;
+            this.ppBlue1Press = false;
+            this.ppBlue2Press = false;
+            this.ppBlue3Press = false;
+            this.showRedKey = false;
+            this.showBlueKey = false;
+            this.wrongComboRed = false;
+            this.wrongComboBlue = false;
+            this.ppR1Played = false;
+            this.ppR2Played = false;
+            this.ppR3Played = false;
+            this.ppB1Played = false;
+            this.ppB2Played = false;
+            this.ppB3Played = false;
+            this.wcodeR1Played = false;
+            this.wcodeR2Played = false;
+            this.wcodeR3Played = false;
+            this.wcodeB1Played = false;
+            this.wcodeB2Played = false;
+            this.wcodeB3Played = false;
+        }
+    }, {
+        key: "preload",
+        value: function preload() {
+            this.load.image("redkey", "asset/RedKey.png");
+            this.load.image("bluekey", "asset/BlueKey.png");
+            this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
+            this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
+            this.load.tilemapTiledJSON('map7', 'asset/tilemaps/maps/Level7.json');
+            this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
+            this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
+            this.load.audio('key_sound', 'asset/sounds/key.mp3');
+            this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
+            this.load.audio('pp_sound', 'asset/sounds/PressurePlate.mp3');
+            this.load.audio('keyd_sound', 'asset/sounds/KeyDrop.mp3');
+            this.load.audio('wcode_sound', 'asset/sounds/WrongCode.mp3');
+            this.load.spritesheet("PressurePlateIdle", "asset/level_sll/ppIdle.png", {
+                frameWidth: 64,
+                frameHeight: 10
+            });
+            this.load.spritesheet("PressurePlatePress", "asset/level_sll/ppPress.png", {
+                frameWidth: 64,
+                frameHeight: 10
+            });
+            this.anims.create({
+                key: "red_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "red_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "red_move_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [24, 25, 26]
+                })
+            });
+            this.anims.create({
+                key: "red_move_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [27, 28, 29]
+                })
+            });
+            this.anims.create({
+                key: "red_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "red_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [30, 31, 32]
+                })
+            });
+            //blue anim
+            this.anims.create({
+                key: "blue_idle_right",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [0, 1, 2]
+                })
+            });
+            this.anims.create({
+                key: "blue_idle_left",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [24, 25, 26]
+                })
+            });
+            this.anims.create({
+                key: "blue_move_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [27, 28, 29]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [33, 34, 35]
+                })
+            });
+            this.anims.create({
+                key: "blue_jump_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [30, 31, 32]
+                })
+            });
+        }
+    }, {
+        key: "create",
+        value: function create() {
+            //Pressure Plate
+            this.anims.create({
+                key: "pressure_plate_activate",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("PressurePlatePress", {
+                    frames: [0]
+                })
+            });
+            this.anims.create({
+                key: "pressure_plate_idle",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("PressurePlateIdle", {
+                    frames: [0]
+                })
+            });
+            // Play music
+            this.bgm = this.sound.add('bgm');
+            var musicConfig = {
+                mute: false,
+                volume: 0.4,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            };
+            this.bgm.play(musicConfig);
+            // Add sound effect
+            this.jumpSound = this.sound.add('jump_sound');
+            this.keySound = this.sound.add('key_sound');
+            this.vicSound = this.sound.add('vic_sound');
+            this.ppSound = this.sound.add('pp_sound');
+            this.keyDropSound = this.sound.add('keyd_sound');
+            this.wCodeSound = this.sound.add('wcode_sound');
+            this.input.keyboard.on("keyup", function (e) {
+                if (e.key == "Escape") {
+                    // Stop music when esc
+                    this.bgm.stop();
+                    this.scene.start(Control_1.Control.Scene.Menu);
+                }
+            }, this);
+            var map1 = this.add.tilemap("map7");
+            var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
+            var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
+            this.top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
+            this.top.setDepth(1);
+            this.top.setCollisionBetween(0, 5);
+            var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
+            bot.setDepth(0);
+            // Define Keys
+            this.key_ArrowRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+            this.key_ArrowLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+            this.key_ArrowUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+            this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            // Add knights in to the scene
+            this.red = this.physics.add.sprite(960, 340, "redknight1");
+            this.blue = this.physics.add.sprite(90, 600, "blueknight");
+            // Add Pressure Plate
+            this.ppRed1 = this.physics.add.sprite(192, 280, "PressurePlateIdle");
+            //this.ppRed2 = this.physics.add.sprite(640,300, "PressurePlateIdle");
+            //this.ppRed3 = this.physics.add.sprite(1088,300, "PressurePlateIdle");
+            this.ppBlue1 = this.physics.add.sprite(960, 200, "PressurePlateIdle");
+            //this.ppBlue2 = this.physics.add.sprite(640,630, "PressurePlateIdle");
+            //this.ppBlue3 = this.physics.add.sprite(1088,630, "PressurePlateIdle");
+            //this.ppRed1.play('pressure_plate_idle', true);
+            this.ppRed1.setImmovable(true);
+            //this.ppRed2.setImmovable(true);
+            //this.ppRed3.setImmovable(true);
+            this.ppBlue1.setImmovable(true);
+            //this.ppBlue2.setImmovable(true);
+            //this.ppBlue3.setImmovable(true);
+            // Enable collision
+            this.red.setCollideWorldBounds(true);
+            this.blue.setCollideWorldBounds(true);
+            this.ppRed1.setCollideWorldBounds(true);
+            //this.ppRed2.setCollideWorldBounds(true);
+            // this.ppRed3.setCollideWorldBounds(true);
+            this.ppBlue1.setCollideWorldBounds(true);
+            // this.ppBlue2.setCollideWorldBounds(true);
+            //this.ppBlue3.setCollideWorldBounds(true);
+            // Place the keys
+            //this.redkey = this.add.image(610,170,"redkey");
+            //this.redkey.setScale(2)
+            //this.bluekey = this.add.image(935,550,"bluekey")
+            //this.bluekey.setScale(2);
+        }
+    }, {
+        key: "update",
+        value: function update(delta) {
+            //Collision Relation 
+            this.physics.collide(this.ppRed1, this.top);
+            //this.physics.collide(this.ppRed2,this.top);
+            //this.physics.collide(this.ppRed3,this.top);
+            this.physics.collide(this.ppBlue1, this.top);
+            // this.physics.collide(this.ppBlue2,this.top);
+            // this.physics.collide(this.ppBlue3,this.top);
+            this.physics.collide(this.red, this.ppRed1);
+            this.physics.collide(this.red, this.ppBlue1);
+            //this.physics.collide(this.red,this.ppRed2);
+            // this.physics.collide(this.red,this.ppRed3);
+            this.physics.collide(this.blue, this.ppBlue1);
+            this.physics.collide(this.blue, this.ppRed1);
+            // this.physics.collide(this.blue,this.ppBlue2);
+            // this.physics.collide(this.blue,this.ppBlue3);
+            this.physics.collide(this.top, this.redkey);
+            this.physics.collide(this.top, this.bluekey);
+            //Get the keys
+            this.physics.overlap(this.red, this.redkey, this.getredkey, null, this);
+            this.physics.overlap(this.blue, this.bluekey, this.getbluekey, null, this);
+            this.physics.overlap(this.red, this.ppRed1, this.activateR1PlateR, null, this);
+            //this.physics.overlap(this.red,this.ppRed2,this.activateR2Plate,null,this);
+            //this.physics.overlap(this.red,this.ppRed3,this.activateR3Plate,null,this);
+            this.physics.overlap(this.blue, this.ppBlue1, this.activateB1PlateB, null, this);
+            //this.physics.overlap(this.blue,this.ppBlue2,this.activateB2Plate,null,this);
+            //this.physics.overlap(this.blue,this.ppBlue3,this.activateB3Plate,null,this);
+            //console.log(this.redcanjump)
+            /*if(this.red.getBounds().centerX>570 && this.red.getBounds().centerX<640){
+                if(this.red.getBounds().centerY>130 && this.red.getBounds().centerY<200){
+                    this.redkey.destroy()
+                    if(this.getRedKey === false){
+                        this.keySound.play();
+                        this.getRedKey = true;
+                    }
+                        
+                }
+            }
+                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+                if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
+                    this.bluekey.destroy()
+                    if(this.getBlueKey === false){
+                        this.keySound.play();
+                        this.getBlueKey = true;
+                    }
+                }
+            }*/
+            if (this.getBlueKey && this.getRedKey && this.isVictory === false) {
+                this.vicSound.play();
+                this.bgm.stop();
+                this.isVictory = true;
+                this.scene.start(Control_1.Control.Scene.Level);
+            }
+            // Red Control
+            // Jump detection
+            if (this.redcanjump == false) {
+                if (this.redjumpcount == 1 && this.red.body.velocity.y == 10) {
+                    this.redcanjump = true;
+                    this.redjumpcount = 0;
+                } else if (this.red.body.velocity.y == 10) {
+                    this.redjumpcount++;
+                }
+            }
+            // Right Left Jump action
+            this.physics.collide(this.red, this.top);
+            if (this.key_ArrowRight.isDown === true) {
+                this.red.setVelocityX(200);
+                this.red.play("red_move_right", true);
+                if (this.key_ArrowUp.isDown === true) {
+                    if (this.redcanjump) {
+                        this.red.play("red_jump_right");
+                        this.red.setVelocityY(-400);
+                        this.redcanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
+            } else if (this.key_ArrowLeft.isDown) {
+                this.red.setVelocityX(-200);
+                this.red.play("red_move_left", true);
+                if (this.key_ArrowUp.isDown === true) {
+                    if (this.redcanjump) {
+                        this.red.play("red_jump_left");
+                        this.red.setVelocityY(-400);
+                        this.redcanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
+            } else if (this.key_ArrowUp.isDown) {
+                if (this.redcanjump) {
+                    this.red.play("red_jump_right");
+                    this.red.setVelocityY(-400);
+                    this.redcanjump = false;
+                    this.jumpSound.play();
+                }
+            } else {
+                this.red.setVelocityX(0);
+                this.red.play("red_idle_right", true);
+            }
+            // Blue Control
+            // Jump detection
+            if (this.bluecanjump == false) {
+                if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 10) {
+                    this.bluecanjump = true;
+                    this.bluejumpcount = 0;
+                } else if (this.blue.body.velocity.y == 10) {
+                    this.bluejumpcount++;
+                }
+            }
+            // Right Left Jump action
+            this.physics.collide(this.blue, this.top);
+            if (this.key_D.isDown === true) {
+                this.blue.setVelocityX(200);
+                this.blue.play("blue_move_right", true);
+                if (this.key_W.isDown === true) {
+                    if (this.bluecanjump) {
+                        this.blue.play("blue_jump_right");
+                        this.blue.setVelocityY(-400);
+                        this.bluecanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
+            } else if (this.key_A.isDown) {
+                this.blue.setVelocityX(-200);
+                this.blue.play("blue_move_left", true);
+                if (this.key_W.isDown === true) {
+                    if (this.bluecanjump) {
+                        this.blue.play("blue_jump_left");
+                        this.blue.setVelocityY(-400);
+                        this.bluecanjump = false;
+                        this.jumpSound.play();
+                    }
+                }
+            } else if (this.key_W.isDown) {
+                if (this.bluecanjump) {
+                    this.blue.play("blue_jump_right");
+                    this.blue.setVelocityY(-400);
+                    this.bluecanjump = false;
+                    this.jumpSound.play();
+                }
+            } else {
+                this.blue.setVelocityX(0);
+                this.blue.play("blue_idle_right", true);
+            }
+            //check if already show keys
+            if (this.ppRed1Press) {
+                this.blueKeyShow();
+            }
+            if (this.ppBlue1Press) {
+                this.redKeyShow();
+            }
+        }
+    }, {
+        key: "getredkey",
+        value: function getredkey() {
+            this.redkey.destroy();
+            if (this.getRedKey === false) {
+                this.keySound.play();
+                this.getRedKey = true;
+            }
+        }
+    }, {
+        key: "getbluekey",
+        value: function getbluekey() {
+            this.bluekey.destroy();
+            if (this.getBlueKey === false) {
+                this.keySound.play();
+                this.getBlueKey = true;
+            }
+        }
+    }, {
+        key: "activateR1PlateR",
+        value: function activateR1PlateR() {
+            this.physics.overlap(this.blue, this.ppRed1, this.activateR1PlateB, null, this);
+            //this.ppRed1.play("pressure_plate_activate");
+            //if(this.ppRed2Press && !this.wrongComboRed){
+            // this.ppRed1Press = true;
+            // this.playPPR1();
+            // }
+            // else{
+            // this.wrongComboRed = true;
+            //this.playWcodeR1();
+            // }
+        }
+    }, {
+        key: "activateR1PlateB",
+        value: function activateR1PlateB() {
+            this.ppRed1.play("pressure_plate_activate");
+            this.ppRed1Press = true;
+            this.playPPR1();
+        }
+    }, {
+        key: "activateR2Plate",
+        value: function activateR2Plate() {
+            this.ppRed2.play("pressure_plate_activate");
+            if (this.ppRed3Press && !this.wrongComboRed) {
+                this.ppRed2Press = true;
+                this.playPPR2();
+            } else {
+                this.wrongComboRed = true;
+                this.playWcodeR2();
+            }
+        }
+    }, {
+        key: "activateR3Plate",
+        value: function activateR3Plate() {
+            this.ppRed3.play("pressure_plate_activate");
+            if (!this.wrongComboRed) {
+                this.ppRed3Press = true;
+                this.playPPR3();
+            } else {
+                this.playWcodeR3();
+            }
+        }
+    }, {
+        key: "activateB1PlateB",
+        value: function activateB1PlateB() {
+            this.physics.overlap(this.red, this.ppBlue1, this.activateB1PlateR, null, this);
+            /*this.ppBlue1.play("pressure_plate_activate");
+            
+            //console.log(this.ppBlue2Press);
+            if(this.ppBlue2Press && !this.wrongComboBlue){
+                this.ppBlue1Press = true;
+                this.playPPB1();
+            }
+            else{
+                this.wrongComboBlue = true;
+                this.playWcodeB1();
+            }*/
+        }
+    }, {
+        key: "activateB1PlateR",
+        value: function activateB1PlateR() {
+            this.ppBlue1.play("pressure_plate_activate");
+            this.ppBlue1Press = true;
+            this.playPPB1();
+        }
+    }, {
+        key: "activateB2Plate",
+        value: function activateB2Plate() {
+            this.ppBlue2.play("pressure_plate_activate");
+            //console.log(!this.wrongComboBlue);
+            if (!this.wrongComboBlue) {
+                this.ppBlue2Press = true;
+                this.playPPB2();
+            } else {
+                this.playWcodeB2();
+            }
+        }
+    }, {
+        key: "activateB3Plate",
+        value: function activateB3Plate() {
+            this.ppBlue3.play("pressure_plate_activate");
+            if (this.ppBlue1Press && !this.wrongComboBlue) {
+                this.ppBlue3Press = true;
+                this.playPPB3();
+            } else {
+                this.wrongComboBlue = true;
+                this.playWcodeB3();
+            }
+        }
+    }, {
+        key: "blueKeyShow",
+        value: function blueKeyShow() {
+            if (this.showBlueKey) return;else {
+                this.bluekey = this.physics.add.sprite(384, 600, "bluekey");
+                this.keyDropSound.play();
+                this.bluekey.setScale(2);
+                this.bluekey.setCollideWorldBounds(true);
+                this.showBlueKey = true;
+            }
+        }
+    }, {
+        key: "redKeyShow",
+        value: function redKeyShow() {
+            if (this.showRedKey) return;else {
+                this.redkey = this.physics.add.sprite(384, 280, "redkey");
+                this.keyDropSound.play();
+                this.redkey.setScale(2);
+                this.redkey.setCollideWorldBounds(true);
+                this.showRedKey = true;
+            }
+        }
+    }, {
+        key: "playPPR1",
+        value: function playPPR1() {
+            if (this.ppR1Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR1Played = true;
+                this.wcodeR1Played = true;
+            }
+        }
+    }, {
+        key: "playPPR2",
+        value: function playPPR2() {
+            if (this.ppR2Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR2Played = true;
+                this.wcodeR2Played = true;
+            }
+        }
+    }, {
+        key: "playPPR3",
+        value: function playPPR3() {
+            if (this.ppR3Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR3Played = true;
+                this.wcodeR3Played = true;
+            }
+        }
+    }, {
+        key: "playPPB1",
+        value: function playPPB1() {
+            if (this.ppB1Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB1Played = true;
+                this.wcodeB1Played = true;
+            }
+        }
+    }, {
+        key: "playPPB2",
+        value: function playPPB2() {
+            if (this.ppB2Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB2Played = true;
+                this.wcodeB2Played = true;
+            }
+        }
+    }, {
+        key: "playPPB3",
+        value: function playPPB3() {
+            if (this.ppB3Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB3Played = true;
+                this.wcodeB3Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR1",
+        value: function playWcodeR1() {
+            if (this.wcodeR1Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR1Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR2",
+        value: function playWcodeR2() {
+            if (this.wcodeR2Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR2Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR3",
+        value: function playWcodeR3() {
+            if (this.wcodeR3Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR3Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB1",
+        value: function playWcodeB1() {
+            if (this.wcodeB1Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB1Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB2",
+        value: function playWcodeB2() {
+            if (this.wcodeB2Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB2Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB3",
+        value: function playWcodeB3() {
+            if (this.wcodeB3Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB3Played = true;
+            }
+        }
+    }]);
+
+    return Level_sll2;
+}(Phaser.Scene);
+
+exports.Level_sll2 = Level_sll2;
+
+},{"../Control":1}],9:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Control_1 = require("../Control");
+
 var ControlScene = function (_Phaser$Scene) {
     _inherits(ControlScene, _Phaser$Scene);
 
@@ -3480,7 +4160,7 @@ var ControlScene = function (_Phaser$Scene) {
 
 exports.ControlScene = ControlScene;
 
-},{"../Control":1}],9:[function(require,module,exports){
+},{"../Control":1}],10:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3534,7 +4214,7 @@ var HelpScene = function (_Phaser$Scene) {
 
 exports.HelpScene = HelpScene;
 
-},{"../Control":1}],10:[function(require,module,exports){
+},{"../Control":1}],11:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3576,6 +4256,7 @@ var LevelScene = function (_Phaser$Scene) {
             var level4 = this.add.text(570, 350, "[ Level 4 ]", { font: "40px Impact" });
             var level5 = this.add.text(570, 400, "[ Level 5 ]", { font: "40px Impact" });
             var level6 = this.add.text(570, 450, "[ Level 6 ]", { font: "40px Impact" });
+            var level7 = this.add.text(570, 500, "[ Level 7 ]", { font: "40px Impact" });
             back.setInteractive();
             back.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Menu);
@@ -3604,6 +4285,10 @@ var LevelScene = function (_Phaser$Scene) {
             level6.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Level6);
             });
+            level7.setInteractive();
+            level7.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Level7);
+            });
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     this.scene.start(Control_1.Control.Scene.Menu);
@@ -3617,7 +4302,7 @@ var LevelScene = function (_Phaser$Scene) {
 
 exports.LevelScene = LevelScene;
 
-},{"../Control":1}],11:[function(require,module,exports){
+},{"../Control":1}],12:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3712,7 +4397,7 @@ var LoadingScene = function (_Phaser$Scene) {
 
 exports.LoadingScene = LoadingScene;
 
-},{"../Control":1}],12:[function(require,module,exports){
+},{"../Control":1}],13:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3822,7 +4507,7 @@ var MenuScene = function (_Phaser$Scene) {
 
 exports.MenuScene = MenuScene;
 
-},{"../Control":1}],13:[function(require,module,exports){
+},{"../Control":1}],14:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3867,7 +4552,7 @@ var SplashScene = function (_Phaser$Scene) {
 
 exports.SplashScene = SplashScene;
 
-},{"../Control":1}],14:[function(require,module,exports){
+},{"../Control":1}],15:[function(require,module,exports){
 "use strict";
 /**@type {import("../types/phaser")} */
 
@@ -3884,6 +4569,7 @@ var Level_al1_1 = require("./Level/Level_al1");
 var Level_crj2_1 = require("./Level/Level_crj2");
 var Level_al2_1 = require("./Level/Level_al2");
 var Level_sll1_1 = require("./Level/Level_sll1");
+var Level_sll2_1 = require("./Level/Level_sll2");
 var config = {
     type: Phaser.AUTO,
     scale: {
@@ -3901,13 +4587,13 @@ var config = {
             gravity: { y: 600 }
         }
     },
-    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1, Level_crj_1.Level_crj, Level_al1_1.Level_al1, Level_crj2_1.Level_crj2, Level_al2_1.Level_al2, Level_sll1_1.Level_sll1],
+    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1, Level_crj_1.Level_crj, Level_al1_1.Level_al1, Level_crj2_1.Level_crj2, Level_al2_1.Level_al2, Level_sll1_1.Level_sll1, Level_sll2_1.Level_sll2],
     render: {
         pixelArt: true
     }
 };
 var game = new Phaser.Game(config);
 
-},{"./Level/Level1":2,"./Level/Level_al1":3,"./Level/Level_al2":4,"./Level/Level_crj":5,"./Level/Level_crj2":6,"./Level/Level_sll1":7,"./Scene/ControlScene":8,"./Scene/HelpScene":9,"./Scene/LevelScene":10,"./Scene/LoadingScene":11,"./Scene/MenuScene":12,"./Scene/SplashScene":13}]},{},[14])
+},{"./Level/Level1":2,"./Level/Level_al1":3,"./Level/Level_al2":4,"./Level/Level_crj":5,"./Level/Level_crj2":6,"./Level/Level_sll1":7,"./Level/Level_sll2":8,"./Scene/ControlScene":9,"./Scene/HelpScene":10,"./Scene/LevelScene":11,"./Scene/LoadingScene":12,"./Scene/MenuScene":13,"./Scene/SplashScene":14}]},{},[15])
 
 //# sourceMappingURL=demo.js.map

@@ -12,5 +12,6 @@ export const Control ={
         Level4:"Level_al2",
         Level5:"Level_crj",
         Level6:"Level_crj2",
+        Level7:"Level_sll2",
     }
 }
