@@ -420,10 +420,6 @@ export class Level_crj extends Phaser.Scene{
 
 
         //death
-<<<<<<< HEAD
-        //console.log(this.blue.body.y)
-=======
->>>>>>> 4df2f1860313f6fc2b68bf0c2f6e9410e3d20f07
         if(this.red.body.y>=352){
             this.redshot();
         }

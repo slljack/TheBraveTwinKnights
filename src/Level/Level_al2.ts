@@ -1,5 +1,5 @@
 import {Control} from "../Control"
-export class Level_al1 extends Phaser.Scene{
+export class Level_al2 extends Phaser.Scene{
     red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
     key_ArrowUp: Phaser.Input.Keyboard.Key;
@@ -45,7 +45,7 @@ export class Level_al1 extends Phaser.Scene{
     key_space: Phaser.Input.Keyboard.Key;
     constructor(){
         super({
-            key : Control.Scene.Level4
+            key : Control.Scene.Level5
         })
     }
     init(){
@@ -65,7 +65,7 @@ export class Level_al1 extends Phaser.Scene{
         this.load.image("bluekey","asset/BlueKey.png");
         this.load.image('CastleBlock','asset/tilemaps/tiles/CastleBlock.png');
         this.load.image('CastleBackground','asset/tilemaps/tiles/CastleBackground.png');
-        this.load.tilemapTiledJSON('mapal1','asset/tilemaps/maps/LevelMap_al1.json');
+        this.load.tilemapTiledJSON('mapal2','asset/tilemaps/maps/LevelMap_al2.json');
         this.load.audio('bgm','asset/audio/bgm_maoudamashii_8bit05.mp3');
         this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
         this.load.audio('key_sound','asset/sounds/key.mp3');
@@ -320,7 +320,7 @@ export class Level_al1 extends Phaser.Scene{
         },this)
 
         
-        let map1 = this.add.tilemap("mapal1");
+        let map1 = this.add.tilemap("mapal2");
         let block =  map1.addTilesetImage("CastleBlock","CastleBlock");
         let CastleBackground = map1.addTilesetImage("CastleBackground","CastleBackground");
         this.top = map1.createStaticLayer("Collision",[block,CastleBackground],0,0);
@@ -341,20 +341,21 @@ export class Level_al1 extends Phaser.Scene{
         this.key_space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Add knights in to the scene
-        this.red = this.physics.add.sprite(1200,600,"redknight1");
-        this.blue = this.physics.add.sprite(90,600,"blueknight");
+        this.red = this.physics.add.sprite(1248,400,"redknight1");
+        this.blue = this.physics.add.sprite(32,400,"blueknight");
 
         // Add demons into the scene
         this.darkdemon = this.physics.add.sprite(640,600,"darkdemon")
-        this.darkdemon.setVelocityX(-500);
-        this.reddemon1 = this.physics.add.sprite(1050,580,"reddemon");
-        this.bluedemon1 = this.physics.add.sprite(230,580,"bluedemon");
+        this.darkdemon.setVelocityX(-1000);
+        this.reddemon1 = this.physics.add.sprite(1050,600,"reddemon");
+        this.reddemon1.setVelocityX(-800);
+        this.bluedemon1 = this.physics.add.sprite(230,600,"bluedemon");
+        this.bluedemon1.setVelocityX(700);
 
-        this.reddemon2 = this.physics.add.sprite(40,220,"reddemon");
+        this.reddemon2 = this.physics.add.sprite(1180,160,"reddemon");
         this.reddemon2.setVelocityX(-200);
-        this.bluedemon2 = this.physics.add.sprite(1010,220,"bluedemon");
-        this.bluedemon2.setVelocityX(-200);
-
+        this.bluedemon2 = this.physics.add.sprite(160,160,"bluedemon");
+        this.bluedemon2.setVelocityX(250);
 
 
         // Enable collision
@@ -369,10 +370,10 @@ export class Level_al1 extends Phaser.Scene{
 
 
         // Place the keys
-        this.redkey = this.physics.add.image(1180,220,"redkey");
+        this.redkey = this.physics.add.image(160,160,"redkey");
         this.redkey.setScale(2)
 
-        this.bluekey = this.physics.add.image(100,220,"bluekey")
+        this.bluekey = this.physics.add.image(1180,160,"bluekey")
         this.bluekey.setScale(2);
     }
 
@@ -391,15 +392,22 @@ export class Level_al1 extends Phaser.Scene{
         // Demon Movement
         // Red Demon
         if(this.rd1_alive){
-            this.reddemon1.play("reddemon_idle",true);
+            if(this.reddemon1.getBounds().centerX < 120){
+                this.reddemon1.play("reddemon_left",true);
+                this.reddemon1.setVelocityX(800);
+            }
+            else if(this.reddemon1.getBounds().centerX > 1180){
+                this.reddemon1.play("reddemon_right",true);
+                this.reddemon1.setVelocityX(-800);
+            }
         }
 
         if(this.rd2_alive){
-            if(this.reddemon2.getBounds().centerX < 35){
+            if(this.reddemon2.getBounds().centerX < 1150){
                 this.reddemon2.play("reddemon_left",true);
                 this.reddemon2.setVelocityX(200);
             }
-            else if(this.reddemon2.getBounds().centerX > 285){
+            else if(this.reddemon2.getBounds().centerX > 1240){
                 this.reddemon2.play("reddemon_right",true);
                 this.reddemon2.setVelocityX(-200);
             }
@@ -407,28 +415,36 @@ export class Level_al1 extends Phaser.Scene{
 
         // Blue Demon
         if(this.bd1_alive){
-            this.bluedemon1.play("bluedemon_idle",true);
+            if(this.bluedemon1.getBounds().centerX < 120){
+                this.bluedemon1.play("bluedemon_left",true);
+                this.bluedemon1.setVelocityX(700);
+            }
+            else if(this.bluedemon1.getBounds().centerX > 1180){
+                this.bluedemon1.play("bluedemon_right",true);
+                this.bluedemon1.setVelocityX(-700);
+            }
         }
 
         if(this.bd2_alive){
-            if(this.bluedemon2.getBounds().centerX < 1000){
+            if(this.bluedemon2.getBounds().centerX < 100){
                 this.bluedemon2.play("bluedemon_left",true);
-                this.bluedemon2.setVelocityX(200);
+                this.bluedemon2.setVelocityX(250);
             }
-            else if(this.bluedemon2.getBounds().centerX > 1240){
+            else if(this.bluedemon2.getBounds().centerX > 280){
                 this.bluedemon2.play("bluedemon_right",true);
-                this.bluedemon2.setVelocityX(-200);
+                this.bluedemon2.setVelocityX(-250);
             }
         }
 
+
         // Dark Demon
-        if(this.darkdemon.getBounds().centerX < 300){
+        if(this.darkdemon.getBounds().centerX < 120){
             this.darkdemon.play("darkdemon_left",true);
-            this.darkdemon.setVelocityX(500);
+            this.darkdemon.setVelocityX(1000);
         }
-        else if(this.darkdemon.getBounds().centerX > 1000){
+        else if(this.darkdemon.getBounds().centerX > 1180){
             this.darkdemon.play("darkdemon_right",true);
-            this.darkdemon.setVelocityX(-500);
+            this.darkdemon.setVelocityX(-1000);
         }
 
         // Overlap actions////////////////////////////////////////////////
@@ -606,31 +622,39 @@ export class Level_al1 extends Phaser.Scene{
     }
 
     reddemonDeath1(){
-        this.rd1_alive = false;
-        this.atkSound.play();
-        this.reddemon1.play("reddemon_death");
-        this.reddemon1.destroy();
+        if(this.redAlive){
+            this.rd1_alive = false;
+            this.atkSound.play();
+            this.reddemon1.play("reddemon_death");
+            this.reddemon1.destroy();
+        }
     }
 
     reddemonDeath2(){
-        this.rd2_alive = false;
-        this.atkSound.play();
-        this.reddemon2.play("reddemon_death");
-        this.reddemon2.destroy();
+        if(this.redAlive){
+            this.rd2_alive = false;
+            this.atkSound.play();
+            this.reddemon2.play("reddemon_death");
+            this.reddemon2.destroy();
+        }
     }
 
     bluedemonDeath1(){
-        this.bd1_alive = false;
-        this.atkSound.play();
-        this.bluedemon1.play("bluedemon_death");
-        this.bluedemon1.destroy();
+        if(this.blueAlive){
+            this.bd1_alive = false;
+            this.atkSound.play();
+            this.bluedemon1.play("bluedemon_death");
+            this.bluedemon1.destroy();
+        }
     }
 
     bluedemonDeath2(){
-        this.bd2_alive = false;
-        this.atkSound.play();
-        this.bluedemon2.play("bluedemon_death");
-        this.bluedemon2.destroy();
+        if(this.blueAlive){
+            this.bd2_alive = false;
+            this.atkSound.play();
+            this.bluedemon2.play("bluedemon_death");
+            this.bluedemon2.destroy();
+        }
     }
 
 
