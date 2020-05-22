@@ -21,6 +21,9 @@ export class Level_sll1 extends Phaser.Scene{
     jumpSound: Phaser.Sound.BaseSound;
     keySound: Phaser.Sound.BaseSound;
     vicSound: Phaser.Sound.BaseSound;
+    ppSound: Phaser.Sound.BaseSound;
+    keyDropSound: Phaser.Sound.BaseSound;
+    wCodeSound: Phaser.Sound.BaseSound;
     bgm: Phaser.Sound.BaseSound;
     isVictory: boolean = false;
     ppRed1: Phaser.Physics.Arcade.Sprite;
@@ -36,7 +39,9 @@ export class Level_sll1 extends Phaser.Scene{
     ppBlue2Press: boolean = false;
     ppBlue3Press: boolean = false;
     showRedKey: boolean = false;
-    showBlueKey: boolean= false;
+    showBlueKey: boolean = false;
+    wrongComboRed: boolean = false;
+    wrongComboBlue: boolean = false;
 
     constructor(){
         super({
@@ -48,6 +53,16 @@ export class Level_sll1 extends Phaser.Scene{
         this.getBlueKey = false;
         this.getRedKey = false;
         this.isVictory = false;
+        this.ppRed1Press = false;
+        this.ppRed2Press = false;
+        this.ppRed3Press = false;
+        this.ppBlue1Press = false;
+        this.ppBlue2Press = false;
+        this.ppBlue3Press = false;
+        this.showRedKey = false;
+        this.showBlueKey = false;
+        this.wrongComboRed = false;
+        this.wrongComboBlue = false;
     }
     preload(){
         this.load.image("redkey","asset/RedKey.png");
@@ -59,6 +74,9 @@ export class Level_sll1 extends Phaser.Scene{
         this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
         this.load.audio('key_sound','asset/sounds/key.mp3');
         this.load.audio('vic_sound','asset/sounds/victory.mp3');
+        this.load.audio('pp_sound', 'asset/sounds/PressurePlate.mp3');
+        this.load.audio('keyd_sound', 'asset/sounds/KeyDrop.mp3');
+        this.load.audio('wcode_sound', 'asset/sounds/WrongCode.mp3');
         this.load.spritesheet("PressurePlate", "asset/level_sll/PressurePlate.png",{
             frameWidth:64,
             frameHeight:64,
@@ -208,6 +226,9 @@ export class Level_sll1 extends Phaser.Scene{
         this.jumpSound = this.sound.add('jump_sound');
         this.keySound = this.sound.add('key_sound');
         this.vicSound = this.sound.add('vic_sound');
+        this.ppSound = this.sound.add('pp_sound');
+        this.keyDropSound = this.sound.add('keyd_sound');
+        this.wCodeSound = this.sound.add('wcode_sound');
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
@@ -471,38 +492,80 @@ export class Level_sll1 extends Phaser.Scene{
 
     }
 
-    activateR1Plate(){
+    activateR1Plate(){//3
         this.ppRed1.play("pressure_plate_activate");
+       
         
-        if(this.ppRed2Press){
+        if(this.ppRed2Press && !this.wrongComboRed){
             this.ppRed1Press = true;
-        
-            
+            this.ppSound.play();
+        }
+        else{
+            this.wCodeSound.play();
+            this.wrongComboRed = true;
         }
     }
-    activateR2Plate(){
+    activateR2Plate(){//2
         this.ppRed2.play("pressure_plate_activate");
         
-        if(this.ppRed3Press)
+
+        if(this.ppRed3Press && !this.wrongComboRed){
             this.ppRed2Press = true;
+            this.ppSound.play();
+        }
+        else{
+            this.wCodeSound.play();
+            this.wrongComboRed = true;
+        }
+
     }
-    activateR3Plate(){
+    activateR3Plate(){//1
         this.ppRed3.play("pressure_plate_activate");
-        this.ppRed3Press = true;
+
+        if(!this.wrongComboRed){
+            this.ppSound.play();
+            this.ppRed3Press = true;
+        }
+        else{
+            this.wCodeSound.play();
+        }
     }
-    activateB1Plate(){
+    activateB1Plate(){//2
         this.ppBlue1.play("pressure_plate_activate");
-        if(this.ppBlue2Press)
+        
+        //console.log(this.ppBlue2Press);
+        if(this.ppBlue2Press && !this.wrongComboBlue){
             this.ppBlue1Press = true;
+            this.ppSound.play();
+        }
+        else{
+            this.wrongComboBlue = true;
+            this.wCodeSound.play();
+        }
     }
-    activateB2Plate(){
+    activateB2Plate(){//1
         this.ppBlue2.play("pressure_plate_activate");
-        this.ppBlue2Press = true;
+        //console.log(!this.wrongComboBlue);
+        if(!this.wrongComboBlue){
+            this.ppSound.play();
+            this.ppBlue2Press = true;
+        }
+        else{
+            this.wCodeSound.play();
+        }
     }
-    activateB3Plate(){
+    activateB3Plate(){//3
         this.ppBlue3.play("pressure_plate_activate");
-        if(this.ppBlue1Press)
+        
+
+        if(this.ppBlue1Press && !this.wrongComboBlue){
             this.ppBlue3Press = true;
+            this.ppSound.play();
+        }
+        else{
+            this.wCodeSound.play();
+            this.wrongComboBlue = true;
+        }
     }
 
     blueKeyShow(){
@@ -510,6 +573,7 @@ export class Level_sll1 extends Phaser.Scene{
             return;
         else{
             this.bluekey = this.physics.add.sprite(384,600,"bluekey")
+            this.keyDropSound.play();
             this.bluekey.setScale(2)
             this.bluekey.setCollideWorldBounds(true);
             this.showBlueKey = true;
@@ -521,6 +585,7 @@ export class Level_sll1 extends Phaser.Scene{
             return;
         else{
             this.redkey = this.physics.add.sprite(384,280,"redkey")
+            this.keyDropSound.play();
             this.redkey.setScale(2)
             this.redkey.setCollideWorldBounds(true);
             this.showRedKey = true;

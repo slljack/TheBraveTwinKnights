@@ -2761,6 +2761,8 @@ var Level_sll1 = function (_Phaser$Scene) {
         _this.ppBlue3Press = false;
         _this.showRedKey = false;
         _this.showBlueKey = false;
+        _this.wrongComboRed = false;
+        _this.wrongComboBlue = false;
         return _this;
     }
 
@@ -2771,6 +2773,16 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.getBlueKey = false;
             this.getRedKey = false;
             this.isVictory = false;
+            this.ppRed1Press = false;
+            this.ppRed2Press = false;
+            this.ppRed3Press = false;
+            this.ppBlue1Press = false;
+            this.ppBlue2Press = false;
+            this.ppBlue3Press = false;
+            this.showRedKey = false;
+            this.showBlueKey = false;
+            this.wrongComboRed = false;
+            this.wrongComboBlue = false;
         }
     }, {
         key: "preload",
@@ -2784,6 +2796,9 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
+            this.load.audio('pp_sound', 'asset/sounds/PressurePlate.mp3');
+            this.load.audio('keyd_sound', 'asset/sounds/KeyDrop.mp3');
+            this.load.audio('wcode_sound', 'asset/sounds/WrongCode.mp3');
             this.load.spritesheet("PressurePlate", "asset/level_sll/PressurePlate.png", {
                 frameWidth: 64,
                 frameHeight: 64
@@ -2908,6 +2923,9 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.jumpSound = this.sound.add('jump_sound');
             this.keySound = this.sound.add('key_sound');
             this.vicSound = this.sound.add('vic_sound');
+            this.ppSound = this.sound.add('pp_sound');
+            this.keyDropSound = this.sound.add('keyd_sound');
+            this.wCodeSound = this.sound.add('wcode_sound');
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     // Stop music when esc
@@ -3134,45 +3152,80 @@ var Level_sll1 = function (_Phaser$Scene) {
         key: "activateR1Plate",
         value: function activateR1Plate() {
             this.ppRed1.play("pressure_plate_activate");
-            if (this.ppRed2Press) {
+            if (this.ppRed2Press && !this.wrongComboRed) {
                 this.ppRed1Press = true;
+                this.ppSound.play();
+            } else {
+                this.wCodeSound.play();
+                this.wrongComboRed = true;
             }
         }
     }, {
         key: "activateR2Plate",
         value: function activateR2Plate() {
             this.ppRed2.play("pressure_plate_activate");
-            if (this.ppRed3Press) this.ppRed2Press = true;
+            if (this.ppRed3Press && !this.wrongComboRed) {
+                this.ppRed2Press = true;
+                this.ppSound.play();
+            } else {
+                this.wCodeSound.play();
+                this.wrongComboRed = true;
+            }
         }
     }, {
         key: "activateR3Plate",
         value: function activateR3Plate() {
             this.ppRed3.play("pressure_plate_activate");
-            this.ppRed3Press = true;
+            if (!this.wrongComboRed) {
+                this.ppSound.play();
+                this.ppRed3Press = true;
+            } else {
+                this.wCodeSound.play();
+            }
         }
     }, {
         key: "activateB1Plate",
         value: function activateB1Plate() {
             this.ppBlue1.play("pressure_plate_activate");
-            if (this.ppBlue2Press) this.ppBlue1Press = true;
+            //console.log(this.ppBlue2Press);
+            if (this.ppBlue2Press && !this.wrongComboBlue) {
+                this.ppBlue1Press = true;
+                this.ppSound.play();
+            } else {
+                this.wrongComboBlue = true;
+                this.wCodeSound.play();
+            }
         }
     }, {
         key: "activateB2Plate",
         value: function activateB2Plate() {
             this.ppBlue2.play("pressure_plate_activate");
-            this.ppBlue2Press = true;
+            //console.log(!this.wrongComboBlue);
+            if (!this.wrongComboBlue) {
+                this.ppSound.play();
+                this.ppBlue2Press = true;
+            } else {
+                this.wCodeSound.play();
+            }
         }
     }, {
         key: "activateB3Plate",
         value: function activateB3Plate() {
             this.ppBlue3.play("pressure_plate_activate");
-            if (this.ppBlue1Press) this.ppBlue3Press = true;
+            if (this.ppBlue1Press && !this.wrongComboBlue) {
+                this.ppBlue3Press = true;
+                this.ppSound.play();
+            } else {
+                this.wCodeSound.play();
+                this.wrongComboBlue = true;
+            }
         }
     }, {
         key: "blueKeyShow",
         value: function blueKeyShow() {
             if (this.showBlueKey) return;else {
                 this.bluekey = this.physics.add.sprite(384, 600, "bluekey");
+                this.keyDropSound.play();
                 this.bluekey.setScale(2);
                 this.bluekey.setCollideWorldBounds(true);
                 this.showBlueKey = true;
@@ -3183,6 +3236,7 @@ var Level_sll1 = function (_Phaser$Scene) {
         value: function redKeyShow() {
             if (this.showRedKey) return;else {
                 this.redkey = this.physics.add.sprite(384, 280, "redkey");
+                this.keyDropSound.play();
                 this.redkey.setScale(2);
                 this.redkey.setCollideWorldBounds(true);
                 this.showRedKey = true;
