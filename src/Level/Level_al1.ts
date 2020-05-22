@@ -186,7 +186,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"reddemon_idle",
             frameRate:3,
             frames:this.anims.generateFrameNumbers("reddemon",{
-                frames:[0,1,2]
+                frames:[0,1,2,3,4]
             })
         })
 
@@ -194,7 +194,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"reddemon_death",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("reddemon",{
-                frames:[7,8,9]
+                frames:[5,6,7,8,9]
             })
         })
 
@@ -202,7 +202,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"reddemon_right",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("reddemon",{
-                frames:[10,11,12]
+                frames:[10,11,12,13,14]
             })
         })
 
@@ -210,7 +210,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"reddemon_left",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("reddemon",{
-                frames:[15,16,17]
+                frames:[15,16,17,18,19]
             })
         })
 
@@ -219,7 +219,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"bluedemon_idle",
             frameRate:3,
             frames:this.anims.generateFrameNumbers("bluedemon",{
-                frames:[0,1,2]
+                frames:[0,1,2,3,4]
             })
         })
 
@@ -227,7 +227,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"bluedemon_death",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("bluedemon",{
-                frames:[7,8,9]
+                frames:[5,6,7,8,9]
             })
         })
 
@@ -235,7 +235,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"bluedemon_right",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("bluedemon",{
-                frames:[10,11,12]
+                frames:[10,11,12,13,14]
             })
         })
 
@@ -243,7 +243,7 @@ export class Level_al1 extends Phaser.Scene{
             key:"bluedemon_left",
             frameRate:5,
             frames:this.anims.generateFrameNumbers("bluedemon",{
-                frames:[15,16,17]
+                frames:[15,16,17,18,19]
             })
         })
     }
@@ -303,16 +303,16 @@ export class Level_al1 extends Phaser.Scene{
         this.blue = this.physics.add.sprite(90,600,"blueknight");
 
         // Add demons into the scene
-        //this.reddemon1 = this.physics.add.sprite(860,580,"reddemon");
-        //this.bluedemon1 = this.physics.add.sprite(415,580,"bluedemon");
+        this.reddemon1 = this.physics.add.sprite(860,580,"reddemon");
+        this.bluedemon1 = this.physics.add.sprite(415,580,"bluedemon");
 
 
 
         // Enable collision
         this.red.setCollideWorldBounds(true);
         this.blue.setCollideWorldBounds(true);
-        //this.reddemon1.setCollideWorldBounds(true);
-        //this.bluedemon1.setCollideWorldBounds(true);
+        this.reddemon1.setCollideWorldBounds(true);
+        this.bluedemon1.setCollideWorldBounds(true);
 
 
 
@@ -325,21 +325,18 @@ export class Level_al1 extends Phaser.Scene{
     }
 
     update(delta:number){
-        console.log(this.redcanjump);
-
         // Collision Relation
         this.physics.collide(this.red,this.top)
         this.physics.collide(this.blue,this.top)
-        //this.physics.collide(this.reddemon1,this.top)
-        //this.physics.collide(this.bluedemon1,this.top)
+        this.physics.collide(this.reddemon1,this.top)
+        this.physics.collide(this.bluedemon1,this.top)
 
         // Red Demon
-        //this.reddemon1.play("reddemon_idle",true);
+        this.reddemon1.play("reddemon_idle",true);
 
         // Blue Demon
-        //this.bluedemon1.play("bluedemon_idle",true);
-        
-        /*
+        this.bluedemon1.play("bluedemon_idle",true);
+
         if(this.red.getBounds().centerX>1210 && this.red.getBounds().centerX<1270){
             if(this.red.getBounds().centerY>200 && this.red.getBounds().centerY<260){
                 this.redkey.destroy()
@@ -360,7 +357,6 @@ export class Level_al1 extends Phaser.Scene{
                 }
             }
         }
-        */
 
         if(this.getBlueKey && this.getRedKey && this.isVictory === false){
             this.vicSound.play();
@@ -371,8 +367,11 @@ export class Level_al1 extends Phaser.Scene{
 
         // Check coord
         if(this.key_space.isDown){
-            console.log("Red:  " + this.red.getBounds().centerX + "," + this.red.getBounds().centerY)
-            console.log("Blue: " + this.blue.getBounds().centerX + "," + this.blue.getBounds().centerY)
+            //console.log("Red:  " + this.red.getBounds().centerX + "," + this.red.getBounds().centerY)
+            //console.log("Blue: " + this.blue.getBounds().centerX + "," + this.blue.getBounds().centerY)
+            console.log("RedCandJump: " + this.redcanjump);
+            console.log("RedVelocitY: " + this.red.body.velocity.y);
+            console.log("RedJP_Count: " + this.redjumpcount)
         }
 
 
@@ -386,6 +385,10 @@ export class Level_al1 extends Phaser.Scene{
             else if(this.red.body.velocity.y==10){
                 this.redjumpcount++
             }
+            else if(this.redjumpcount == 1 && this.red.body.velocity.y == 0){
+                this.redcanjump=true;
+                this.redjumpcount = 0;
+            }
         }
 
         // Right Left Jump action
@@ -398,6 +401,7 @@ export class Level_al1 extends Phaser.Scene{
                     this.red.play("red_jump_right");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
+                    this.redjumpcount++;
                     this.jumpSound.play();
                 }
             }
@@ -410,6 +414,7 @@ export class Level_al1 extends Phaser.Scene{
                     this.red.play("red_jump_left");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
+                    this.redjumpcount++;
                     this.jumpSound.play();
                 }
             }
@@ -439,6 +444,10 @@ export class Level_al1 extends Phaser.Scene{
             }
             else if(this.blue.body.velocity.y==10){
                 this.bluejumpcount++
+            }
+            else if(this.bluejumpcount == 1 && this.blue.body.velocity.y == 0){
+                this.bluecanjump=true;
+                this.bluejumpcount = 0;
             }
         }
 
