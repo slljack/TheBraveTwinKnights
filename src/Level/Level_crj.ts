@@ -583,6 +583,8 @@ export class Level_crj extends Phaser.Scene{
             if(this.bluealive == false){
                 this.bgm.stop();
                 this.lose.play();
+                this.scene.start(Control.Scene.Level)
+
             }
 
         }
@@ -604,6 +606,7 @@ export class Level_crj extends Phaser.Scene{
             if(this.redalive == false){
                 this.bgm.stop();
                 this.lose.play();
+                this.scene.start(Control.Scene.Level)
             }
         }
 
