@@ -1,4 +1,5 @@
 import {Control} from "../Control"
+import {MenuScene} from "../Scene/MenuScene"
 export class Level1 extends Phaser.Scene{
     red: Phaser.Physics.Arcade.Sprite;
     key_ArrowRight: Phaser.Input.Keyboard.Key;
@@ -44,7 +45,7 @@ export class Level1 extends Phaser.Scene{
         this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
         this.load.audio('key_sound','asset/sounds/key.mp3');
         this.load.audio('vic_sound','asset/sounds/victory.mp3');
-
+        this.load.audio("defeated","asset/sounds/gameover.mp3");
         this.anims.create({
             key:"red_idle_right",
             frameRate:10,

@@ -37,12 +37,14 @@ export class Level_crj extends Phaser.Scene{
     block1: any;
     block2: any;
     bluealive: boolean;
+    lose: Phaser.Sound.BaseSound;
     constructor(){
         super({
             key : Control.Scene.Level2
         })
     }
     init(){
+        this.sound.stopAll();
         this.bluealive = true;
         this.bluebubble=false;
         this.redalive = true;
@@ -63,6 +65,7 @@ export class Level_crj extends Phaser.Scene{
         this.load.audio('key_sound','asset/sounds/key.mp3');
         this.load.audio('vic_sound','asset/sounds/victory.mp3');
         this.load.image("block","asset/level_crj/CastleBlock_1.png");
+        this.load.audio("defeated","asset/sounds/gameover.mp3");
         this.load.spritesheet("dapao","asset/level_crj/dapao.png",{
             frameWidth:128,
             frameHeight:64
@@ -240,7 +243,6 @@ export class Level_crj extends Phaser.Scene{
 
         // Play music
         this.bgm = this.sound.add('bgm');
-
         var musicConfig = {
             mute : false,
             volume: 0.4,
@@ -250,13 +252,14 @@ export class Level_crj extends Phaser.Scene{
             loop: true,
             delay:0
         }
-
+        this.lose = this.sound.add("defeated");
         this.bgm.play(musicConfig);
 
         // Add sound effect
         this.jumpSound = this.sound.add('jump_sound');
         this.keySound = this.sound.add('key_sound');
         this.vicSound = this.sound.add('vic_sound');
+        
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
@@ -351,6 +354,7 @@ export class Level_crj extends Phaser.Scene{
     }
 
     update(delta:number){
+
         this.physics.collide(this.top,this.huopao);
         this.physics.collide(this.top,this.shuipao);
         this.physics.collide(this.red,this.huopao);
@@ -416,7 +420,10 @@ export class Level_crj extends Phaser.Scene{
 
 
         //death
+<<<<<<< HEAD
         //console.log(this.blue.body.y)
+=======
+>>>>>>> 4df2f1860313f6fc2b68bf0c2f6e9410e3d20f07
         if(this.red.body.y>=352){
             this.redshot();
         }
@@ -577,6 +584,11 @@ export class Level_crj extends Phaser.Scene{
             this.redalive = false;
             this.red.play("red_dead_right",true);
             this.red.body.velocity.x = 0
+            if(this.bluealive == false){
+                this.bgm.stop();
+                this.lose.play();
+            }
+
         }
 
     }
@@ -593,7 +605,12 @@ export class Level_crj extends Phaser.Scene{
             this.bluealive = false;
             this.blue.play("blue_dead_right",true);
             this.blue.body.velocity.x = 0
+            if(this.redalive == false){
+                this.bgm.stop();
+                this.lose.play();
+            }
         }
+
     }
 
     dropdown(){

@@ -1,12 +1,13 @@
 import {Control} from "../Control"
 export class MenuScene extends Phaser.Scene{
+    menubgm: Phaser.Sound.BaseSound;
     constructor(){
         super({
             key : Control.Scene.Menu
         })
     }
     init(){
-
+        this.sound.stopAll()
 
     }
     preload(){
@@ -16,6 +17,20 @@ export class MenuScene extends Phaser.Scene{
         // Play music
         let bgm = this.sound.add('bgm');
 
+
+        this.menubgm = this.sound.add('menubgm');
+
+        var musicConfig = {
+            mute : false,
+            volume: 0.4,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay:0
+        }
+
+        this.menubgm.play(musicConfig);
         let logo = this.add.image(this.game.renderer.width/2,this.game.renderer.height/2-164,"logo");
         logo.setScale(2);
         let playbutton = this.add.text(570,400,"<Play>",{font:"40px Impact"});

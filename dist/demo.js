@@ -71,6 +71,7 @@ var Level1 = function (_Phaser$Scene) {
             this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
+            this.load.audio("defeated", "asset/sounds/gameover.mp3");
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -966,6 +967,7 @@ var Level_crj = function (_Phaser$Scene) {
     _createClass(Level_crj, [{
         key: "init",
         value: function init() {
+            this.sound.stopAll();
             this.bluealive = true;
             this.bluebubble = false;
             this.redalive = true;
@@ -988,6 +990,7 @@ var Level_crj = function (_Phaser$Scene) {
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
             this.load.image("block", "asset/level_crj/CastleBlock_1.png");
+            this.load.audio("defeated", "asset/sounds/gameover.mp3");
             this.load.spritesheet("dapao", "asset/level_crj/dapao.png", {
                 frameWidth: 128,
                 frameHeight: 64
@@ -1144,6 +1147,7 @@ var Level_crj = function (_Phaser$Scene) {
                 loop: true,
                 delay: 0
             };
+            this.lose = this.sound.add("defeated");
             this.bgm.play(musicConfig);
             // Add sound effect
             this.jumpSound = this.sound.add('jump_sound');
@@ -1277,7 +1281,10 @@ var Level_crj = function (_Phaser$Scene) {
                 this.block2.body.x = 768;
             }
             //death
+<<<<<<< HEAD
             //console.log(this.blue.body.y)
+=======
+>>>>>>> 4df2f1860313f6fc2b68bf0c2f6e9410e3d20f07
             if (this.red.body.y >= 352) {
                 this.redshot();
             }
@@ -1407,6 +1414,10 @@ var Level_crj = function (_Phaser$Scene) {
                 this.redalive = false;
                 this.red.play("red_dead_right", true);
                 this.red.body.velocity.x = 0;
+                if (this.bluealive == false) {
+                    this.bgm.stop();
+                    this.lose.play();
+                }
             }
         }
     }, {
@@ -1426,6 +1437,10 @@ var Level_crj = function (_Phaser$Scene) {
                 this.bluealive = false;
                 this.blue.play("blue_dead_right", true);
                 this.blue.body.velocity.x = 0;
+                if (this.redalive == false) {
+                    this.bgm.stop();
+                    this.lose.play();
+                }
             }
         }
     }, {
@@ -1497,6 +1512,7 @@ var Level_crj2 = function (_Phaser$Scene) {
     _createClass(Level_crj2, [{
         key: "init",
         value: function init() {
+            this.sound.stopAll();
             this.redbubble = false;
             this.bluekeybubble = false;
             this.bluealive = true;
@@ -1521,6 +1537,7 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
             this.load.image("block", "asset/level_crj/CastleBlock_1.png");
+            this.load.audio("defeated", "asset/sounds/gameover.mp3");
             this.load.spritesheet("dapao", "asset/level_crj/dapao.png", {
                 frameWidth: 128,
                 frameHeight: 64
@@ -1720,6 +1737,7 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.jumpSound = this.sound.add('jump_sound');
             this.keySound = this.sound.add('key_sound');
             this.vicSound = this.sound.add('vic_sound');
+            this.lose = this.sound.add("defeated");
             this.input.keyboard.on("keyup", function (e) {
                 if (e.key == "Escape") {
                     // Stop music when esc
@@ -1864,7 +1882,7 @@ var Level_crj2 = function (_Phaser$Scene) {
                 this.block3.body.y = 640;
             }
             //xiao ji guan 2
-            if (this.red.getBounds().centerX >= 497 && this.red.getBounds().centerX <= 640) {
+            if (this.red.getBounds().centerX >= 487 && this.red.getBounds().centerX <= 640) {
                 if (this.red.body.y >= 256) {
                     this.trapout();
                 }
@@ -1900,8 +1918,10 @@ var Level_crj2 = function (_Phaser$Scene) {
             if (this.red.body.y >= 352) {
                 this.redshot();
             }
-            if (this.blue.body.y <= 352 || this.blue.body.y >= 726) {
-                console.log("bluedead");
+            if (this.blue.body.y <= 352) {
+                this.bluedead();
+            }
+            if (this.blue.body.y >= 678) {
                 this.bluedead();
             }
             this.physics.overlap(this.red, this.redkey, this.getredkey, null, this);
@@ -2024,6 +2044,10 @@ var Level_crj2 = function (_Phaser$Scene) {
                 this.redalive = false;
                 this.red.play("red_dead_right", true);
                 this.red.body.velocity.x = 0;
+                if (this.bluealive == false) {
+                    this.bgm.stop();
+                    this.lose.play();
+                }
             }
         }
     }, {
@@ -2043,6 +2067,10 @@ var Level_crj2 = function (_Phaser$Scene) {
                 this.bluealive = false;
                 this.blue.play("blue_dead_right", true);
                 this.blue.body.velocity.x = 0;
+                if (this.redalive == false) {
+                    this.bgm.stop();
+                    this.lose.play();
+                }
             }
         }
     }, {
@@ -2360,6 +2388,7 @@ var LoadingScene = function (_Phaser$Scene) {
             this.load.image("a", "asset/A.png");
             this.load.image("s", "asset/S.png");
             this.load.image("d", "asset/D.png");
+            this.load.audio("menubgm", "asset/audio/bgm_maoudamashii_fantasy08.mp3");
             var loadingbar = this.add.graphics({
                 fillStyle: {
                     color: 0xffffff
@@ -2440,7 +2469,9 @@ var MenuScene = function (_Phaser$Scene) {
 
     _createClass(MenuScene, [{
         key: "init",
-        value: function init() {}
+        value: function init() {
+            this.sound.stopAll();
+        }
     }, {
         key: "preload",
         value: function preload() {
@@ -2453,6 +2484,17 @@ var MenuScene = function (_Phaser$Scene) {
 
             // Play music
             var bgm = this.sound.add('bgm');
+            this.menubgm = this.sound.add('menubgm');
+            var musicConfig = {
+                mute: false,
+                volume: 0.4,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            };
+            this.menubgm.play(musicConfig);
             var logo = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 - 164, "logo");
             logo.setScale(2);
             var playbutton = this.add.text(570, 400, "<Play>", { font: "40px Impact" });
