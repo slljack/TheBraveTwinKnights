@@ -835,6 +835,7 @@ var Level_crj = function (_Phaser$Scene) {
     _createClass(Level_crj, [{
         key: "init",
         value: function init() {
+            this.sound.stopAll();
             this.bluealive = true;
             this.bluebubble = false;
             this.redalive = true;
@@ -1375,6 +1376,7 @@ var Level_crj2 = function (_Phaser$Scene) {
     _createClass(Level_crj2, [{
         key: "init",
         value: function init() {
+            this.sound.stopAll();
             this.redbubble = false;
             this.bluekeybubble = false;
             this.bluealive = true;
@@ -2331,7 +2333,9 @@ var MenuScene = function (_Phaser$Scene) {
 
     _createClass(MenuScene, [{
         key: "init",
-        value: function init() {}
+        value: function init() {
+            this.sound.stopAll();
+        }
     }, {
         key: "preload",
         value: function preload() {
