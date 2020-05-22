@@ -2787,6 +2787,18 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.showBlueKey = false;
             this.wrongComboRed = false;
             this.wrongComboBlue = false;
+            this.ppR1Played = false;
+            this.ppR2Played = false;
+            this.ppR3Played = false;
+            this.ppB1Played = false;
+            this.ppB2Played = false;
+            this.ppB3Played = false;
+            this.wcodeR1Played = false;
+            this.wcodeR2Played = false;
+            this.wcodeR3Played = false;
+            this.wcodeB1Played = false;
+            this.wcodeB2Played = false;
+            this.wcodeB3Played = false;
         }
     }, {
         key: "preload",
@@ -2803,9 +2815,13 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.load.audio('pp_sound', 'asset/sounds/PressurePlate.mp3');
             this.load.audio('keyd_sound', 'asset/sounds/KeyDrop.mp3');
             this.load.audio('wcode_sound', 'asset/sounds/WrongCode.mp3');
-            this.load.spritesheet("PressurePlate", "asset/level_sll/PressurePlate.png", {
+            this.load.spritesheet("PressurePlateIdle", "asset/level_sll/ppIdle.png", {
                 frameWidth: 64,
-                frameHeight: 64
+                frameHeight: 10
+            });
+            this.load.spritesheet("PressurePlatePress", "asset/level_sll/ppPress.png", {
+                frameWidth: 64,
+                frameHeight: 10
             });
             this.anims.create({
                 key: "red_idle_right",
@@ -2900,14 +2916,14 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.anims.create({
                 key: "pressure_plate_activate",
                 frameRate: 10,
-                frames: this.anims.generateFrameNumbers("PressurePlate", {
-                    frames: [1]
+                frames: this.anims.generateFrameNumbers("PressurePlatePress", {
+                    frames: [0]
                 })
             });
             this.anims.create({
                 key: "pressure_plate_idle",
                 frameRate: 10,
-                frames: this.anims.generateFrameNumbers("PressurePlate", {
+                frames: this.anims.generateFrameNumbers("PressurePlateIdle", {
                     frames: [0]
                 })
             });
@@ -2956,12 +2972,13 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.red = this.physics.add.sprite(90, 280, "redknight1");
             this.blue = this.physics.add.sprite(90, 600, "blueknight");
             // Add Pressure Plate
-            this.ppRed1 = this.physics.add.sprite(192, 280, "PressurePlate");
-            this.ppRed2 = this.physics.add.sprite(640, 280, "PressurePlate");
-            this.ppRed3 = this.physics.add.sprite(1088, 280, "PressurePlate");
-            this.ppBlue1 = this.physics.add.sprite(192, 600, "PressurePlate");
-            this.ppBlue2 = this.physics.add.sprite(640, 600, "PressurePlate");
-            this.ppBlue3 = this.physics.add.sprite(1088, 600, "PressurePlate");
+            this.ppRed1 = this.physics.add.sprite(192, 280, "PressurePlateIdle");
+            this.ppRed2 = this.physics.add.sprite(640, 300, "PressurePlateIdle");
+            this.ppRed3 = this.physics.add.sprite(1088, 300, "PressurePlateIdle");
+            this.ppBlue1 = this.physics.add.sprite(192, 630, "PressurePlateIdle");
+            this.ppBlue2 = this.physics.add.sprite(640, 630, "PressurePlateIdle");
+            this.ppBlue3 = this.physics.add.sprite(1088, 630, "PressurePlateIdle");
+            //this.ppRed1.play('pressure_plate_idle', true);
             this.ppRed1.setImmovable(true);
             this.ppRed2.setImmovable(true);
             this.ppRed3.setImmovable(true);
@@ -3158,10 +3175,10 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.ppRed1.play("pressure_plate_activate");
             if (this.ppRed2Press && !this.wrongComboRed) {
                 this.ppRed1Press = true;
-                this.ppSound.play();
+                this.playPPR1();
             } else {
-                this.wCodeSound.play();
                 this.wrongComboRed = true;
+                this.playWcodeR1();
             }
         }
     }, {
@@ -3170,10 +3187,10 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.ppRed2.play("pressure_plate_activate");
             if (this.ppRed3Press && !this.wrongComboRed) {
                 this.ppRed2Press = true;
-                this.ppSound.play();
+                this.playPPR2();
             } else {
-                this.wCodeSound.play();
                 this.wrongComboRed = true;
+                this.playWcodeR2();
             }
         }
     }, {
@@ -3181,10 +3198,10 @@ var Level_sll1 = function (_Phaser$Scene) {
         value: function activateR3Plate() {
             this.ppRed3.play("pressure_plate_activate");
             if (!this.wrongComboRed) {
-                this.ppSound.play();
                 this.ppRed3Press = true;
+                this.playPPR3();
             } else {
-                this.wCodeSound.play();
+                this.playWcodeR3();
             }
         }
     }, {
@@ -3194,10 +3211,10 @@ var Level_sll1 = function (_Phaser$Scene) {
             //console.log(this.ppBlue2Press);
             if (this.ppBlue2Press && !this.wrongComboBlue) {
                 this.ppBlue1Press = true;
-                this.ppSound.play();
+                this.playPPB1();
             } else {
                 this.wrongComboBlue = true;
-                this.wCodeSound.play();
+                this.playWcodeB1();
             }
         }
     }, {
@@ -3206,10 +3223,10 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.ppBlue2.play("pressure_plate_activate");
             //console.log(!this.wrongComboBlue);
             if (!this.wrongComboBlue) {
-                this.ppSound.play();
                 this.ppBlue2Press = true;
+                this.playPPB2();
             } else {
-                this.wCodeSound.play();
+                this.playWcodeB2();
             }
         }
     }, {
@@ -3218,10 +3235,10 @@ var Level_sll1 = function (_Phaser$Scene) {
             this.ppBlue3.play("pressure_plate_activate");
             if (this.ppBlue1Press && !this.wrongComboBlue) {
                 this.ppBlue3Press = true;
-                this.ppSound.play();
+                this.playPPB3();
             } else {
-                this.wCodeSound.play();
                 this.wrongComboBlue = true;
+                this.playWcodeB3();
             }
         }
     }, {
@@ -3244,6 +3261,120 @@ var Level_sll1 = function (_Phaser$Scene) {
                 this.redkey.setScale(2);
                 this.redkey.setCollideWorldBounds(true);
                 this.showRedKey = true;
+            }
+        }
+    }, {
+        key: "playPPR1",
+        value: function playPPR1() {
+            if (this.ppR1Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR1Played = true;
+                this.wcodeR1Played = true;
+            }
+        }
+    }, {
+        key: "playPPR2",
+        value: function playPPR2() {
+            if (this.ppR2Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR2Played = true;
+                this.wcodeR2Played = true;
+            }
+        }
+    }, {
+        key: "playPPR3",
+        value: function playPPR3() {
+            if (this.ppR3Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppR3Played = true;
+                this.wcodeR3Played = true;
+            }
+        }
+    }, {
+        key: "playPPB1",
+        value: function playPPB1() {
+            if (this.ppB1Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB1Played = true;
+                this.wcodeB1Played = true;
+            }
+        }
+    }, {
+        key: "playPPB2",
+        value: function playPPB2() {
+            if (this.ppB2Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB2Played = true;
+                this.wcodeB2Played = true;
+            }
+        }
+    }, {
+        key: "playPPB3",
+        value: function playPPB3() {
+            if (this.ppB3Played) {
+                return;
+            } else {
+                this.ppSound.play();
+                this.ppB3Played = true;
+                this.wcodeB3Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR1",
+        value: function playWcodeR1() {
+            if (this.wcodeR1Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR1Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR2",
+        value: function playWcodeR2() {
+            if (this.wcodeR2Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR2Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeR3",
+        value: function playWcodeR3() {
+            if (this.wcodeR3Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeR3Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB1",
+        value: function playWcodeB1() {
+            if (this.wcodeB1Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB1Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB2",
+        value: function playWcodeB2() {
+            if (this.wcodeB2Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB2Played = true;
+            }
+        }
+    }, {
+        key: "playWcodeB3",
+        value: function playWcodeB3() {
+            if (this.wcodeB3Played) return;else {
+                this.wCodeSound.play();
+                this.wcodeB3Played = true;
             }
         }
     }]);
