@@ -395,7 +395,7 @@ var Level_al1 = function (_Phaser$Scene) {
             this.load.image("bluekey", "asset/BlueKey.png");
             this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
-            this.load.tilemapTiledJSON('mapal1', 'asset/tilemaps/maps/LevelMap_al2.json');
+            this.load.tilemapTiledJSON('mapal1', 'asset/tilemaps/maps/LevelMap_al1.json');
             this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
             this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
@@ -665,10 +665,10 @@ var Level_al1 = function (_Phaser$Scene) {
             // Red Control
             // Jump detection
             if (this.redcanjump === false) {
-                if (this.redjumpcount == 1 && this.red.body.velocity.y == 10) {
+                if (this.redjumpcount == 1 && this.red.body.velocity.y == 0) {
                     this.redcanjump = true;
                     this.redjumpcount = 0;
-                } else if (this.red.body.velocity.y == 10) {
+                } else if (this.red.body.velocity.y == 0) {
                     this.redjumpcount++;
                 } else if (this.redjumpcount == 1 && this.red.body.velocity.y == 0) {
                     this.redcanjump = true;
@@ -685,7 +685,6 @@ var Level_al1 = function (_Phaser$Scene) {
                         this.red.play("red_jump_right");
                         this.red.setVelocityY(-400);
                         this.redcanjump = false;
-                        this.redjumpcount++;
                         this.jumpSound.play();
                     }
                 }
@@ -697,7 +696,6 @@ var Level_al1 = function (_Phaser$Scene) {
                         this.red.play("red_jump_left");
                         this.red.setVelocityY(-400);
                         this.redcanjump = false;
-                        this.redjumpcount++;
                         this.jumpSound.play();
                     }
                 }
@@ -715,10 +713,10 @@ var Level_al1 = function (_Phaser$Scene) {
             // Blue Control
             // Jump detection
             if (this.bluecanjump == false) {
-                if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 10) {
+                if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 0) {
                     this.bluecanjump = true;
                     this.bluejumpcount = 0;
-                } else if (this.blue.body.velocity.y == 10) {
+                } else if (this.blue.body.velocity.y == 0) {
                     this.bluejumpcount++;
                 } else if (this.bluejumpcount == 1 && this.blue.body.velocity.y == 0) {
                     this.bluecanjump = true;

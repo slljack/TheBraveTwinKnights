@@ -378,11 +378,11 @@ export class Level_al1 extends Phaser.Scene{
         // Red Control
         // Jump detection
         if(this.redcanjump===false){
-            if(this.redjumpcount==1 && this.red.body.velocity.y==10){
+            if(this.redjumpcount==1 && this.red.body.velocity.y==0){
                 this.redcanjump=true;
                 this.redjumpcount = 0;
             }
-            else if(this.red.body.velocity.y==10){
+            else if(this.red.body.velocity.y==0){
                 this.redjumpcount++
             }
             else if(this.redjumpcount == 1 && this.red.body.velocity.y == 0){
@@ -401,7 +401,6 @@ export class Level_al1 extends Phaser.Scene{
                     this.red.play("red_jump_right");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
-                    this.redjumpcount++;
                     this.jumpSound.play();
                 }
             }
@@ -414,7 +413,6 @@ export class Level_al1 extends Phaser.Scene{
                     this.red.play("red_jump_left");
                     this.red.setVelocityY(-400);
                     this.redcanjump = false;
-                    this.redjumpcount++;
                     this.jumpSound.play();
                 }
             }
@@ -438,11 +436,11 @@ export class Level_al1 extends Phaser.Scene{
         // Blue Control
         // Jump detection
         if(this.bluecanjump==false){
-            if(this.bluejumpcount==1 && this.blue.body.velocity.y==10){
+            if(this.bluejumpcount==1 && this.blue.body.velocity.y==0){
                 this.bluecanjump=true;
                 this.bluejumpcount = 0;
             }
-            else if(this.blue.body.velocity.y==10){
+            else if(this.blue.body.velocity.y==0){
                 this.bluejumpcount++
             }
             else if(this.bluejumpcount == 1 && this.blue.body.velocity.y == 0){
