@@ -45,7 +45,7 @@ export class Level_sll1 extends Phaser.Scene{
 
     constructor(){
         super({
-            key : Control.Scene.Level6
+            key : Control.Scene.Level2
         })
     }
     init(){

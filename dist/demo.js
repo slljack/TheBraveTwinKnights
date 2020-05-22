@@ -11,11 +11,11 @@ exports.Control = {
         Help: "Help",
         Control: "Control",
         Level1: "Level1",
-        Level2: "Level_crj",
-        Level3: "Level_crj2",
-        Level4: "Level_al1",
-        Level5: "Level_al2",
-        Level6: "Level_sll1"
+        Level2: "Level_sll1",
+        Level3: "Level_al1",
+        Level4: "Level_al2",
+        Level5: "Level_crj",
+        Level6: "Level_crj2"
     }
 };
 
@@ -359,7 +359,7 @@ var Level_al1 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_al1);
 
         var _this = _possibleConstructorReturn(this, (Level_al1.__proto__ || Object.getPrototypeOf(Level_al1)).call(this, {
-            key: Control_1.Control.Scene.Level4
+            key: Control_1.Control.Scene.Level3
         }));
 
         _this.redcanjump = true;
@@ -945,7 +945,7 @@ var Level_al2 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_al2);
 
         var _this = _possibleConstructorReturn(this, (Level_al2.__proto__ || Object.getPrototypeOf(Level_al2)).call(this, {
-            key: Control_1.Control.Scene.Level5
+            key: Control_1.Control.Scene.Level4
         }));
 
         _this.redcanjump = true;
@@ -1553,7 +1553,7 @@ var Level_crj = function (_Phaser$Scene) {
         _classCallCheck(this, Level_crj);
 
         var _this = _possibleConstructorReturn(this, (Level_crj.__proto__ || Object.getPrototypeOf(Level_crj)).call(this, {
-            key: Control_1.Control.Scene.Level2
+            key: Control_1.Control.Scene.Level5
         }));
 
         _this.redcanjump = true;
@@ -2015,6 +2015,7 @@ var Level_crj = function (_Phaser$Scene) {
                 if (this.bluealive == false) {
                     this.bgm.stop();
                     this.lose.play();
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }
         }
@@ -2038,6 +2039,7 @@ var Level_crj = function (_Phaser$Scene) {
                 if (this.redalive == false) {
                     this.bgm.stop();
                     this.lose.play();
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }
         }
@@ -2094,7 +2096,7 @@ var Level_crj2 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_crj2);
 
         var _this = _possibleConstructorReturn(this, (Level_crj2.__proto__ || Object.getPrototypeOf(Level_crj2)).call(this, {
-            key: Control_1.Control.Scene.Level3
+            key: Control_1.Control.Scene.Level6
         }));
 
         _this.redcanjump = true;
@@ -2645,6 +2647,7 @@ var Level_crj2 = function (_Phaser$Scene) {
                 if (this.bluealive == false) {
                     this.bgm.stop();
                     this.lose.play();
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }
         }
@@ -2668,6 +2671,7 @@ var Level_crj2 = function (_Phaser$Scene) {
                 if (this.redalive == false) {
                     this.bgm.stop();
                     this.lose.play();
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }
         }
@@ -2743,7 +2747,7 @@ var Level_sll1 = function (_Phaser$Scene) {
         _classCallCheck(this, Level_sll1);
 
         var _this = _possibleConstructorReturn(this, (Level_sll1.__proto__ || Object.getPrototypeOf(Level_sll1)).call(this, {
-            key: Control_1.Control.Scene.Level6
+            key: Control_1.Control.Scene.Level2
         }));
 
         _this.redcanjump = true;
@@ -3017,7 +3021,7 @@ var Level_sll1 = function (_Phaser$Scene) {
                         
                 }
             }
-              if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
                 if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                     this.bluekey.destroy()
                     if(this.getBlueKey === false){
