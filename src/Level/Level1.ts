@@ -29,6 +29,7 @@ export class Level1 extends Phaser.Scene{
         })
     }
     init(){
+        this.sound.stopAll();
         this.getBlueKey = false;
         this.getRedKey = false;
         this.isVictory = false;
