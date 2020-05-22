@@ -366,6 +366,12 @@ var Level_al1 = function (_Phaser$Scene) {
         _this.getRedKey = false;
         _this.getBlueKey = false;
         _this.isVictory = false;
+        _this.redLife = true;
+        _this.blueLife = true;
+        _this.rd1_life = true;
+        _this.rd2_life = true;
+        _this.bd1_life = true;
+        _this.bd2_life = true;
         return _this;
     }
 
@@ -375,6 +381,12 @@ var Level_al1 = function (_Phaser$Scene) {
             this.getBlueKey = false;
             this.getRedKey = false;
             this.isVictory = false;
+            this.redLife = true;
+            this.blueLife = true;
+            this.rd1_life = true;
+            this.rd2_life = true;
+            this.bd1_life = true;
+            this.bd2_life = true;
         }
     }, {
         key: "preload",
@@ -383,11 +395,12 @@ var Level_al1 = function (_Phaser$Scene) {
             this.load.image("bluekey", "asset/BlueKey.png");
             this.load.image('CastleBlock', 'asset/tilemaps/tiles/CastleBlock.png');
             this.load.image('CastleBackground', 'asset/tilemaps/tiles/CastleBackground.png');
-            this.load.tilemapTiledJSON('map', 'asset/tilemaps/maps/LevelMap1.json');
+            this.load.tilemapTiledJSON('map1', 'asset/tilemaps/maps/LevelMap_al1.json');
             this.load.audio('bgm', 'asset/audio/bgm_maoudamashii_8bit05.mp3');
             this.load.audio('jump_sound', 'asset/sounds/jump.mp3');
             this.load.audio('key_sound', 'asset/sounds/key.mp3');
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
+            //Red animation/////////////////////////////////////////
             this.anims.create({
                 key: "red_idle_right",
                 frameRate: 10,
@@ -400,6 +413,13 @@ var Level_al1 = function (_Phaser$Scene) {
                 frameRate: 10,
                 frames: this.anims.generateFrameNumbers("redknight1", {
                     frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "red_death_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("redknight1", {
+                    frames: [18, 19, 20, 21, 22, 23]
                 })
             });
             this.anims.create({
@@ -430,7 +450,7 @@ var Level_al1 = function (_Phaser$Scene) {
                     frames: [30, 31, 32]
                 })
             });
-            //blue anim
+            //Blue Animation/////////////////////////////////////////
             this.anims.create({
                 key: "blue_idle_right",
                 frameRate: 10,
@@ -443,6 +463,13 @@ var Level_al1 = function (_Phaser$Scene) {
                 frameRate: 10,
                 frames: this.anims.generateFrameNumbers("blueknight", {
                     frames: [3, 4, 5]
+                })
+            });
+            this.anims.create({
+                key: "blue_death_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("blueknight", {
+                    frames: [12, 13, 14, 15, 16, 17]
                 })
             });
             this.anims.create({
@@ -473,6 +500,64 @@ var Level_al1 = function (_Phaser$Scene) {
                     frames: [30, 31, 32]
                 })
             });
+            //Red Demon Animation///////////////////////////////////
+            this.anims.create({
+                key: "reddemon_idle",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("reddemon", {
+                    frames: [0, 1, 2, 3, 4]
+                })
+            });
+            this.anims.create({
+                key: "reddemon_death",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("reddemon", {
+                    frames: [5, 6, 7, 8, 9]
+                })
+            });
+            this.anims.create({
+                key: "reddemon_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("reddemon", {
+                    frames: [10, 11, 12, 13, 14]
+                })
+            });
+            this.anims.create({
+                key: "reddemon_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("reddemon", {
+                    frames: [15, 16, 17, 18, 19]
+                })
+            });
+            //Blue Demon Animation//////////////////////////////////
+            this.anims.create({
+                key: "bluedemon_idle",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("bluedemon", {
+                    frames: [0, 1, 2, 3, 4]
+                })
+            });
+            this.anims.create({
+                key: "bluedemon_death",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("bluedemon", {
+                    frames: [5, 6, 7, 8, 9]
+                })
+            });
+            this.anims.create({
+                key: "bluedemon_right",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("bluedemon", {
+                    frames: [10, 11, 12, 13, 14]
+                })
+            });
+            this.anims.create({
+                key: "bluedemon_left",
+                frameRate: 5,
+                frames: this.anims.generateFrameNumbers("bluedemon", {
+                    frames: [15, 16, 17, 18, 19]
+                })
+            });
         }
     }, {
         key: "create",
@@ -500,12 +585,12 @@ var Level_al1 = function (_Phaser$Scene) {
                     this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
-            var map1 = this.add.tilemap("map");
+            var map1 = this.add.tilemap("map1");
             var block = map1.addTilesetImage("CastleBlock", "CastleBlock");
             var CastleBackground = map1.addTilesetImage("CastleBackground", "CastleBackground");
             this.top = map1.createStaticLayer("Collision", [block, CastleBackground], 0, 0);
             this.top.setDepth(1);
-            this.top.setCollisionBetween(0, 5);
+            this.top.setCollisionBetween(0, 10);
             var bot = map1.createStaticLayer("Background", [block, CastleBackground], 0, 0);
             bot.setDepth(0);
             // Define Keys
@@ -515,24 +600,34 @@ var Level_al1 = function (_Phaser$Scene) {
             this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
             this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
             this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            this.key_space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
             // Add knights in to the scene
-            this.red = this.physics.add.sprite(90, 280, "redknight1");
+            this.red = this.physics.add.sprite(1200, 600, "redknight1");
             this.blue = this.physics.add.sprite(90, 600, "blueknight");
+            // Add demons into the scene
+            this.reddemon1 = this.physics.add.sprite(860, 580, "reddemon");
+            this.bluedemon1 = this.physics.add.sprite(415, 580, "bluedemon");
             // Enable collision
             this.red.setCollideWorldBounds(true);
             this.blue.setCollideWorldBounds(true);
+            this.reddemon1.setCollideWorldBounds(true);
+            this.bluedemon1.setCollideWorldBounds(true);
             // Place the keys
-            this.redkey = this.add.image(610, 170, "redkey");
+            this.redkey = this.add.image(1245, 230, "redkey");
             this.redkey.setScale(2);
-            this.bluekey = this.add.image(935, 550, "bluekey");
+            this.bluekey = this.add.image(35, 230, "bluekey");
             this.bluekey.setScale(2);
         }
     }, {
         key: "update",
         value: function update(delta) {
-            console.log(this.redcanjump);
-            if (this.red.getBounds().centerX > 570 && this.red.getBounds().centerX < 640) {
-                if (this.red.getBounds().centerY > 130 && this.red.getBounds().centerY < 200) {
+            // Collision Relation
+            this.physics.collide(this.red, this.top);
+            this.physics.collide(this.blue, this.top);
+            this.physics.collide(this.reddemon1, this.top);
+            this.physics.collide(this.bluedemon1, this.top);
+            if (this.red.getBounds().centerX > 1210 && this.red.getBounds().centerX < 1270) {
+                if (this.red.getBounds().centerY > 200 && this.red.getBounds().centerY < 260) {
                     this.redkey.destroy();
                     if (this.getRedKey === false) {
                         this.keySound.play();
@@ -540,8 +635,8 @@ var Level_al1 = function (_Phaser$Scene) {
                     }
                 }
             }
-            if (this.blue.getBounds().centerX > 895 && this.blue.getBounds().centerX < 965) {
-                if (this.blue.getBounds().centerY > 500 && this.blue.getBounds().centerY < 600) {
+            if (this.blue.getBounds().centerX > 0 && this.blue.getBounds().centerX < 60) {
+                if (this.blue.getBounds().centerY > 200 && this.blue.getBounds().centerY < 260) {
                     this.bluekey.destroy();
                     if (this.getBlueKey === false) {
                         this.keySound.play();
@@ -555,6 +650,11 @@ var Level_al1 = function (_Phaser$Scene) {
                 this.isVictory = true;
                 this.scene.start(Control_1.Control.Scene.Level);
             }
+            // Check coord
+            if (this.key_space.isDown) {
+                console.log("Red:  " + this.red.getBounds().centerX + "," + this.red.getBounds().centerY);
+                console.log("Blue: " + this.blue.getBounds().centerX + "," + this.blue.getBounds().centerY);
+            }
             // Red Control
             // Jump detection
             if (this.redcanjump == false) {
@@ -566,7 +666,6 @@ var Level_al1 = function (_Phaser$Scene) {
                 }
             }
             // Right Left Jump action
-            this.physics.collide(this.red, this.top);
             if (this.key_ArrowRight.isDown === true) {
                 this.red.setVelocityX(200);
                 this.red.play("red_move_right", true);
@@ -598,7 +697,7 @@ var Level_al1 = function (_Phaser$Scene) {
                 }
             } else {
                 this.red.setVelocityX(0);
-                this.red.play("red_idle_right", true);
+                this.red.play("red_idle_left", true);
             }
             // Blue Control
             // Jump detection
@@ -611,7 +710,6 @@ var Level_al1 = function (_Phaser$Scene) {
                 }
             }
             // Right Left Jump action
-            this.physics.collide(this.blue, this.top);
             if (this.key_D.isDown === true) {
                 this.blue.setVelocityX(200);
                 this.blue.play("blue_move_right", true);
@@ -645,7 +743,23 @@ var Level_al1 = function (_Phaser$Scene) {
                 this.blue.setVelocityX(0);
                 this.blue.play("blue_idle_right", true);
             }
+            // Red Demon
+            this.reddemon1.play("reddemon_idle", true);
+            // Blue Demon
+            this.bluedemon1.play("bluedemon_idle", true);
         }
+    }, {
+        key: "redDeath",
+        value: function redDeath() {}
+    }, {
+        key: "blueDeath",
+        value: function blueDeath() {}
+    }, {
+        key: "reddemonDeath",
+        value: function reddemonDeath() {}
+    }, {
+        key: "bluedemonDeath",
+        value: function bluedemonDeath() {}
     }]);
 
     return Level_al1;
@@ -1460,6 +1574,21 @@ var LoadingScene = function (_Phaser$Scene) {
             this.load.image("fireball", "asset/level_crj/fireball2.png");
             this.load.image("bubble", "asset/level_crj/bubble.png");
             this.load.spritesheet("blueknight2", "asset/level_crj/BlueKnight.png", {
+                frameWidth: 64,
+                frameHeight: 64
+            });
+            //Load Red Demon
+            this.load.spritesheet("reddemon", "asset/level_al/RedDemon.png", {
+                frameWidth: 64,
+                frameHeight: 64
+            });
+            //Load Blue Demon
+            this.load.spritesheet("bluedemon", "asset/level_al/BlueDemon.png", {
+                frameWidth: 64,
+                frameHeight: 64
+            });
+            //Load Dark Demon
+            this.load.spritesheet("darkdemon", "asset/level_al/DarkDemon.png", {
                 frameWidth: 64,
                 frameHeight: 64
             });

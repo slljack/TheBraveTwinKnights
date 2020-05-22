@@ -46,6 +46,23 @@ export class LoadingScene extends Phaser.Scene{
             frameHeight:64
         });
 
+        //Load Red Demon
+        this.load.spritesheet("reddemon","asset/level_al/RedDemon.png",{
+            frameWidth:64,
+            frameHeight:64
+        });
+
+        //Load Blue Demon
+        this.load.spritesheet("bluedemon","asset/level_al/BlueDemon.png",{
+            frameWidth:64,
+            frameHeight:64
+        });
+
+        //Load Dark Demon
+        this.load.spritesheet("darkdemon","asset/level_al/DarkDemon.png",{
+            frameWidth:64,
+            frameHeight:64
+        });
     }
     create(){
 
