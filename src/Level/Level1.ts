@@ -248,7 +248,6 @@ export class Level1 extends Phaser.Scene{
         }
 
         // Red Control
-
         // Jump detection
         if(this.redcanjump==false){
             if(this.redjumpcount==1 && this.red.body.velocity.y==10){
@@ -304,7 +303,6 @@ export class Level1 extends Phaser.Scene{
 
 
         // Blue Control
-
         // Jump detection
         if(this.bluecanjump==false){
             if(this.bluejumpcount==1 && this.blue.body.velocity.y==10){

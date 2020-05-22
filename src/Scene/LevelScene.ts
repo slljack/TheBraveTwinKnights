@@ -15,6 +15,7 @@ export class LevelScene extends Phaser.Scene{
 
         let level1 = this.add.text(570,200,"[ Level 1 ]",{font:"40px Impact"});
         let level2 = this.add.text(570,250,"[ Level 2 ]",{font:"40px Impact"});
+        let level3 = this.add.text(570,300,"[ Level 3 ]",{font:"40px Impact"});
         let level4 = this.add.text(570,350,"[ Level 4 ]",{font:"40px Impact"});
         back.setInteractive();
         back.on("pointerdown",()=>{
@@ -31,6 +32,12 @@ export class LevelScene extends Phaser.Scene{
         level2.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Level2)
         })
+        level3.setInteractive();
+        level3.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Level3)
+        })
+
+
         level4.setInteractive();
         level4.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Level4)
