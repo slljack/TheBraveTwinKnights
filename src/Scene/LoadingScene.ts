@@ -13,12 +13,11 @@ export class LoadingScene extends Phaser.Scene{
         this.load.image("down","asset/down.png");
         this.load.image("right","asset/right.png");
         this.load.image("left","asset/left.png");
-
         this.load.image("w","asset/W.png");
         this.load.image("a","asset/A.png");
         this.load.image("s","asset/S.png");
         this.load.image("d","asset/D.png");
-
+        this.load.audio("menubgm","asset/audio/bgm_maoudamashii_fantasy08.mp3")
         let loadingbar = this.add.graphics({
             fillStyle:{
                 color:0xffffff

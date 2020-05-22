@@ -46,12 +46,14 @@ export class Level_crj2 extends Phaser.Scene{
     trap2: any;
     redbubble: boolean;
     bluekeybubble: boolean;
+    lose: Phaser.Sound.BaseSound;
     constructor(){
         super({
             key : Control.Scene.Level3
         })
     }
     init(){
+        this.sound.stopAll();
         this.redbubble = false;
         this.bluekeybubble = false;
         this.bluealive = true;
@@ -74,6 +76,7 @@ export class Level_crj2 extends Phaser.Scene{
         this.load.audio('key_sound','asset/sounds/key.mp3');
         this.load.audio('vic_sound','asset/sounds/victory.mp3');
         this.load.image("block","asset/level_crj/CastleBlock_1.png");
+        this.load.audio("defeated","asset/sounds/gameover.mp3");
         this.load.spritesheet("dapao","asset/level_crj/dapao.png",{
             frameWidth:128,
             frameHeight:64
@@ -305,6 +308,8 @@ export class Level_crj2 extends Phaser.Scene{
         this.jumpSound = this.sound.add('jump_sound');
         this.keySound = this.sound.add('key_sound');
         this.vicSound = this.sound.add('vic_sound');
+        this.lose = this.sound.add("defeated");
+
 
         this.input.keyboard.on("keyup",function(e: { key: string; }){
             if(e.key=="Escape"){
@@ -491,7 +496,7 @@ export class Level_crj2 extends Phaser.Scene{
 
         //xiao ji guan 2
         
-        if(this.red.getBounds().centerX>=497 && this.red.getBounds().centerX<=640){
+        if(this.red.getBounds().centerX>=487 && this.red.getBounds().centerX<=640){
             if(this.red.body.y >= 256){
                 this.trapout()
             }
@@ -536,9 +541,12 @@ export class Level_crj2 extends Phaser.Scene{
         if(this.red.body.y>=352){
             this.redshot();
         }
-        if(this.blue.body.y<=352 ||this.blue.body.y>=726 ){
-            console.log("bluedead");
+        if(this.blue.body.y<=352 ){
             this.bluedead();
+        }
+        if(this.blue.body.y >= 678){
+
+            this.bluedead()
         }
 
         this.physics.overlap(this.red,this.redkey,this.getredkey,null,this);
@@ -690,6 +698,10 @@ export class Level_crj2 extends Phaser.Scene{
             this.redalive = false;
             this.red.play("red_dead_right",true);
             this.red.body.velocity.x = 0
+            if(this.bluealive == false){
+                this.bgm.stop();
+                this.lose.play();
+            }
         }
 
     }
@@ -706,6 +718,10 @@ export class Level_crj2 extends Phaser.Scene{
             this.bluealive = false;
             this.blue.play("blue_dead_right",true);
             this.blue.body.velocity.x = 0
+            if(this.redalive == false){
+                this.bgm.stop();
+                this.lose.play();
+            }
         }
     }
 
