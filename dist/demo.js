@@ -184,7 +184,7 @@ var Level1 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("map");
@@ -620,7 +620,7 @@ var Level_al1 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("mapal1");
@@ -1206,7 +1206,7 @@ var Level_al2 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("mapal2");
@@ -1760,7 +1760,7 @@ var Level_crj = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("map2");
@@ -2343,7 +2343,7 @@ var Level_crj2 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("map3");
@@ -2951,7 +2951,7 @@ var Level_sll1 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("map6");
@@ -3609,7 +3609,7 @@ var Level_sll2 = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Menu);
+                    this.scene.start(Control_1.Control.Scene.Level);
                 }
             }, this);
             var map1 = this.add.tilemap("map7");
@@ -4152,6 +4152,7 @@ var ControlScene = function (_Phaser$Scene) {
             s.setScale(4);
             var d = this.add.image(870, 455, "d");
             d.setScale(4);
+            this.add.text(270, 500, "Press ESC to go back to the previous menu.", { font: "40px Impact" });
         }
     }]);
 
@@ -4467,7 +4468,7 @@ var MenuScene = function (_Phaser$Scene) {
                 hoversprite.setVisible(false);
             });
             playbutton.on("pointerdown", function () {
-                _this2.scene.start(Control_1.Control.Scene.Level);
+                _this2.scene.start(Control_1.Control.Scene.Level1);
             });
             levelbutton.setInteractive();
             levelbutton.on("pointerover", function () {

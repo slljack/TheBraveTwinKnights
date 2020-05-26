@@ -262,7 +262,7 @@ export class Level_sll1 extends Phaser.Scene{
             if(e.key=="Escape"){
                 // Stop music when esc
                 this.bgm.stop();
-                this.scene.start(Control.Scene.Menu)
+                this.scene.start(Control.Scene.Level)
             }
         },this)
 

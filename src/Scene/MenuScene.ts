@@ -55,7 +55,7 @@ export class MenuScene extends Phaser.Scene{
             hoversprite.setVisible(false);
         })
         playbutton.on("pointerdown",()=>{
-            this.scene.start(Control.Scene.Level);
+            this.scene.start(Control.Scene.Level1);
         })
 
         levelbutton.setInteractive();

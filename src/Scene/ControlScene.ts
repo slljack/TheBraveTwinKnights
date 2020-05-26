@@ -89,6 +89,8 @@ export class ControlScene extends Phaser.Scene{
 
         let d = this.add.image(870,455,"d");
         d.setScale(4);
+
+        this.add.text(270,500,"Press ESC to go back to the previous menu.",{font:"40px Impact"});
     }
 
 }
