@@ -1581,6 +1581,8 @@ var Level_crj = function (_Phaser$Scene) {
     _createClass(Level_crj, [{
         key: "init",
         value: function init() {
+            this.used = false;
+            this.jiguanpressed = false;
             this.sound.stopAll();
             this.bluealive = true;
             this.bluebubble = false;
@@ -1605,6 +1607,15 @@ var Level_crj = function (_Phaser$Scene) {
             this.load.audio('vic_sound', 'asset/sounds/victory.mp3');
             this.load.image("block", "asset/level_crj/CastleBlock_1.png");
             this.load.audio("defeated", "asset/sounds/gameover.mp3");
+            this.load.image("bubblesaver", "asset/level_crj/bublesaver.png");
+            this.load.spritesheet("unpress", "asset/level_crj/press.png", {
+                frameWidth: 64,
+                frameHeight: 10
+            });
+            this.load.spritesheet("pressed", "asset/level_crj/pressed.png", {
+                frameWidth: 64,
+                frameHeight: 10
+            });
             this.load.spritesheet("dapao", "asset/level_crj/dapao.png", {
                 frameWidth: 128,
                 frameHeight: 64
@@ -1724,6 +1735,21 @@ var Level_crj = function (_Phaser$Scene) {
             // Level Label
             var label = this.add.text(0, 0, "<Level 6> Watch Your Step", { font: "25px Impact" });
             label.setDepth(1);
+            //button anims
+            this.anims.create({
+                key: "jiguan_unpress",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("unpress", {
+                    frames: [0]
+                })
+            });
+            this.anims.create({
+                key: "jiguan_pressed",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("pressed", {
+                    frames: [0]
+                })
+            });
             // dapao anims
             this.anims.create({
                 key: "dapao_idle_right",
@@ -1774,7 +1800,7 @@ var Level_crj = function (_Phaser$Scene) {
                 if (e.key == "Escape") {
                     // Stop music when esc
                     this.bgm.stop();
-                    this.scene.start(Control_1.Control.Scene.Level);
+                    this.scene.start(Control_1.Control.Scene.Menu);
                 }
             }, this);
             var map1 = this.add.tilemap("map2");
@@ -1819,6 +1845,22 @@ var Level_crj = function (_Phaser$Scene) {
             this.shuipao.setDrag(200, 200);
             this.huopao.play("dapao_idle_left", true);
             this.shuipao.play("dapao_idle_right", true);
+            //jiguan
+            this.jiguan = this.physics.add.sprite(480, 64, "unpress");
+            this.bubblesavers = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+            this.saver1 = this.bubblesavers.create(-32, 416, "bubblesaver").setDepth(3);
+            this.saver2 = this.bubblesavers.create(-32, 480, "bubblesaver").setDepth(3);
+            this.saver3 = this.bubblesavers.create(-32, 544, "bubblesaver").setDepth(3);
+            this.saver4 = this.bubblesavers.create(-32, 608, "bubblesaver").setDepth(3);
+            this.saver5 = this.bubblesavers.create(-32, 672, "bubblesaver").setDepth(3);
+            this.saver1.visible = false;
+            this.saver2.visible = false;
+            this.saver3.visible = false;
+            this.saver4.visible = false;
+            //this.saver5.visible = false;
             this.fireballs = this.physics.add.group({
                 immovable: true,
                 allowGravity: false
@@ -1845,6 +1887,8 @@ var Level_crj = function (_Phaser$Scene) {
     }, {
         key: "update",
         value: function update(delta) {
+            this.physics.collide(this.top, this.jiguan);
+            this.physics.collide(this.red, this.jiguan);
             this.physics.collide(this.top, this.huopao);
             this.physics.collide(this.top, this.shuipao);
             this.physics.collide(this.red, this.huopao);
@@ -1857,6 +1901,8 @@ var Level_crj = function (_Phaser$Scene) {
             }
             this.physics.overlap(this.red, this.fireballs, this.redshot, null, this);
             this.physics.overlap(this.blue, this.bubbles, this.blueshot, null, this);
+            this.physics.overlap(this.red, this.jiguan, this.jiguanpress, null, this);
+            this.physics.overlap(this.blue, this.bubblesavers, this.saveornot, null, this);
             var fireball = this.fireballs.getFirstAlive(true);
             if (fireball) {
                 if (fireball.body.x < 0) {
@@ -2083,6 +2129,43 @@ var Level_crj = function (_Phaser$Scene) {
                 this.getBlueKey = true;
             }
         }
+    }, {
+        key: "jiguanpress",
+        value: function jiguanpress() {
+            if (this.jiguanpressed == false) {
+                this.jiguan.play("jiguan_pressed");
+                this.jiguanpressed = true;
+                this.saver1.visible = true;
+                this.saver2.visible = true;
+                this.saver3.visible = true;
+                this.saver4.visible = true;
+                this.saver5.visible = true;
+                this.saver1.body.velocity.x = 200;
+                this.saver2.body.velocity.x = 200;
+                this.saver3.body.velocity.x = 200;
+                this.saver4.body.velocity.x = 200;
+                this.saver5.body.velocity.x = 200;
+            }
+        }
+    }, {
+        key: "saveornot",
+        value: function saveornot() {
+            if (this.bluebubble == true) {
+                this.bluebubble = false;
+                this.used = true;
+            } else {
+                if (this.used == false) {
+                    this.bluealive = false;
+                    this.blue.play("blue_dead_right", true);
+                    this.blue.body.velocity.x = 0;
+                    if (this.redalive == false) {
+                        this.bgm.stop();
+                        this.lose.play();
+                        this.scene.start(Control_1.Control.Scene.Level);
+                    }
+                }
+            }
+        }
     }]);
 
     return Level_crj;
@@ -2127,6 +2210,8 @@ var Level_crj2 = function (_Phaser$Scene) {
     _createClass(Level_crj2, [{
         key: "init",
         value: function init() {
+            this.used = false;
+            this.jiguanpressed = false;
             this.sound.stopAll();
             this.redbubble = false;
             this.bluekeybubble = false;
@@ -2165,6 +2250,15 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.load.spritesheet("bluekey2", "asset/level_crj/bluekey.png", {
                 frameHeight: 64,
                 frameWidth: 64
+            });
+            this.load.image("bubblesaver", "asset/level_crj/bublesaver.png");
+            this.load.spritesheet("unpress", "asset/level_crj/press.png", {
+                frameWidth: 64,
+                frameHeight: 10
+            });
+            this.load.spritesheet("pressed", "asset/level_crj/pressed.png", {
+                frameWidth: 64,
+                frameHeight: 10
             });
             // shooting group
             this.anims.create({
@@ -2281,6 +2375,21 @@ var Level_crj2 = function (_Phaser$Scene) {
             // Level Label
             var label = this.add.text(0, 0, "<Level 7> How To Float?", { font: "25px Impact" });
             label.setDepth(1);
+            //button anims
+            this.anims.create({
+                key: "jiguan_unpress",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("unpress", {
+                    frames: [0]
+                })
+            });
+            this.anims.create({
+                key: "jiguan_pressed",
+                frameRate: 10,
+                frames: this.anims.generateFrameNumbers("pressed", {
+                    frames: [0]
+                })
+            });
             // dapao anims
             this.anims.create({
                 key: "dapao_idle_right",
@@ -2409,6 +2518,22 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.bluekey.setDragX(100);
             this.redkey.setCollideWorldBounds(true);
             this.bluekey.setCollideWorldBounds(true);
+            //jiguan
+            this.jiguan = this.physics.add.sprite(800, 280, "unpress").setImmovable(true);
+            this.bubblesavers = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+            this.saver1 = this.bubblesavers.create(-32, 416, "bubblesaver").setDepth(3);
+            this.saver2 = this.bubblesavers.create(-32, 480, "bubblesaver").setDepth(3);
+            this.saver3 = this.bubblesavers.create(-32, 544, "bubblesaver").setDepth(3);
+            this.saver4 = this.bubblesavers.create(-32, 608, "bubblesaver").setDepth(3);
+            this.saver5 = this.bubblesavers.create(-32, 672, "bubblesaver").setDepth(3);
+            this.saver1.visible = false;
+            this.saver2.visible = false;
+            this.saver3.visible = false;
+            this.saver4.visible = false;
+            this.saver5.visible = false;
             //add dapao to scene
             this.huopao = this.physics.add.sprite(64, 32, "dapao");
             this.shuipao = this.physics.add.sprite(256, 544, "dapao");
@@ -2441,6 +2566,8 @@ var Level_crj2 = function (_Phaser$Scene) {
     }, {
         key: "update",
         value: function update(delta) {
+            this.physics.collide(this.top, this.jiguan);
+            this.physics.collide(this.red, this.jiguan);
             this.physics.collide(this.top, this.huopao);
             this.physics.collide(this.top, this.shuipao);
             this.physics.collide(this.red, this.huopao);
@@ -2452,12 +2579,15 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.physics.collide(this.blocks, this.shuipao);
             this.physics.collide(this.blocks, this.bluekey);
             this.physics.collide(this.blocks, this.redkey);
+            this.jiguan.body.velocity.x = 0;
             //shuipao move
             if (this.shuipao.body.velocity.x != 0) {
                 this.shuipao.play("dapao_move_right", true);
             }
             this.physics.overlap(this.red, this.fireballs, this.redshot, null, this);
             this.physics.overlap(this.blue, this.bubbles, this.blueshot, null, this);
+            this.physics.overlap(this.red, this.jiguan, this.jiguanpress, null, this);
+            this.physics.overlap(this.blue, this.bubblesavers, this.saveornot, null, this);
             var fireball = this.fireballs.getFirstAlive(true);
             if (fireball) {
                 if (fireball.body.x > 1280) {
@@ -2736,6 +2866,43 @@ var Level_crj2 = function (_Phaser$Scene) {
         value: function redkeybubble() {
             this.redbubble = true;
             this.redkey.body.velocity.y = -100;
+        }
+    }, {
+        key: "jiguanpress",
+        value: function jiguanpress() {
+            if (this.jiguanpressed == false) {
+                this.jiguan.play("jiguan_pressed");
+                this.jiguanpressed = true;
+                this.saver1.visible = true;
+                this.saver2.visible = true;
+                this.saver3.visible = true;
+                this.saver4.visible = true;
+                this.saver5.visible = true;
+                this.saver1.body.velocity.x = 200;
+                this.saver2.body.velocity.x = 200;
+                this.saver3.body.velocity.x = 200;
+                this.saver4.body.velocity.x = 200;
+                this.saver5.body.velocity.x = 200;
+            }
+        }
+    }, {
+        key: "saveornot",
+        value: function saveornot() {
+            if (this.bluebubble == true) {
+                this.bluebubble = false;
+                this.used = true;
+            } else {
+                if (this.used == false) {
+                    this.bluealive = false;
+                    this.blue.play("blue_dead_right", true);
+                    this.blue.body.velocity.x = 0;
+                    if (this.redalive == false) {
+                        this.bgm.stop();
+                        this.lose.play();
+                        this.scene.start(Control_1.Control.Scene.Level);
+                    }
+                }
+            }
         }
     }]);
 
@@ -3059,7 +3226,7 @@ var Level_sll1 = function (_Phaser$Scene) {
                         
                 }
             }
-                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+              if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
                 if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                     this.bluekey.destroy()
                     if(this.getBlueKey === false){
@@ -3722,7 +3889,7 @@ var Level_sll2 = function (_Phaser$Scene) {
                         
                 }
             }
-                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+              if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
                 if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                     this.bluekey.destroy()
                     if(this.getBlueKey === false){

@@ -47,12 +47,23 @@ export class Level_crj2 extends Phaser.Scene{
     redbubble: boolean;
     bluekeybubble: boolean;
     lose: Phaser.Sound.BaseSound;
+    jiguan: Phaser.Physics.Arcade.Sprite;
+    jiguanpressed: boolean;
+    bubblesavers: Phaser.Physics.Arcade.Group;
+    saver1: any;
+    saver2: any;
+    saver3: any;
+    saver4: any;
+    saver5: any;
+    used: boolean;
     constructor(){
         super({
             key : Control.Scene.Level7
         })
     }
     init(){
+        this.used = false
+        this.jiguanpressed =false
         this.sound.stopAll();
         this.redbubble = false;
         this.bluekeybubble = false;
@@ -90,6 +101,15 @@ export class Level_crj2 extends Phaser.Scene{
         this.load.spritesheet("bluekey2","asset/level_crj/bluekey.png",{
             frameHeight:64,
             frameWidth:64
+        })
+        this.load.image("bubblesaver","asset/level_crj/bublesaver.png")
+        this.load.spritesheet("unpress","asset/level_crj/press.png",{
+            frameWidth:64,
+            frameHeight:10,
+        })
+        this.load.spritesheet("pressed","asset/level_crj/pressed.png",{
+            frameWidth:64,
+            frameHeight:10
         })
 
         // shooting group
@@ -226,6 +246,25 @@ export class Level_crj2 extends Phaser.Scene{
         // Level Label
         let label = this.add.text(0,0,"<Level 7> How To Float?",{font:"25px Impact"});
         label.setDepth(1);
+        //button anims
+        this.anims.create({
+            key:"jiguan_unpress",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("unpress",{
+                frames:[0]
+            })
+        })
+
+        this.anims.create({
+            key:"jiguan_pressed",
+            frameRate:10,
+            frames:this.anims.generateFrameNumbers("pressed",{
+                frames:[0]
+            })
+        })
+
+
+
 
         // dapao anims
         this.anims.create({
@@ -389,6 +428,30 @@ export class Level_crj2 extends Phaser.Scene{
         this.redkey.setCollideWorldBounds(true);
         this.bluekey.setCollideWorldBounds(true);
         
+
+
+        //jiguan
+        this.jiguan = this.physics.add.sprite(800,280,"unpress").setImmovable(true)
+        this.bubblesavers = this.physics.add.group({
+            immovable:true,
+            allowGravity:false
+        })
+        this.saver1 = this.bubblesavers.create(-32,416,"bubblesaver").setDepth(3);
+        this.saver2 = this.bubblesavers.create(-32,480,"bubblesaver").setDepth(3);
+        this.saver3 = this.bubblesavers.create(-32,544,"bubblesaver").setDepth(3);
+        this.saver4 = this.bubblesavers.create(-32,608,"bubblesaver").setDepth(3);
+        this.saver5 = this.bubblesavers.create(-32,672,"bubblesaver").setDepth(3);
+        this.saver1.visible = false;
+        this.saver2.visible = false;
+        this.saver3.visible = false;
+        this.saver4.visible = false;
+        this.saver5.visible = false;
+
+
+
+
+
+
         //add dapao to scene
         this.huopao = this.physics.add.sprite(64,32,"dapao");
         this.shuipao = this.physics.add.sprite(256,544,"dapao");
@@ -425,6 +488,8 @@ export class Level_crj2 extends Phaser.Scene{
     }
 
     update(delta:number){
+        this.physics.collide(this.top,this.jiguan);
+        this.physics.collide(this.red,this.jiguan)
         this.physics.collide(this.top,this.huopao);
         this.physics.collide(this.top,this.shuipao);
         this.physics.collide(this.red,this.huopao);
@@ -436,7 +501,7 @@ export class Level_crj2 extends Phaser.Scene{
         this.physics.collide(this.blocks,this.shuipao);
         this.physics.collide(this.blocks,this.bluekey);
         this.physics.collide(this.blocks,this.redkey);
-
+        this.jiguan.body.velocity.x = 0
         //shuipao move
         if(this.shuipao.body.velocity.x !=0){
             this.shuipao.play("dapao_move_right",true);
@@ -444,7 +509,8 @@ export class Level_crj2 extends Phaser.Scene{
 
         this.physics.overlap(this.red,this.fireballs,this.redshot,null,this);
         this.physics.overlap(this.blue,this.bubbles,this.blueshot,null,this);
-
+        this.physics.overlap(this.red,this.jiguan,this.jiguanpress,null,this)
+        this.physics.overlap(this.blue,this.bubblesavers,this.saveornot,null,this)
 
         let fireball = this.fireballs.getFirstAlive(true);
         if(fireball){
@@ -770,6 +836,43 @@ export class Level_crj2 extends Phaser.Scene{
         this.redbubble = true;
         this.redkey.body.velocity.y = -100
     }
+    jiguanpress(){
+        if(this.jiguanpressed == false){
+            this.jiguan.play("jiguan_pressed")
+            this.jiguanpressed = true
+            this.saver1.visible = true;
+            this.saver2.visible = true;
+            this.saver3.visible = true;
+            this.saver4.visible = true;
+            this.saver5.visible = true;
+            this.saver1.body.velocity.x = 200
+            this.saver2.body.velocity.x = 200
+            this.saver3.body.velocity.x = 200
+            this.saver4.body.velocity.x = 200
+            this.saver5.body.velocity.x = 200
+
+        }
+    }
+    saveornot(){
+        if(this.bluebubble == true){
+            this.bluebubble = false
+            this.used = true
+        }
+        else{
+            if(this.used == false){
+                this.bluealive = false
+                this.blue.play("blue_dead_right",true);
+                this.blue.body.velocity.x = 0
+                if(this.redalive == false){
+                    this.bgm.stop();
+                    this.lose.play();
+                    this.scene.start(Control.Scene.Level)
+                }        
+            }
+            
+        }
+    }
+
 
 
 
