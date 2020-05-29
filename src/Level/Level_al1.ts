@@ -289,6 +289,10 @@ export class Level_al1 extends Phaser.Scene{
     }
 
     create(){
+        // Level Label
+        let label = this.add.text(0,0,"<Level 4>",{font:"25px Impact"});
+        label.setDepth(2);
+
         // Play music
         this.bgm = this.sound.add('bgm');
 
