@@ -218,7 +218,7 @@ export class Level_sll1 extends Phaser.Scene{
 
     create(){
         // Level Label
-        let label = this.add.text(0,0,"<Level 2>",{font:"25px Impact"});
+        let label = this.add.text(0,0,"<Level 2> Where to Start?",{font:"25px Impact"});
         label.setDepth(1);
 
          //Pressure Plate

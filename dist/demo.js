@@ -166,7 +166,7 @@ var Level1 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 1>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 1> Go Ahead", { font: "25px Impact" });
             label.setDepth(1);
             // Play music
             this.bgm = this.sound.add('bgm');
@@ -604,7 +604,7 @@ var Level_al1 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 4>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 4> Know Your Enemy", { font: "25px Impact" });
             label.setDepth(2);
             // Play music
             this.bgm = this.sound.add('bgm');
@@ -1193,7 +1193,7 @@ var Level_al2 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 5>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 5> Parkour?", { font: "25px Impact" });
             label.setDepth(1);
             // Play music
             this.bgm = this.sound.add('bgm');
@@ -1722,7 +1722,7 @@ var Level_crj = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 6>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 6> Watch Your Step", { font: "25px Impact" });
             label.setDepth(1);
             // dapao anims
             this.anims.create({
@@ -2279,7 +2279,7 @@ var Level_crj2 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 7>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 7> How To Float?", { font: "25px Impact" });
             label.setDepth(1);
             // dapao anims
             this.anims.create({
@@ -2931,7 +2931,7 @@ var Level_sll1 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 2>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 2> Where to Start?", { font: "25px Impact" });
             label.setDepth(1);
             //Pressure Plate
             this.anims.create({
@@ -3592,7 +3592,7 @@ var Level_sll2 = function (_Phaser$Scene) {
         key: "create",
         value: function create() {
             // Level Label
-            var label = this.add.text(0, 0, "<Level 3>", { font: "25px Impact" });
+            var label = this.add.text(0, 0, "<Level 3> 2 > 1", { font: "25px Impact" });
             label.setDepth(1);
             //Pressure Plate
             this.anims.create({

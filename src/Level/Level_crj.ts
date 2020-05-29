@@ -205,7 +205,7 @@ export class Level_crj extends Phaser.Scene{
 
     create(){
         // Level Label
-        let label = this.add.text(0,0,"<Level 6>",{font:"25px Impact"});
+        let label = this.add.text(0,0,"<Level 6> Watch Your Step",{font:"25px Impact"});
         label.setDepth(1);
 
         // dapao anims
