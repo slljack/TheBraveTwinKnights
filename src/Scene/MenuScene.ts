@@ -37,6 +37,7 @@ export class MenuScene extends Phaser.Scene{
         let levelbutton = this.add.text(570,450,"<Levels>",{font:"40px Impact"});
         let controlbutton = this.add.text(570,500,"<Control>",{font:"40px Impact"});
         let helpbutton = this.add.text(570,550,"<Help>",{font:"40px Impact"});
+        let creditsButton = this.add.text(570,600,"<Credits>",{font:"40px Impact"});
         let hoversprite = this.add.sprite(100,100,"pointer");
         hoversprite.setScale(2);
         hoversprite.setVisible(false);
@@ -104,6 +105,23 @@ export class MenuScene extends Phaser.Scene{
         helpbutton.on("pointerdown",()=>{
             this.scene.start(Control.Scene.Help)
         })
+
+        creditsButton.setInteractive();
+
+        creditsButton.on("pointerover",()=>{
+            hoversprite.setVisible(true),
+            hoversprite.x = creditsButton.x-50,
+            hoversprite.y = creditsButton.y+23
+        })
+
+        creditsButton.on("pointerout",()=>{
+            hoversprite.setVisible(false);
+        })
+        creditsButton.on("pointerdown",()=>{
+            this.scene.start(Control.Scene.Credits)
+        })
+
+
     }
 
 }

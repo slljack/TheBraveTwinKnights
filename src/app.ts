@@ -7,6 +7,7 @@ import { SplashScene } from "./Scene/SplashScene";
 import { LevelScene } from "./Scene/LevelScene";
 import { ControlScene } from "./Scene/ControlScene";
 import { HelpScene } from "./Scene/HelpScene";
+import {CreditsScene} from "./Scene/CreditsScene";
 import {Level1} from "./Level/Level1";
 import {Level_crj} from "./Level/Level_crj"
 import {Level_al1} from "./Level/Level_al1"
@@ -32,7 +33,7 @@ var config = {
         }
     },
     
-    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,Level1,Level_crj,Level_al1,Level_crj2,Level_al2,Level_sll1,Level_sll2],
+    scene :[LoadingScene,MenuScene,SplashScene,LevelScene,ControlScene,HelpScene,CreditsScene,Level1,Level_crj,Level_al1,Level_crj2,Level_al2,Level_sll1,Level_sll2],
     render:{
         pixelArt:true
     }

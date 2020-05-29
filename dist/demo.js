@@ -10,6 +10,7 @@ exports.Control = {
         Level: "Level",
         Help: "Help",
         Control: "Control",
+        Credits: "Credits",
         Level1: "Level1",
         Level2: "Level_sll1",
         Level3: "Level_al1",
@@ -238,6 +239,7 @@ var Level1 = function (_Phaser$Scene) {
                     }
                 }
             }
+            // Check Victory
             if (this.getBlueKey && this.getRedKey && this.isVictory === false) {
                 this.vicSound.play();
                 this.bgm.stop();
@@ -4196,6 +4198,65 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Control_1 = require("../Control");
 
+var CreditsScene = function (_Phaser$Scene) {
+    _inherits(CreditsScene, _Phaser$Scene);
+
+    function CreditsScene() {
+        _classCallCheck(this, CreditsScene);
+
+        return _possibleConstructorReturn(this, (CreditsScene.__proto__ || Object.getPrototypeOf(CreditsScene)).call(this, {
+            key: Control_1.Control.Scene.Credits
+        }));
+    }
+
+    _createClass(CreditsScene, [{
+        key: "init",
+        value: function init() {}
+    }, {
+        key: "create",
+        value: function create() {
+            var _this2 = this;
+
+            var logo = this.add.image(0, 0, "logo").setOrigin(0);
+            this.add.text(logo.x + 150, logo.y + 50, "Credits", { font: "40px Impact" });
+            var back = this.add.text(this.game.renderer.width - 100, 0, "Back", { font: "40px Impact" });
+            back.setInteractive();
+            back.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Menu);
+            });
+            this.input.keyboard.on("keyup", function (e) {
+                if (e.key == "Escape") {
+                    this.scene.start(Control_1.Control.Scene.Menu);
+                }
+            }, this);
+            this.add.text(500, 200, "Developers:", { font: "40px Impact" });
+            this.add.text(550, 250, "Andrew Liu", { font: "40px Impact" });
+            this.add.text(550, 300, "Runjie Chen", { font: "40px Impact" });
+            this.add.text(550, 350, "Shilong Li", { font: "40px Impact" });
+            this.add.text(500, 450, "Music:", { font: "40px Impact" });
+            this.add.text(550, 500, "maoudamashii", { font: "40px Impact" });
+        }
+    }]);
+
+    return CreditsScene;
+}(Phaser.Scene);
+
+exports.CreditsScene = CreditsScene;
+
+},{"../Control":1}],11:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Control_1 = require("../Control");
+
 var HelpScene = function (_Phaser$Scene) {
     _inherits(HelpScene, _Phaser$Scene);
 
@@ -4236,7 +4297,7 @@ var HelpScene = function (_Phaser$Scene) {
 
 exports.HelpScene = HelpScene;
 
-},{"../Control":1}],11:[function(require,module,exports){
+},{"../Control":1}],12:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4324,7 +4385,7 @@ var LevelScene = function (_Phaser$Scene) {
 
 exports.LevelScene = LevelScene;
 
-},{"../Control":1}],12:[function(require,module,exports){
+},{"../Control":1}],13:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4419,7 +4480,7 @@ var LoadingScene = function (_Phaser$Scene) {
 
 exports.LoadingScene = LoadingScene;
 
-},{"../Control":1}],13:[function(require,module,exports){
+},{"../Control":1}],14:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4478,6 +4539,7 @@ var MenuScene = function (_Phaser$Scene) {
             var levelbutton = this.add.text(570, 450, "<Levels>", { font: "40px Impact" });
             var controlbutton = this.add.text(570, 500, "<Control>", { font: "40px Impact" });
             var helpbutton = this.add.text(570, 550, "<Help>", { font: "40px Impact" });
+            var creditsButton = this.add.text(570, 600, "<Credits>", { font: "40px Impact" });
             var hoversprite = this.add.sprite(100, 100, "pointer");
             hoversprite.setScale(2);
             hoversprite.setVisible(false);
@@ -4521,6 +4583,16 @@ var MenuScene = function (_Phaser$Scene) {
             helpbutton.on("pointerdown", function () {
                 _this2.scene.start(Control_1.Control.Scene.Help);
             });
+            creditsButton.setInteractive();
+            creditsButton.on("pointerover", function () {
+                hoversprite.setVisible(true), hoversprite.x = creditsButton.x - 50, hoversprite.y = creditsButton.y + 23;
+            });
+            creditsButton.on("pointerout", function () {
+                hoversprite.setVisible(false);
+            });
+            creditsButton.on("pointerdown", function () {
+                _this2.scene.start(Control_1.Control.Scene.Credits);
+            });
         }
     }]);
 
@@ -4529,7 +4601,7 @@ var MenuScene = function (_Phaser$Scene) {
 
 exports.MenuScene = MenuScene;
 
-},{"../Control":1}],14:[function(require,module,exports){
+},{"../Control":1}],15:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4574,7 +4646,7 @@ var SplashScene = function (_Phaser$Scene) {
 
 exports.SplashScene = SplashScene;
 
-},{"../Control":1}],15:[function(require,module,exports){
+},{"../Control":1}],16:[function(require,module,exports){
 "use strict";
 /**@type {import("../types/phaser")} */
 
@@ -4585,6 +4657,7 @@ var SplashScene_1 = require("./Scene/SplashScene");
 var LevelScene_1 = require("./Scene/LevelScene");
 var ControlScene_1 = require("./Scene/ControlScene");
 var HelpScene_1 = require("./Scene/HelpScene");
+var CreditsScene_1 = require("./Scene/CreditsScene");
 var Level1_1 = require("./Level/Level1");
 var Level_crj_1 = require("./Level/Level_crj");
 var Level_al1_1 = require("./Level/Level_al1");
@@ -4609,13 +4682,13 @@ var config = {
             gravity: { y: 600 }
         }
     },
-    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, Level1_1.Level1, Level_crj_1.Level_crj, Level_al1_1.Level_al1, Level_crj2_1.Level_crj2, Level_al2_1.Level_al2, Level_sll1_1.Level_sll1, Level_sll2_1.Level_sll2],
+    scene: [LoadingScene_1.LoadingScene, MenuScene_1.MenuScene, SplashScene_1.SplashScene, LevelScene_1.LevelScene, ControlScene_1.ControlScene, HelpScene_1.HelpScene, CreditsScene_1.CreditsScene, Level1_1.Level1, Level_crj_1.Level_crj, Level_al1_1.Level_al1, Level_crj2_1.Level_crj2, Level_al2_1.Level_al2, Level_sll1_1.Level_sll1, Level_sll2_1.Level_sll2],
     render: {
         pixelArt: true
     }
 };
 var game = new Phaser.Game(config);
 
-},{"./Level/Level1":2,"./Level/Level_al1":3,"./Level/Level_al2":4,"./Level/Level_crj":5,"./Level/Level_crj2":6,"./Level/Level_sll1":7,"./Level/Level_sll2":8,"./Scene/ControlScene":9,"./Scene/HelpScene":10,"./Scene/LevelScene":11,"./Scene/LoadingScene":12,"./Scene/MenuScene":13,"./Scene/SplashScene":14}]},{},[15])
+},{"./Level/Level1":2,"./Level/Level_al1":3,"./Level/Level_al2":4,"./Level/Level_crj":5,"./Level/Level_crj2":6,"./Level/Level_sll1":7,"./Level/Level_sll2":8,"./Scene/ControlScene":9,"./Scene/CreditsScene":10,"./Scene/HelpScene":11,"./Scene/LevelScene":12,"./Scene/LoadingScene":13,"./Scene/MenuScene":14,"./Scene/SplashScene":15}]},{},[16])
 
 //# sourceMappingURL=demo.js.map

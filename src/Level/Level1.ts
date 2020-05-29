@@ -244,6 +244,7 @@ export class Level1 extends Phaser.Scene{
             }
         }
 
+        // Check Victory
         if(this.getBlueKey && this.getRedKey && this.isVictory === false){
             this.vicSound.play();
             this.bgm.stop();

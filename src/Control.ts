@@ -6,6 +6,7 @@ export const Control ={
         Level:"Level",
         Help:"Help",
         Control:"Control",
+        Credits:"Credits",
         Level1:"Level1",
         Level2:"Level_sll1",
         Level3:"Level_al1",
