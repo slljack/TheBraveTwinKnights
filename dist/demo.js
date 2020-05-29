@@ -1846,7 +1846,7 @@ var Level_crj = function (_Phaser$Scene) {
             this.huopao.play("dapao_idle_left", true);
             this.shuipao.play("dapao_idle_right", true);
             //jiguan
-            this.jiguan = this.physics.add.sprite(480, 64, "unpress");
+            this.jiguan = this.physics.add.sprite(480, 64, "unpress").setImmovable(true);
             this.bubblesavers = this.physics.add.group({
                 immovable: true,
                 allowGravity: false
@@ -2507,7 +2507,7 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
             this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
             // Add knights in to the scene
-            this.red = this.physics.add.sprite(90, 280, "redknight1");
+            this.red = this.physics.add.sprite(96, 280, "redknight1");
             this.blue = this.physics.add.sprite(90, 600, "blueknight2");
             // Enable collision
             this.red.setCollideWorldBounds(true);
@@ -2519,7 +2519,7 @@ var Level_crj2 = function (_Phaser$Scene) {
             this.redkey.setCollideWorldBounds(true);
             this.bluekey.setCollideWorldBounds(true);
             //jiguan
-            this.jiguan = this.physics.add.sprite(800, 280, "unpress").setImmovable(true);
+            this.jiguan = this.physics.add.sprite(32, 280, "unpress").setImmovable(true);
             this.bubblesavers = this.physics.add.group({
                 immovable: true,
                 allowGravity: false

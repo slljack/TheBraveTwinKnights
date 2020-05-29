@@ -411,7 +411,7 @@ export class Level_crj2 extends Phaser.Scene{
         this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // Add knights in to the scene
-        this.red = this.physics.add.sprite(90,280,"redknight1");
+        this.red = this.physics.add.sprite(96,280,"redknight1");
         this.blue = this.physics.add.sprite(90,600,"blueknight2");
         
         // Enable collision
@@ -431,7 +431,7 @@ export class Level_crj2 extends Phaser.Scene{
 
 
         //jiguan
-        this.jiguan = this.physics.add.sprite(800,280,"unpress").setImmovable(true)
+        this.jiguan = this.physics.add.sprite(32,280,"unpress").setImmovable(true)
         this.bubblesavers = this.physics.add.group({
             immovable:true,
             allowGravity:false
