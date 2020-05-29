@@ -3226,7 +3226,7 @@ var Level_sll1 = function (_Phaser$Scene) {
                         
                 }
             }
-              if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
                 if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                     this.bluekey.destroy()
                     if(this.getBlueKey === false){
@@ -3889,7 +3889,7 @@ var Level_sll2 = function (_Phaser$Scene) {
                         
                 }
             }
-              if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
+                if(this.blue.getBounds().centerX>895 && this.blue.getBounds().centerX<965){
                 if(this.blue.getBounds().centerY>500 && this.blue.getBounds().centerY<600){
                     this.bluekey.destroy()
                     if(this.getBlueKey === false){
