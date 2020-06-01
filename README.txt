@@ -1,4 +1,4 @@
-Produce by: CSE380 "TheBraveTwinKnights" Team
+Produce by: "TheBraveTwinKnights" Team
 
 Firebase URL: https://thebravetwinknights.firebaseapp.com
 
