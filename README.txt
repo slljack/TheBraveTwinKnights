@@ -1,6 +1,6 @@
 Produce by: CSE380 "TheBraveTwinKnights" Team
 
-Firebase URL: https://thebravetwinknights.firebaseapp.com/banchmark2/
+Firebase URL: https://thebravetwinknights.firebaseapp.com
 
 Game Engine: Phaser 3
 
